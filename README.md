@@ -275,13 +275,13 @@ If you have questions or want to request a license exception, please [contact th
 
 Installing optional dependencies may be subject to a more restrictive license.
 
-## Star history
+## Star History
 
 <a href="https://www.star-history.com/?repos=polakowo%2Fvectorbt&type=timeline&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=polakowo/vectorbt&type=timeline&theme=dark&legend=top-left&sealed_token=KlOVtbOm3HjH84bY3hmz2J3mCAIuIo25-YWRtFRduUgrPKKvY_57s9_VBT6mVPCK2yn_2lT8HTUUtin98D6TMMW17aKv-cydUxd1Du1Tf1ssKC-JgTB0jxbYu-6OUz9D_O94uHS12_AaS3JYAJKzzapwwzEeHicDIqJN9XE3_Rl6RB6gk03qvQA5b6mn" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=polakowo/vectorbt&type=timeline&legend=top-left&sealed_token=KlOVtbOm3HjH84bY3hmz2J3mCAIuIo25-YWRtFRduUgrPKKvY_57s9_VBT6mVPCK2yn_2lT8HTUUtin98D6TMMW17aKv-cydUxd1Du1Tf1ssKC-JgTB0jxbYu-6OUz9D_O94uHS12_AaS3JYAJKzzapwwzEeHicDIqJN9XE3_Rl6RB6gk03qvQA5b6mn" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=polakowo/vectorbt&type=timeline&legend=top-left&sealed_token=KlOVtbOm3HjH84bY3hmz2J3mCAIuIo25-YWRtFRduUgrPKKvY_57s9_VBT6mVPCK2yn_2lT8HTUUtin98D6TMMW17aKv-cydUxd1Du1Tf1ssKC-JgTB0jxbYu-6OUz9D_O94uHS12_AaS3JYAJKzzapwwzEeHicDIqJN9XE3_Rl6RB6gk03qvQA5b6mn" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=polakowo/vectorbt&type=timeline&theme=dark&legend=top-left&sealed_token=482an5rek002Q4c3VCaRd7goV3LwR6GP6m56UOqTunBJKoEq19_RkbQldrL-OP4f5XnDtU9tOOTrs-NTtnqFoQoUZJdWPQEQ-eO2q1McxpYu-STLc1fj9tY60p-spkcSQ9bxs7WJkumrqYI1LSc3mBd7CIu2K7IuYNAgv1pYuFJOQaN1yD5p3wWNgcFM" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=polakowo/vectorbt&type=timeline&legend=top-left&sealed_token=482an5rek002Q4c3VCaRd7goV3LwR6GP6m56UOqTunBJKoEq19_RkbQldrL-OP4f5XnDtU9tOOTrs-NTtnqFoQoUZJdWPQEQ-eO2q1McxpYu-STLc1fj9tY60p-spkcSQ9bxs7WJkumrqYI1LSc3mBd7CIu2K7IuYNAgv1pYuFJOQaN1yD5p3wWNgcFM" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=polakowo/vectorbt&type=timeline&legend=top-left&sealed_token=482an5rek002Q4c3VCaRd7goV3LwR6GP6m56UOqTunBJKoEq19_RkbQldrL-OP4f5XnDtU9tOOTrs-NTtnqFoQoUZJdWPQEQ-eO2q1McxpYu-STLc1fj9tY60p-spkcSQ9bxs7WJkumrqYI1LSc3mBd7CIu2K7IuYNAgv1pYuFJOQaN1yD5p3wWNgcFM" />
  </picture>
 </a>
 
