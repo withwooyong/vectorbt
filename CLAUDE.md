@@ -10,11 +10,18 @@ NumPy 배열에 담아 한 번에 실행하며, 핫 패스는 Numba JIT 커널�
 
 ## 자주 쓰는 명령
 
-```bash
-# 개발 설치 (테스트 의존성 포함)
-pip install -e ".[test]"
+리포에는 가상환경이 없다. `.venv/` 는 `.gitignore` 에 있으므로 리포 루트에 만들어 쓴다(CI 는 `uv venv` 를 쓴다).
+Windows 에서는 `.venv/Scripts/python -m pytest ...` 처럼 가상환경의 python 을 직접 지정하는 편이 안전하다.
 
-# Rust 엔진을 로컬에서 빌드 (rust 툴체인 + maturin 필요, 반드시 release 빌드)
+```bash
+# 가상환경 생성 + 개발 설치 (테스트 의존성 포함)
+python -m venv .venv
+pip install -e ".[test]"
+pip install "plotly<7"   # 아래 "plotly 7 호환" 참고. 이 줄이 없으면 import vectorbt 자체가 실패한다
+
+# Rust 엔진 (A) PyPI 휠 설치 — 빠르지만 master 의 Rust 소스보다 오래되었을 수 있다
+pip install -e ".[rust]"                   # vectorbt-rust==1.1.0 고정
+# Rust 엔진 (B) 로컬 빌드 — rust 툴체인 + maturin 필요, 반드시 release 빌드. Rust 소스를 고쳤으면 이 방법만 유효
 pip install -e ".[test-rust]"
 python -m maturin develop --manifest-path rust/Cargo.toml --release
 
@@ -29,12 +36,23 @@ pytest tests/test_engine.py
 
 # Numba 와 Rust 커널의 결과 일치 확인 + 벤치마크
 python benchmarks/bench_engine.py --rows 5000 --cols 50 --check
-python benchmarks/bench_matrix.py          # BENCHMARKS*.md 재생성
+python benchmarks/bench_matrix.py          # benchmarks/BENCHMARKS*.md 재생성
 
 # 문서 (docs/ 디렉터리에서 실행)
 pip install -e ".[full,docs]"
 python generate_api.py && python update_api_nav.py && mkdocs build --strict
 ```
+
+**plotly 7 호환 문제.** `pyproject.toml` 은 `plotly>=4.12.0` 으로만 제한하는데, plotly 7.0 은 `scattermapbox`
+속성을 제거했고 `vectorbt/templates/{light,dark}.json` 테마 템플릿이 아직 그 속성을 쓴다. 그래서 새 환경에
+그냥 설치하면 `import vectorbt` 시점에 `_settings.py` 의 `register_template` 이 `ValueError` 로 죽는다.
+2026-09 기준 우회는 `plotly<7` 고정이다. 근본 수정(템플릿 JSON 을 `scattermap` 으로 바꾸거나 `pyproject.toml`
+에 상한을 두는 것)은 upstream 코드 변경이므로 사용자 결정이 필요하다.
+
+**엔진 테스트의 예상 결과(2026-09 실측).** Rust 미설치면 `tests/test_engine.py` 는 7 passed · 87 skipped 로
+거의 전부 skip 된다. PyPI 휠 `vectorbt-rust==1.1.0` 을 설치하면 93 passed · 1 failed 인데, 실패하는
+`test_rust_rolling_std_stability` 는 커밋 f989752 가 `rust/src/generic.rs` 를 고치면서 추가한 테스트이고
+휠은 그 이전에 빌드되었다(버전은 둘 다 1.1.0). 이 실패는 코드 버그가 아니라 휠이 오래된 것이며, 로컬 빌드(B)로만 사라진다.
 
 코드 스타일은 `black` 기준 줄 길이 120 이다(`pyproject.toml`). 별도 lint 설정은 없고 `mypy.ini` 는
 `ignore_missing_imports` 만 켜 둔 상태다.
@@ -79,7 +97,8 @@ messaging    Telegram 봇 연동
 - `vbt.settings["engine"]` 은 `"auto"`(기본) · `"numba"` · `"rust"` 중 하나이며, 각 호출의 `engine=` 인자가 이를 덮어쓴다.
 - `resolve_engine(engine, supports_rust)` 가 최종 엔진을 결정한다. `auto` 는 Rust 가 설치되어 있고
   major.minor 버전이 vectorbt 와 일치하며 해당 호출이 지원될 때만 Rust 를 고르고, 아니면 Numba 로 폴백한다.
-  `rust` 를 명시했는데 불가능하면 이유가 담긴 예외를 던진다.
+  버전이 어긋나면 `is_rust_available()` 이 경고를 한 번 내고 Rust 를 "없음" 으로 취급한다.
+  `rust` 를 명시했는데 불가능하면 이유가 담긴 예외를 던진다(미설치는 `ImportError`, 미지원 호출은 `ValueError`).
 - `*_compatible_with_rust(...)` 계열 함수가 `RustSupport` 를 반환하며, `combine_rust_support` 로 여러
   조건을 합친다. dtype 변환이 필요하면 `prepare_array_for_rust` 로 float64 등으로 맞춘 뒤 넘긴다.
 - **난수 함수는 예외다.** `resolve_random_engine` 은 `auto` 에서도 Numba 를 유지한다. 기존 NumPy/Numba
@@ -101,7 +120,9 @@ indicators,labels,records,portfolio}.rs` 가 Python 서브패키지와 1:1 로 �
 `pd.Series.vbt` / `pd.DataFrame.vbt` 가 진입점이며, 하위 네임스페이스는 `@register_series_vbt_accessor("returns")`
 같은 데코레이터로 붙는다(`vbt.signals`, `vbt.returns`, `vbt.ohlcv`, `vbt.px`). 액세서는 **캐시되지 않으므로**
 `df.vbt` 를 두 번 호출하면 객체가 두 번 생성된다. 액세서 상속 계층은 `Base → Generic → Signals/Returns/OHLCV` 이므로
-Generic 메서드는 하위 네임스페이스에서도 그대로 쓸 수 있다.
+Generic 메서드는 하위 네임스페이스에서도 그대로 쓸 수 있다. 예외가 둘 있다. `vbt.px`(`px_accessors.py`)는
+`BaseAccessor` 를 직접 상속해 Generic 메서드가 없고, `vbt.ohlcv`(`ohlcv_accessors.py`)는 DataFrame 에만
+등록되며 `vbt.ohlc` 라는 별칭도 같은 클래스를 가리킨다.
 
 ### 브로드캐스팅과 ArrayWrapper
 
@@ -120,8 +141,11 @@ pickle 이 동작한다.
 
 - `tests/conftest.py` 는 pandas 의 `assert_*_equal` 을 몽키패치해 datetime 단위(ns) · 문자열 dtype 차이를
   정규화한다. pandas 3 의 dtype 변화 때문이며, `rtol`/`atol` 이 있으면 정규화 없이 원래 오류를 그대로 낸다.
-- 테스트 소스에 `engine="rust"` 문자열이 있으면 Rust 미설치 환경에서 자동으로 skip 된다. Rust 경로를 실제로
-  검증하려면 로컬에서 `maturin develop --release` 를 먼저 실행해야 한다.
+- `conftest.py` 의 `pytest_collection_modifyitems` 가 테스트 함수 소스에서 정규식 `engine\s*=\s*['"]rust['"]` 를
+  찾아, Rust 가 없거나 버전이 안 맞으면 자동으로 skip 마커를 붙인다. `tests/test_engine.py` 의 Rust 패리티
+  클래스들은 그와 별개로 `@pytest.mark.skipif(not _engine.is_rust_available(), ...)` 를 직접 달고 있다.
+  Rust 경로를 실제로 검증하려면 로컬에서 `maturin develop --release` 를 먼저 실행해야 한다(PyPI 휠은 master 보다
+  오래되었을 수 있다. "자주 쓰는 명령" 의 예상 결과 참고).
 - `tests/utils.py` 의 `hash` 는 SHA-512 기반 결정적 해시이고, `record_arrays_close` 는 구조화 배열의
   필드별 근사 비교다.
 - `.coveragerc` 는 플로팅 · 외부 데이터 소스 · Telegram 등 I/O 모듈을 커버리지에서 제외한다.
