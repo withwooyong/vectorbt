@@ -1,0 +1,32 @@
+[
+  {
+    "path": "scripts/backfill_ohlcv.py",
+    "local_lf_sha256": "2fe0964eb0ff9c4d07c027addcbe2a720e3eb831798050f157a3d4aa9104446f",
+    "container_sha256": "2fe0964eb0ff9c4d07c027addcbe2a720e3eb831798050f157a3d4aa9104446f",
+    "equal": true
+  },
+  {
+    "path": "app/adapter/out/kiwoom/chart.py",
+    "local_lf_sha256": "9050c4a9c0c0069e531d44b5e38222e08f62ee6cd0bdd1a6f7354a5500737560",
+    "container_sha256": "9050c4a9c0c0069e531d44b5e38222e08f62ee6cd0bdd1a6f7354a5500737560",
+    "equal": true
+  },
+  {
+    "path": "app/adapter/out/kiwoom/stkinfo.py",
+    "local_lf_sha256": "4a16bbd4320e5cbab26bf8460975b831a63e97b326af2108e2738145815b6be0",
+    "container_sha256": "4a16bbd4320e5cbab26bf8460975b831a63e97b326af2108e2738145815b6be0",
+    "equal": true
+  },
+  {
+    "path": "app/application/service/ohlcv_daily_service.py",
+    "local_lf_sha256": "d1e3eaf0082ae9cb468204ac0a736d5cb73efc3191a3da9b3635574e8795e82e",
+    "container_sha256": "d1e3eaf0082ae9cb468204ac0a736d5cb73efc3191a3da9b3635574e8795e82e",
+    "equal": true
+  },
+  {
+    "path": "app/adapter/out/persistence/repositories/stock_price.py",
+    "local_lf_sha256": "853300fe796f1bc443b38bd3f94d5d8b5a72a4c23faeea01f03388231588e1a6",
+    "container_sha256": "853300fe796f1bc443b38bd3f94d5d8b5a72a4c23faeea01f03388231588e1a6",
+    "equal": true
+  }
+]

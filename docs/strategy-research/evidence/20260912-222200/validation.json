@@ -1,0 +1,15 @@
+{
+  "purpose": "Local audit evidence integrity, not a supplier backfill manifest",
+  "checks": [
+    "SQL transactions committed read-only",
+    "1201 zero-close rows and 695 positive-volume zero-close rows recalculated",
+    "180 sample bars independently compared with SQL for 3 conditions",
+    "Markdown local links, UTF-8 and fences checked"
+  ],
+  "files": {
+    "06-price-provenance.txt": "0be4c9806d7b7bdc466e17372ead2c5b689511d5d77013f6d5685021e7a83c20",
+    "07-hts-comparison-inputs.txt": "9c51a8cbf0b7c4e1a309f3b5eadcbfcc9b84b942e090ac037ecca37b3ed10487",
+    "code-provenance.json": "c6042366d67fbfd932b46cd0b8edb39c8c19392fe1e26e65eb9d8ecccffb2d82",
+    "hts-sample-bars.json": "e2a4ddc104da835aa296c69bda09f56475ec4427b4dd1880398e4ca7707ca8c3"
+  }
+}
