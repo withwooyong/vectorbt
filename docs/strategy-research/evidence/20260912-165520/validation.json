@@ -1,0 +1,9 @@
+{
+  "annual_sum": 8202637,
+  "increase_from_20260910": 3720658,
+  "market_breakdown_verified": true,
+  "nonpositive_rows": 1201,
+  "nonpositive_rows_with_nonzero_volume": 695,
+  "sql_commits": 5,
+  "api_rechecked": false
+}
