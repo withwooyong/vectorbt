@@ -1,0 +1,103 @@
+{
+  "observed_date_kst": "2026-09-10",
+  "annual_row_sum_verified": 4481979,
+  "market_zero_breakdown_verified": true,
+  "api_db_matching_days": 7,
+  "api_checks": {
+    "sample": 200,
+    "over_400_days": 400,
+    "unsupported_exchange": 422
+  },
+  "quality": {
+    "adjusted": "t",
+    "min": "2015-04-03",
+    "max": "2026-09-09",
+    "rows": "4481979",
+    "stocks": "4505",
+    "null_ohlc": "0",
+    "nonpositive_ohlc": "0",
+    "invalid_ohlc": "0",
+    "null_volume": "0",
+    "negative_volume": "0",
+    "zero_volume": "173158",
+    "null_amount": "0"
+  },
+  "current_exchange_label_annual": [
+    {
+      "year": "2015",
+      "market_name": "거래소",
+      "rows": "1092",
+      "stocks": "15"
+    },
+    {
+      "year": "2016",
+      "market_name": "거래소",
+      "rows": "5261",
+      "stocks": "31"
+    },
+    {
+      "year": "2017",
+      "market_name": "거래소",
+      "rows": "9671",
+      "stocks": "51"
+    },
+    {
+      "year": "2018",
+      "market_name": "거래소",
+      "rows": "14668",
+      "stocks": "70"
+    },
+    {
+      "year": "2019",
+      "market_name": "거래소",
+      "rows": "18357",
+      "stocks": "85"
+    },
+    {
+      "year": "2020",
+      "market_name": "거래소",
+      "rows": "22157",
+      "stocks": "95"
+    },
+    {
+      "year": "2021",
+      "market_name": "거래소",
+      "rows": "26473",
+      "stocks": "117"
+    },
+    {
+      "year": "2022",
+      "market_name": "거래소",
+      "rows": "29402",
+      "stocks": "123"
+    },
+    {
+      "year": "2023",
+      "market_name": "거래소",
+      "rows": "151247",
+      "stocks": "899"
+    },
+    {
+      "year": "2024",
+      "market_name": "거래소",
+      "rows": "220431",
+      "stocks": "910"
+    },
+    {
+      "year": "2025",
+      "market_name": "거래소",
+      "rows": "221206",
+      "stocks": "919"
+    },
+    {
+      "year": "2026",
+      "market_name": "거래소",
+      "rows": "155314",
+      "stocks": "922"
+    }
+  ],
+  "limitations": [
+    "Current market labels are not historical membership",
+    "Proxy calendar cannot detect dates missing for all stocks"
+  ]
+}

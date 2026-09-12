@@ -1,68 +1,64 @@
-# Session Handoff
+# 다음 세션 인수인계
 
-> Last updated: 2026-09-10 18:54 (KST)
-> Branch: `master`
-> Latest commit: `2d6d8da` - CLAUDE.md 를 실측 결과로 보정: plotly 7 호환 · Rust 설치 경로 · 액세서 예외 · skip 기준
+> 갱신: 2026-09-12 KST
+> 작업 폴더: `C:\Users\aeby\vscode\stock\vectorbt`
+> 브랜치: `master` / 원격: `withwooyong/vectorbt`
+> 종료 전 기준 커밋: `cb6166f` (이번 인수 커밋의 부모)
 
-## Current Status
+키움 조건검색으로 표현 가능한 매매전략을 홈서버 KRX 일봉으로 비교하기 위한 **조사·데이터 진단·실험 설계를 완료했다.** 다음 단계는 백필 진행 상태와 가격 조정 정의를 확인하고 HTS 단일 조건 대조를 준비하는 것이다. 아직 전략 코드 구현, HTS 결과 일치 검증, 백테스트 성과 산출은 하지 않았다.
 
-`polakowo/vectorbt` 포크(`origin` = `withwooyong/vectorbt`)의 한글 `CLAUDE.md` 를 실제 실행으로 검증해 보정하고
-`origin/master` 에 푸시했다. upstream 코드는 건드리지 않았다. 리포 루트에 테스트용 `.venv` 가 생겼고(gitignore 대상),
-이번 인수인계 커밋을 제외하면 작업 트리는 깨끗하다.
+## 먼저 읽을 문서
 
-## Completed This Session
+1. `AGENTS.md`: 한글 작업 지침 및 검증 원칙.
+2. [연구 안내](docs/strategy-research/README.md): 전체 상태와 네 결과물의 역할.
+3. 다음 작업에 맞는 문서만 추가로 읽는다. 데이터 확인은 [데이터 점검](docs/strategy-research/data-audit.md)과 [백필 인수 기준](docs/strategy-research/backfill-contract.md), HTS 준비는 [조건 대응표](docs/strategy-research/condition-map.md), 구현 준비는 [실험 명세](docs/strategy-research/experiment-spec.md).
 
-| # | Task | Commit | Files |
-|---|------|--------|-------|
-| 1 | `.venv` 생성 후 `CLAUDE.md` 의 명령만으로 `pytest tests/test_engine.py` 실행. Numba 만: 7 passed · 87 skipped, PyPI Rust 휠: 93 passed · 1 failed | (환경만, 커밋 없음) | `.venv/` |
-| 2 | `CLAUDE.md` 의 서술 전부를 코드와 대조하고 어긋난 4개 절 보정 | `2d6d8da` | `CLAUDE.md` |
-| 3 | `origin/master` 푸시 (사용자 명시 승인) | — | — |
-| 4 | 인수인계 문서 갱신 | (이번 커밋) | `CHANGELOG.md`, `HANDOFF.md` |
+이전 환경 점검 기록은 [2026-09-10 환경 핸드오프](docs/strategy-research/environment-handoff-2026-09-10.md)에 원문을 보존했다. 당시 목표·승인·제약은 과거 세션의 기록이며 이번 사용자 지시를 덮어쓰지 않는다.
 
-## In Progress / Pending
+## 확정한 요구와 작업 경계
 
-| # | Task | Status | Notes |
-|---|------|--------|-------|
-| 1 | plotly 7 비호환 근본 수정 | 미착수, 승인 필요 | `vectorbt/templates/{light,dark}.json` 의 `scattermapbox` 를 `scattermap` 으로 바꾸거나 `pyproject.toml` 에 `plotly<7` 상한. upstream 코드 변경이므로 사용자가 방안을 골라야 한다 |
-| 2 | Rust 로컬 빌드로 `test_rust_rolling_std_stability` 통과 확인 | 보류 | 이 PC 에 cargo 가 없다. Rust 소스를 고칠 계획이 생길 때만 의미가 있다 |
-| 3 | Codex(`~/.codex/config.toml`) · Gemini CLI(`~/.gemini/settings.json`) 설정 가져오기 | 보류 | `/import` 로 스캔 후 `/import --yes=<digest>` 로 적용. 사용자가 선택하지 않았음 |
+- 여러 전략군을 비교하고, 키움 영웅문4 조건검색에서 설정 가능한 조건을 사용한다.
+- 2015-01-02부터의 백필은 다른 프로젝트에서 수행한다. 여기서 백필을 중복 실행하지 않는다.
+- 이번 사용자는 조사 1 → 데이터 점검 2·백필 기준 4 → 실험 명세 3을 모두 승인했고, 이어 핸드오프·커밋·푸시를 요청했다.
+- 전략 기본값은 연구 제안이다. 실제 투자금·허용 낙폭·최종 매매 방식은 미확정이다.
+- 홈서버 DB 조회는 읽기 전용이었다. 수집 POST, 원본 DB 변경, 조건식 저장, 실주문은 수행하지 않았다.
+- 비용을 아끼기 위해 필요한 파일과 집계만 읽는다. 독립적 웹 조사는 작은 모델, 복잡한 검토는 적합한 모델로 제한적으로 위임한다. 전체 대화 복제나 같은 조사 반복을 피한다.
 
-## Key Decisions Made
+## 완료한 결과와 주요 발견
 
-- **코드는 고치지 않고 문서만 고쳤다.** 사용자 지시가 "코드와 어긋나는 서술이 있으면 CLAUDE.md 를 고쳐라" 였으므로,
-  plotly 7 비호환은 `CLAUDE.md` 에 우회법과 근본 수정 후보를 적고 결정은 사용자에게 넘겼다.
-- **Rust 는 PyPI 휠로만 검증했다.** cargo 가 없어 로컬 빌드가 불가능했고, 휠로도 93개가 통과해 디스패치 서술은
-  충분히 검증됐다고 판단했다. 실패 1개는 휠이 오래된 탓임을 커밋 f989752 의 변경 파일로 확인했다.
-- **커밋 메시지는 한글.** 직전 세션 결정을 유지했다. 푸시는 사용자가 "1"(권장안 선택)로 명시 승인한 뒤에만 했다.
-- **미추적 `AGENTS.md` 는 건드리지 않았다.** 다른 도구가 만든 파일이며 사용자가 지시하기 전에는 손대지 말라고 했다.
+조건 대응표, 데이터 점검 보고서, 백필 인수 기준 및 재실행 SQL 4개, 3개 전략군·6개 후보의 실험 명세를 작성했다. SQL 결과와 API 7일 표본은 `docs/strategy-research/evidence/`에 저장했다.
 
-## Known Issues
+2026-09-10 실측은 4,481,979행·4,505종목이다. 1,804종목이 2023-05-11부터 812행만 보유했다. 시장 코드 0에는 ETF 등이 섞여 있고, 현재 시장 정보만으로 과거 코스피 보통주를 복원할 수 없다. 조정가격만 확인했으며 배당·기업행사·원가격 및 역사 유니버스 정의는 추가 확인이 필요하다.
 
-- **plotly 7.0 에서 `import vectorbt` 실패.** `pyproject.toml` 이 `plotly>=4.12.0` 으로만 제한하는데 plotly 7 이
-  `scattermapbox` 를 제거해 `_settings.py` 의 `register_template` 이 `ValueError` 로 죽는다. 새 환경은 반드시
-  `pip install "plotly<7"` 이 필요하다. CI(`uv pip install`)도 같은 이유로 깨질 가능성이 높다.
-- **PyPI `vectorbt-rust==1.1.0` 휠이 master 보다 오래됐다.** 커밋 f989752 가 `rust/src/generic.rs` 를 고쳤지만
-  버전을 올리지 않아 휠과 소스가 같은 1.1.0 을 달고 있다. `test_rust_rolling_std_stability` 1개가 실패한다.
-- README drift 검사가 `DEBUG` · `NUMBA_DISABLE_JIT` 를 다시 보고했다. 직전 세션과 같은 오탐(예제 앱 설정 ·
-  Numba 표준 변수)이라 README 는 고치지 않았다.
-- git 이 `CLAUDE.md` 에 LF → CRLF 경고를 낸다. Windows `autocrlf` 안내이며 내용에는 영향이 없다.
+사용 등급은 진단·구현 준비용 `RESEARCH_ONLY`다. 예비 수익률 비교도 조정가격 의미 확인과 조건 대조 이후이며, 실제 주수·기업행사 반영 운용 검증은 별도 데이터 게이트를 통과해야 한다. 파일의 기간·집계는 9월 10일 스냅샷으로 백필 이후 최신값이 아니다.
 
-## Context for Next Session
+## 다음 세션 시작점
 
-- **사용자 의도**: 이 포크에서 Claude Code 로 작업할 기반 문서를 갖추는 것이 목표였고, 이번 세션은 그 문서가
-  실제로 동작하는지 검증하는 단계였다. 검증은 끝났다.
-- **환경**: 리포 루트 `.venv` (Python 3.14.6, `plotly<7` 고정, `vectorbt-rust` PyPI 휠 설치). 테스트는
-  `.venv/Scripts/python -m pytest ...` 로 돌린다. 전역 Python 3.14 에는 numpy 조차 없다.
-- **지킬 제약**: `master` 는 보호 브랜치이므로 푸시는 명시적 요청이 있을 때만 한다. upstream 코드(`vectorbt/`,
-  `rust/`, `tests/`)를 고치는 일은 사용자 승인이 필요하다. `AGENTS.md` 는 지시 전에는 건드리지 않는다.
-- **다음 세션 첫 작업 권장**: Pending 1(plotly 7 근본 수정). 두 방안을 비교해 권장안을 먼저 제시하고, 사용자가
-  고른 뒤에 코드를 고친다. 고친 뒤 `plotly>=7` 환경에서 `import vectorbt` 와 `tests/test_engine.py` ·
-  `tests/test_plotting.py` 를 통과시킨다.
+**추천: 백필 프로젝트의 현재 결과와 가격 조정 정의부터 확인한다.** 백필 완료 여부를 추정하지 말고 인수 문서의 납품 정보와 대조한다. 서버가 꺼져 있으면 기존 자료 검토와 HTS 대조 준비를 진행한다.
 
-## Files Modified This Session
+그 다음 키움의 최고종가 창·등호, 가격/이평 비교, 전일 거래량 조건을 동일 KRX 마감 시점으로 대조한다. HTS 실제 접근이 제공되지 않으면 설정안과 미확정 항목까지만 확정하고 결과 일치를 주장하지 않는다. 전략 구현에 앞서 기존 환경 문제를 다시 확인한다.
 
+새 세션 첫 메시지 예시:
+
+```text
+AGENTS.md와 HANDOFF.md를 읽고 이어서 진행하자.
+현재 Git 상태와 백필 진행 상태를 확인하고,
+가격 조정 정의 및 HTS 조건 대조에서 다음에 할 작업을 구체화해줘.
+과거 조사 전체를 다시 읽거나 웹 검색을 반복하지 말고 필요한 자료만 확인해줘.
 ```
-CLAUDE.md     | 38 +++++++++++++++++++++++++++++++------- (2d6d8da)
-CHANGELOG.md  | (이번 커밋)
-HANDOFF.md    | (이번 커밋)
-```
+
+## 접속·환경과 검증 기록
+
+- 홈서버는 `ssh home`, DB 조회는 인수 기준의 SSH/psql 명령을 사용한다. 비밀번호·토큰은 문서에 기록하지 않는다.
+- 사용자 안내 가동시간(KST): 평일 05:55~10:00 / 17:25~21:35, 토요일 06:55~08:00, 일요일 09:55~10:30. 매월 1일 아침은 11:00, 1월 5일은 11:30까지 연장. 시간이 바뀔 수 있으므로 서버 런북이 있으면 확인한다.
+- 사용자가 서버가 실행 중임을 알려 2026-09-12 15:31:35 KST에 실제 접속했다. ted-signal-caddy/frontend/backend/db 및 kiwoom-app/db 6개 컨테이너가 모두 healthy였고, kiwoom_db 읽기 전용 트랜잭션 접속도 성공했다. 시간표 밖이라도 사용자 안내와 실제 상태를 우선한다. 백필 집계는 재조회하지 않았으므로 가격 수치는 여전히 9월 10일 스냅샷이다. 이번 세션에서 서버 서비스나 터널을 시작하지 않았다.
+- `python -X utf8 docs/strategy-research/verify_evidence.py`: PASS. 연도별 4,481,979행 합계, 시장 분해, API/DB 7일 일치, API 입력 경계 검사 재확인.
+- 문서 상대 링크·UTF-8·코드 블록·공백 검사 수행. SQL 증거의 표시용 줄 끝 공백만 제거하고 검산을 다시 통과했다. 데이터 값은 변경하지 않았다. 커밋 전 staged diff도 확인한다.
+- 제품 코드 수정이 없어 전체 pytest·Rust 빌드·MkDocs 배포 빌드는 실행하지 않았다. 연구 문서는 사이트의 `docs/docs/`에 편입하지 않았다.
+- 이전 환경 기록에는 Plotly 7 import 오류와 PyPI Rust 휠의 rolling std 테스트 실패가 있다. 이번 종료 작업에서 재실행하지 않았으므로 현재 상태로 단정하지 않는다.
+- 원격 fetch 후 종료 전 기준 HEAD와 `origin/master` 차이 0/0 확인. 커밋·푸시 후 최종 SHA 및 clean 상태는 종료 응답에서 보고한다.
+- Tests 워크플로는 PR/수동 실행용이며 master 직접 push가 테스트를 자동 실행하지 않는다. 조회된 기존 성공 run은 `23737656124`로 이번 커밋 검증이 아니다. 새 SHA의 run 생성 여부를 푸시 후 확인한다.
+
+## 보존한 변경 범위
+
+이번 커밋 대상은 `AGENTS.md`, 이 `HANDOFF.md`, `docs/strategy-research/`의 조사 문서·SQL·검산 스크립트·증거·이전 핸드오프 사본이다. 기존 `CLAUDE.md`, 제품 코드, 의존성 및 환경 설정은 수정하지 않았다. upstream이나 원격 브랜치 강제 덮어쓰기는 하지 않는다.

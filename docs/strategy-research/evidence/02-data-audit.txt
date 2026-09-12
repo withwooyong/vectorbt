@@ -1,0 +1,164 @@
+BEGIN
+SET
+SET
+          observed_at          | current_setting
+-------------------------------+-----------------
+ 2026-09-10 19:41:48.540504+09 | on
+(1 row)
+
+ market_code |  market_name   | is_active | stocks | missing_listed_date
+-------------+----------------+-----------+--------+---------------------
+ 0           | ETF            | f         |     14 |                   0
+ 0           | ETF            | t         |   1168 |                   0
+ 0           | ETN(변동성)    | t         |      8 |                   0
+ 0           | ETN(손실제한)  | t         |      1 |                   0
+ 0           | 거래소         | f         |      5 |                   0
+ 0           | 거래소         | t         |    917 |                   0
+ 0           | 뮤추얼펀드     | t         |      1 |                   0
+ 0           | 인프라투자금융 | t         |      2 |                   0
+ 10          | 코스닥         | f         |     24 |                   0
+ 10          | 코스닥         | t         |   1823 |                   0
+ 50          | KONEX          | f         |      4 |                   0
+ 50          | KONEX          | t         |    108 |                   0
+ 6           | 리츠           | f         |      2 |                   0
+ 6           | 리츠           | t         |     23 |                   0
+ 60          | ETN            | f         |     46 |                   0
+ 60          | ETN            | t         |    361 |                   0
+(16 rows)
+
+ adjusted |    min     |    max     |  rows   | stocks | null_ohlc | nonpositive_ohlc | invalid_ohlc | null_volume | negative_volume | zero_volume | null_amount
+----------+------------+------------+---------+--------+-----------+------------------+--------------+-------------+-----------------+-------------+-------------
+ t        | 2015-04-03 | 2026-09-09 | 4481979 |   4505 |         0 |                0 |            0 |           0 |               0 |      173158 |           0
+(1 row)
+
+ year | market_code |  rows  | stocks |    min     |    max
+------+-------------+--------+--------+------------+------------
+ 2015 | 0           |   3950 |     47 | 2015-04-28 | 2015-12-30
+ 2015 | 10          |   6721 |     81 | 2015-04-03 | 2015-12-30
+ 2015 | 50          |   1429 |     19 | 2015-04-29 | 2015-12-30
+ 2016 | 0           |  18510 |    117 | 2016-01-04 | 2016-12-29
+ 2016 | 10          |  25868 |    144 | 2016-01-04 | 2016-12-29
+ 2016 | 50          |   6065 |     32 | 2016-01-04 | 2016-12-29
+ 2016 | 6           |     70 |      1 | 2016-09-22 | 2016-12-29
+ 2016 | 60          |    214 |      3 | 2016-07-06 | 2016-12-29
+ 2017 | 0           |  36682 |    194 | 2017-01-02 | 2017-12-28
+ 2017 | 10          |  41690 |    207 | 2017-01-02 | 2017-12-28
+ 2017 | 50          |   8453 |     40 | 2017-01-02 | 2017-12-28
+ 2017 | 6           |    243 |      1 | 2017-01-02 | 2017-12-28
+ 2017 | 60          |   1551 |     13 | 2017-01-02 | 2017-12-28
+ 2018 | 0           |  56412 |    267 | 2018-01-02 | 2018-12-28
+ 2018 | 10          |  55917 |    282 | 2018-01-02 | 2018-12-28
+ 2018 | 50          |  10472 |     48 | 2018-01-02 | 2018-12-28
+ 2018 | 6           |    466 |      3 | 2018-01-02 | 2018-12-28
+ 2018 | 60          |   4384 |     27 | 2018-01-02 | 2018-12-28
+ 2019 | 0           |  70890 |    314 | 2019-01-02 | 2019-12-30
+ 2019 | 10          |  76243 |    362 | 2019-01-02 | 2019-12-30
+ 2019 | 50          |  12371 |     57 | 2019-01-02 | 2019-12-30
+ 2019 | 6           |    798 |      5 | 2019-01-02 | 2019-12-30
+ 2019 | 60          |   6959 |     31 | 2019-01-02 | 2019-12-30
+ 2020 | 0           |  81768 |    365 | 2020-01-02 | 2020-12-30
+ 2020 | 10          |  94967 |    425 | 2020-01-02 | 2020-12-30
+ 2020 | 50          |  14429 |     62 | 2020-01-02 | 2020-12-30
+ 2020 | 6           |   1740 |     11 | 2020-01-02 | 2020-12-30
+ 2020 | 60          |   8019 |     34 | 2020-01-02 | 2020-12-30
+ 2021 | 0           | 101198 |    463 | 2021-01-04 | 2021-12-30
+ 2021 | 10          | 114470 |    496 | 2021-01-04 | 2021-12-30
+ 2021 | 50          |  15700 |     67 | 2021-01-04 | 2021-12-30
+ 2021 | 6           |   2952 |     16 | 2021-01-04 | 2021-12-30
+ 2021 | 60          |  12934 |    102 | 2021-01-04 | 2021-12-30
+ 2022 | 0           | 126370 |    581 | 2022-01-03 | 2022-12-29
+ 2022 | 10          | 129884 |    567 | 2022-01-03 | 2022-12-29
+ 2022 | 50          |  17226 |     78 | 2022-01-03 | 2022-12-29
+ 2022 | 6           |   4333 |     19 | 2022-01-03 | 2022-12-29
+ 2022 | 60          |  27862 |    147 | 2022-01-03 | 2022-12-29
+ 2023 | 0           | 298078 |   1617 | 2023-01-02 | 2023-12-28
+ 2023 | 10          | 292827 |   1582 | 2023-01-02 | 2023-12-28
+ 2023 | 50          |  22162 |    100 | 2023-01-02 | 2023-12-28
+ 2023 | 6           |   5335 |     23 | 2023-01-02 | 2023-12-28
+ 2023 | 60          |  41160 |    202 | 2023-01-02 | 2023-12-28
+ 2024 | 0           | 413629 |   1792 | 2024-01-02 | 2024-12-30
+ 2024 | 10          | 398974 |   1700 | 2024-01-02 | 2024-12-30
+ 2024 | 50          |  24810 |    105 | 2024-01-02 | 2024-12-30
+ 2024 | 6           |   5735 |     24 | 2024-01-02 | 2024-12-30
+ 2024 | 60          |  57384 |    281 | 2024-01-02 | 2024-12-30
+ 2025 | 0           | 455440 |   1980 | 2025-01-02 | 2025-12-30
+ 2025 | 10          | 422243 |   1803 | 2025-01-02 | 2025-12-30
+ 2025 | 50          |  25756 |    109 | 2025-01-02 | 2025-12-30
+ 2025 | 6           |   5925 |     25 | 2025-01-02 | 2025-12-30
+ 2025 | 60          |  76285 |    354 | 2025-01-02 | 2025-12-30
+ 2026 | 0           | 344547 |   2116 | 2026-01-02 | 2026-09-09
+ 2026 | 10          | 306968 |   1845 | 2026-01-02 | 2026-09-09
+ 2026 | 50          |  18342 |    112 | 2026-01-02 | 2026-09-09
+ 2026 | 6           |   4099 |     25 | 2026-01-02 | 2026-09-09
+ 2026 | 60          |  62070 |    407 | 2026-01-02 | 2026-09-09
+(58 rows)
+
+ market_code | stocks |    min     |    max     | rows
+-------------+--------+------------+------------+-------
+ 0           |     19 | 2018-07-11 | 2026-08-31 | 13715
+ 10          |     23 | 2016-03-02 | 2026-09-03 | 25347
+ 50          |      4 | 2019-07-10 | 2026-08-25 |  5055
+ 6           |      2 | 2016-09-22 | 2026-06-10 |  3131
+ 60          |     46 | 2016-07-06 | 2026-09-07 | 49506
+(5 rows)
+
+ before_current_listed_date
+----------------------------
+                      41977
+(1 row)
+
+ orphan_prices
+---------------
+             0
+(1 row)
+
+ stock_code | market_code | listed_date |    min     |    max     | rows
+------------+-------------+-------------+------------+------------+------
+ 000660     | 0           | 1996-12-26  | 2023-05-11 | 2026-09-09 |  812
+ 005930     | 0           | 1975-06-11  | 2023-05-11 | 2026-09-09 |  812
+ 069500     | 0           | 2002-10-14  | 2023-05-11 | 2026-09-09 |  812
+(3 rows)
+
+         table_name          |    column_name    |        data_type
+-----------------------------+-------------------+--------------------------
+ frgn_orgn_consecutive       | market_type       | character varying
+ investor_flow_daily         | market_type       | character varying
+ ranking_snapshot            | market_type       | character varying
+ raw_response                | http_status       | integer
+ sector                      | id                | bigint
+ sector                      | market_code       | character varying
+ sector                      | sector_code       | character varying
+ sector                      | sector_name       | character varying
+ sector                      | group_no          | character varying
+ sector                      | is_active         | boolean
+ sector                      | fetched_at        | timestamp with time zone
+ sector                      | created_at        | timestamp with time zone
+ sector                      | updated_at        | timestamp with time zone
+ stock                       | market_code       | character varying
+ stock                       | market_name       | character varying
+ stock_fundamental           | market_cap        | bigint
+ stock_fundamental           | market_cap_weight | numeric
+ stock_minute_price          | adjusted          | boolean
+ stock_minute_price_y2026m05 | adjusted          | boolean
+ stock_minute_price_y2026m06 | adjusted          | boolean
+ stock_minute_price_y2026m07 | adjusted          | boolean
+ stock_minute_price_y2026m08 | adjusted          | boolean
+ stock_minute_price_y2026m09 | adjusted          | boolean
+ stock_minute_price_y2026m10 | adjusted          | boolean
+ stock_minute_price_y2026m11 | adjusted          | boolean
+ stock_minute_price_y2026m12 | adjusted          | boolean
+ stock_minute_price_y2027m01 | adjusted          | boolean
+ stock_minute_price_y2027m02 | adjusted          | boolean
+ stock_minute_price_y2027m03 | adjusted          | boolean
+ stock_minute_price_y2027m04 | adjusted          | boolean
+ stock_price_krx             | adjusted          | boolean
+ stock_price_monthly_krx     | adjusted          | boolean
+ stock_price_monthly_nxt     | adjusted          | boolean
+ stock_price_nxt             | adjusted          | boolean
+ stock_price_weekly_krx      | adjusted          | boolean
+ stock_price_weekly_nxt      | adjusted          | boolean
+ stock_price_yearly_krx      | adjusted          | boolean
+ stock_price_yearly_nxt      | adjusted          | boolean
+(38 rows)
+
+COMMIT

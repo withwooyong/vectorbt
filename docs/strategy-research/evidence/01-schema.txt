@@ -1,0 +1,114 @@
+BEGIN
+SET
+SET
+          observed_at          | current_database | current_setting
+-------------------------------+------------------+-----------------
+ 2026-09-10 19:39:45.969788+09 | kiwoom_db        | on
+(1 row)
+
+         table_name
+-----------------------------
+ alembic_version
+ frgn_orgn_consecutive
+ investor_flow_daily
+ kiwoom_credential
+ kiwoom_token
+ lending_balance_kw
+ ranking_snapshot
+ raw_response
+ sector
+ sector_price_daily
+ short_selling_kw
+ stock
+ stock_daily_flow
+ stock_fundamental
+ stock_investor_breakdown
+ stock_minute_price
+ stock_minute_price_y2026m05
+ stock_minute_price_y2026m06
+ stock_minute_price_y2026m07
+ stock_minute_price_y2026m08
+ stock_minute_price_y2026m09
+ stock_minute_price_y2026m10
+ stock_minute_price_y2026m11
+ stock_minute_price_y2026m12
+ stock_minute_price_y2027m01
+ stock_minute_price_y2027m02
+ stock_minute_price_y2027m03
+ stock_minute_price_y2027m04
+ stock_price_krx
+ stock_price_monthly_krx
+ stock_price_monthly_nxt
+ stock_price_nxt
+ stock_price_weekly_krx
+ stock_price_weekly_nxt
+ stock_price_yearly_krx
+ stock_price_yearly_nxt
+(36 rows)
+
+     table_name     |     column_name     |        data_type         | is_nullable
+--------------------+---------------------+--------------------------+-------------
+ sector_price_daily | id                  | bigint                   | NO
+ sector_price_daily | sector_id           | bigint                   | NO
+ sector_price_daily | trading_date        | date                     | NO
+ sector_price_daily | open_index_centi    | bigint                   | YES
+ sector_price_daily | high_index_centi    | bigint                   | YES
+ sector_price_daily | low_index_centi     | bigint                   | YES
+ sector_price_daily | close_index_centi   | bigint                   | YES
+ sector_price_daily | trade_volume        | bigint                   | YES
+ sector_price_daily | trade_amount        | bigint                   | YES
+ sector_price_daily | fetched_at          | timestamp with time zone | NO
+ sector_price_daily | created_at          | timestamp with time zone | NO
+ sector_price_daily | updated_at          | timestamp with time zone | NO
+ stock              | id                  | bigint                   | NO
+ stock              | stock_code          | character varying        | NO
+ stock              | stock_name          | character varying        | NO
+ stock              | list_count          | bigint                   | YES
+ stock              | audit_info          | character varying        | YES
+ stock              | listed_date         | date                     | YES
+ stock              | last_price          | bigint                   | YES
+ stock              | state               | character varying        | YES
+ stock              | market_code         | character varying        | NO
+ stock              | market_name         | character varying        | YES
+ stock              | up_name             | character varying        | YES
+ stock              | up_size_name        | character varying        | YES
+ stock              | company_class_name  | character varying        | YES
+ stock              | order_warning       | character varying        | NO
+ stock              | nxt_enable          | boolean                  | NO
+ stock              | is_active           | boolean                  | NO
+ stock              | fetched_at          | timestamp with time zone | NO
+ stock              | created_at          | timestamp with time zone | NO
+ stock              | updated_at          | timestamp with time zone | NO
+ stock_price_krx    | id                  | bigint                   | NO
+ stock_price_krx    | stock_id            | bigint                   | NO
+ stock_price_krx    | trading_date        | date                     | NO
+ stock_price_krx    | adjusted            | boolean                  | NO
+ stock_price_krx    | open_price          | bigint                   | YES
+ stock_price_krx    | high_price          | bigint                   | YES
+ stock_price_krx    | low_price           | bigint                   | YES
+ stock_price_krx    | close_price         | bigint                   | YES
+ stock_price_krx    | trade_volume        | bigint                   | YES
+ stock_price_krx    | trade_amount        | bigint                   | YES
+ stock_price_krx    | prev_compare_amount | bigint                   | YES
+ stock_price_krx    | prev_compare_sign   | character                | YES
+ stock_price_krx    | turnover_rate       | numeric                  | YES
+ stock_price_krx    | fetched_at          | timestamp with time zone | NO
+ stock_price_krx    | created_at          | timestamp with time zone | NO
+ stock_price_krx    | updated_at          | timestamp with time zone | NO
+(47 rows)
+
+    tablename    |         indexname          |                                                       indexdef
+-----------------+----------------------------+----------------------------------------------------------------------------------------------------------------------
+ stock           | stock_pkey                 | CREATE UNIQUE INDEX stock_pkey ON kiwoom.stock USING btree (id)
+ stock           | uq_stock_code              | CREATE UNIQUE INDEX uq_stock_code ON kiwoom.stock USING btree (stock_code)
+ stock           | idx_stock_active           | CREATE INDEX idx_stock_active ON kiwoom.stock USING btree (is_active) WHERE (is_active = true)
+ stock           | idx_stock_market_code      | CREATE INDEX idx_stock_market_code ON kiwoom.stock USING btree (market_code)
+ stock           | idx_stock_nxt_enable       | CREATE INDEX idx_stock_nxt_enable ON kiwoom.stock USING btree (nxt_enable) WHERE (nxt_enable = true)
+ stock           | idx_stock_up_name          | CREATE INDEX idx_stock_up_name ON kiwoom.stock USING btree (up_name) WHERE (up_name IS NOT NULL)
+ stock_price_krx | stock_price_krx_pkey       | CREATE UNIQUE INDEX stock_price_krx_pkey ON kiwoom.stock_price_krx USING btree (id)
+ stock_price_krx | uq_price_krx_stock_date    | CREATE UNIQUE INDEX uq_price_krx_stock_date ON kiwoom.stock_price_krx USING btree (stock_id, trading_date, adjusted)
+ stock_price_krx | idx_price_krx_stock_id     | CREATE INDEX idx_price_krx_stock_id ON kiwoom.stock_price_krx USING btree (stock_id)
+ stock_price_krx | idx_price_krx_trading_date | CREATE INDEX idx_price_krx_trading_date ON kiwoom.stock_price_krx USING btree (trading_date)
+(10 rows)
+
+COMMIT
