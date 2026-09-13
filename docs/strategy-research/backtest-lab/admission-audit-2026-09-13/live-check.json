@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-09-13T19:28:24.540298+09:00",
+  "source": "ssh home / kiwoom-db / kiwoom_db",
+  "transaction_read_only": true,
+  "sql": "live-check.sql",
+  "requested_start": "2015-01-02",
+  "requested_end": "2023-12-31",
+  "holdout_prices_queried": false,
+  "rows_by_vendor": [
+    {"data_vendor": "KIWOOM", "adjusted": true, "rows": 5564973, "stock_ids": 3499, "first_date": "2015-01-02", "last_date": "2023-12-28", "zero_close": 1201, "invalid_ohlcv": 1201},
+    {"data_vendor": "KRX", "adjusted": true, "rows": 544241, "stock_ids": 526, "first_date": "2015-01-02", "last_date": "2023-12-28", "zero_close": 0, "invalid_ohlcv": 70871}
+  ],
+  "saved_ka10081_responses": 0,
+  "followup_pattern_check": {"same_session_separate_read_only_transaction": true, "KRX": {"high_below_close": 70871, "high_below_close_positive_volume": 7935, "high_below_close_zero_volume": 62936, "zero_ohl_positive_close_no_volume": 62647}, "KIWOOM": {"high_below_close": 0, "high_below_close_positive_volume": 0, "high_below_close_zero_volume": 0, "zero_ohl_positive_close_no_volume": 0}},
+  "kiwoom_base_tables": 36,
+  "container_health": {"checked_same_session": true, "healthy": ["ted-signal-caddy", "ted-signal-frontend", "ted-signal-backend", "ted-signal-db", "kiwoom-app", "kiwoom-db"]},
+  "collector_repository": {"local_head": "63c1e2753267260724779aa045e5ca3696e3c911", "local_worktree_clean": true, "deployed_head": "69747e6cc658ac3cda4f20ffd4410feb0c930a87", "historical_ingestion_code_proven": false},
+  "limitations": ["aggregate equality is not row-level snapshot equality", "vendor labels and adjusted flags do not prove adjustment semantics", "schema inventory does not prove historical data coverage"]
+}
