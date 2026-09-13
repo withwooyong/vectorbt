@@ -1,0 +1,25 @@
+{
+  "purpose": "source identities reviewed; originals not edited by this task",
+  "files": [
+    {
+      "file": "모닝브리핑_프롬프트.txt",
+      "sha256": "7f3af50ccee26725009393cf371f2bf9aec4ed395571314d0adc99fe94e89a15",
+      "bytes": 23445
+    },
+    {
+      "file": "부코드_개별종목분석용.txt",
+      "sha256": "4fd8e4fb1c6aaf778c59789c730658d703686651ff51850a46848a2cb545d06c",
+      "bytes": 13553
+    },
+    {
+      "file": "부코드_산업분석용.txt",
+      "sha256": "f9bba32eca26f7e453bc8274214b81e9ddf0dc7db54fca4239ac1f2f79f0af93",
+      "bytes": 13912
+    },
+    {
+      "file": "부코드_통찰력투자사고.txt",
+      "sha256": "106007ae2e0cc2da7142e95c14f7e74ccf12d486bfc7080451324e9784cc8d20",
+      "bytes": 15229
+    }
+  ]
+}

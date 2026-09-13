@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-09-13T03:13:33Z",
+  "method": "GitHub REST API repository, commits, and releases endpoints; license judgment checked against the linked repository license file or package metadata",
+  "api_endpoint_templates": {
+    "repository": "https://api.github.com/repos/{owner}/{repo}",
+    "latest_commit": "https://api.github.com/repos/{owner}/{repo}/commits?per_page=1",
+    "latest_release": "https://api.github.com/repos/{owner}/{repo}/releases?per_page=1"
+  },
+  "limitations": [
+    "latest_commit is the first commit returned for the default branch at checked_at_utc",
+    "latest_release is null when the GitHub Releases API returned no release; tags or package registries may still exist",
+    "maintenance fields are activity signals, not stability, security, or strategy-performance evidence"
+  ],
+  "repositories": [
+    {
+      "repo": "polakowo/vectorbt",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "34b6d59", "date_utc": "2026-08-02T09:14:09Z" },
+      "latest_release": { "tag": "v1.1.0", "published_at_utc": "2026-07-05T17:17:14Z", "prerelease": false },
+      "github_license_spdx": "NOASSERTION",
+      "license_judgment": "Apache-2.0 with Commons Clause; source-available/fair-code terms, not plain Apache-2.0",
+      "sources": {
+        "repository": "https://github.com/polakowo/vectorbt",
+        "api_repository": "https://api.github.com/repos/polakowo/vectorbt",
+        "commits": "https://github.com/polakowo/vectorbt/commits/master/",
+        "releases": "https://github.com/polakowo/vectorbt/releases",
+        "license": "https://github.com/polakowo/vectorbt/blob/master/LICENSE.md"
+      }
+    },
+    {
+      "repo": "kernc/backtesting.py",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "ca2e261", "date_utc": "2026-08-05T12:39:16Z" },
+      "latest_release": null,
+      "github_license_spdx": "AGPL-3.0",
+      "license_judgment": "AGPL-3.0",
+      "sources": {
+        "repository": "https://github.com/kernc/backtesting.py",
+        "api_repository": "https://api.github.com/repos/kernc/backtesting.py",
+        "commits": "https://github.com/kernc/backtesting.py/commits/master/",
+        "releases": "https://github.com/kernc/backtesting.py/releases",
+        "license": "https://github.com/kernc/backtesting.py/blob/master/LICENSE.md"
+      }
+    },
+    {
+      "repo": "mementum/backtrader",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "b853d7c", "date_utc": "2023-04-19T14:13:08Z" },
+      "latest_release": null,
+      "github_license_spdx": "GPL-3.0",
+      "license_judgment": "GPL-3.0",
+      "sources": {
+        "repository": "https://github.com/mementum/backtrader",
+        "api_repository": "https://api.github.com/repos/mementum/backtrader",
+        "commits": "https://github.com/mementum/backtrader/commits/master/",
+        "releases": "https://github.com/mementum/backtrader/releases",
+        "license": "https://github.com/mementum/backtrader/blob/master/LICENSE"
+      }
+    },
+    {
+      "repo": "nautechsystems/nautilus_trader",
+      "default_branch": "develop",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "4380f02", "date_utc": "2026-09-13T02:35:42Z" },
+      "latest_release": { "tag": "v2.0.0rc4", "published_at_utc": "2026-09-02T03:26:46Z", "prerelease": true },
+      "github_license_spdx": "LGPL-3.0",
+      "license_judgment": "LGPL-3.0-only",
+      "sources": {
+        "repository": "https://github.com/nautechsystems/nautilus_trader",
+        "api_repository": "https://api.github.com/repos/nautechsystems/nautilus_trader",
+        "commits": "https://github.com/nautechsystems/nautilus_trader/commits/develop/",
+        "releases": "https://github.com/nautechsystems/nautilus_trader/releases",
+        "license": "https://github.com/nautechsystems/nautilus_trader/blob/develop/LICENSE"
+      }
+    },
+    {
+      "repo": "QuantConnect/Lean",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "6eb3890", "date_utc": "2026-09-11T22:16:54Z" },
+      "latest_release": { "tag": "v2.4.0.1", "published_at_utc": "2017-08-08T20:57:57Z", "prerelease": false },
+      "github_license_spdx": "Apache-2.0",
+      "license_judgment": "Apache-2.0",
+      "sources": {
+        "repository": "https://github.com/QuantConnect/Lean",
+        "api_repository": "https://api.github.com/repos/QuantConnect/Lean",
+        "commits": "https://github.com/QuantConnect/Lean/commits/master/",
+        "releases": "https://github.com/QuantConnect/Lean/releases",
+        "license": "https://github.com/QuantConnect/Lean/blob/master/LICENSE"
+      }
+    },
+    {
+      "repo": "vnpy/vnpy",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "fa5206f", "date_utc": "2026-08-06T14:30:12Z" },
+      "latest_release": { "tag": "4.4.0", "published_at_utc": "2026-05-14T12:18:00Z", "prerelease": false },
+      "github_license_spdx": "MIT",
+      "license_judgment": "MIT",
+      "sources": {
+        "repository": "https://github.com/vnpy/vnpy",
+        "api_repository": "https://api.github.com/repos/vnpy/vnpy",
+        "commits": "https://github.com/vnpy/vnpy/commits/master/",
+        "releases": "https://github.com/vnpy/vnpy/releases",
+        "license": "https://github.com/vnpy/vnpy/blob/master/LICENSE"
+      }
+    },
+    {
+      "repo": "FinanceData/FinanceDataReader",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "addcbb7", "date_utc": "2026-05-13T19:12:04Z" },
+      "latest_release": null,
+      "github_license_spdx": "MIT",
+      "license_judgment": "MIT",
+      "sources": {
+        "repository": "https://github.com/FinanceData/FinanceDataReader",
+        "api_repository": "https://api.github.com/repos/FinanceData/FinanceDataReader",
+        "commits": "https://github.com/FinanceData/FinanceDataReader/commits/master/",
+        "releases": "https://github.com/FinanceData/FinanceDataReader/releases",
+        "license": "https://github.com/FinanceData/FinanceDataReader/blob/master/LICENSE.txt"
+      }
+    },
+    {
+      "repo": "sharebook-kr/pykrx",
+      "default_branch": "master",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "fb0d9b3", "date_utc": "2026-05-04T09:49:11Z" },
+      "latest_release": { "tag": "v1.2.8", "published_at_utc": "2026-05-04T09:58:01Z", "prerelease": false },
+      "github_license_spdx": null,
+      "license_judgment": "MIT declared in pyproject.toml; no root LICENSE file observed",
+      "sources": {
+        "repository": "https://github.com/sharebook-kr/pykrx",
+        "api_repository": "https://api.github.com/repos/sharebook-kr/pykrx",
+        "commits": "https://github.com/sharebook-kr/pykrx/commits/master/",
+        "releases": "https://github.com/sharebook-kr/pykrx/releases",
+        "license": "https://github.com/sharebook-kr/pykrx/blob/master/pyproject.toml"
+      }
+    },
+    {
+      "repo": "koreainvestment/open-trading-api",
+      "default_branch": "main",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "b4e6249", "date_utc": "2026-08-26T06:39:24Z" },
+      "latest_release": null,
+      "github_license_spdx": null,
+      "license_judgment": "UNSPECIFIED; no root license file or pyproject license declaration observed",
+      "sources": {
+        "repository": "https://github.com/koreainvestment/open-trading-api",
+        "api_repository": "https://api.github.com/repos/koreainvestment/open-trading-api",
+        "commits": "https://github.com/koreainvestment/open-trading-api/commits/main/",
+        "releases": "https://github.com/koreainvestment/open-trading-api/releases",
+        "license": null
+      }
+    },
+    {
+      "repo": "Kiwoom-Securities/Kiwoom-REST-API",
+      "default_branch": "main",
+      "archived": false,
+      "disabled": false,
+      "latest_commit": { "sha": "234560d", "date_utc": "2026-09-01T06:08:20Z" },
+      "latest_release": null,
+      "github_license_spdx": "NOASSERTION",
+      "license_judgment": "Proprietary restricted license; use limited to Kiwoom OpenAPI service and modification/distribution restricted",
+      "sources": {
+        "repository": "https://github.com/Kiwoom-Securities/Kiwoom-REST-API",
+        "api_repository": "https://api.github.com/repos/Kiwoom-Securities/Kiwoom-REST-API",
+        "commits": "https://github.com/Kiwoom-Securities/Kiwoom-REST-API/commits/main/",
+        "releases": "https://github.com/Kiwoom-Securities/Kiwoom-REST-API/releases",
+        "license": "https://github.com/Kiwoom-Securities/Kiwoom-REST-API/blob/main/LICENSE.md"
+      }
+    }
+  ]
+}

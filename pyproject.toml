@@ -67,6 +67,8 @@ test = [
     "pytest-cov",
     "pytest-xdist",
     "codecov",
+    "pyarrow>=25,<26",
+    "psutil>=7,<8",
 ]
 test-rust = [
     "vectorbt[test]",

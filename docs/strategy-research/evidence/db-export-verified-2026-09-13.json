@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-09-13T14:18:30.0853446+09:00",
+  "sql": "sql/09-export-single-stock.sql",
+  "stock_code": "005930",
+  "rows": 2870,
+  "first_date": "2015-01-02",
+  "last_date": "2026-09-10",
+  "output": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\db-export-20260913-141829\\005930-adjusted.csv",
+  "sha256": "166E2814FBEA6AA4882D20179760551F5A03A07E89BDAB59E55F56EDCF02442B",
+  "return_backtest_executed": false
+}

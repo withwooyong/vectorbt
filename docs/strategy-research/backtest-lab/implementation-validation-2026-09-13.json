@@ -1,0 +1,105 @@
+{
+  "status": "VERIFIED_CORE_WITH_DATA_BLOCKERS",
+  "current_source_sha256": "2bee8e205a9dab182d703ecf2be30538267a3603e990f13aa06396c377f7daa9",
+  "real": {
+    "experiment": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\krx-lab-real-20260913-final",
+    "total": 849,
+    "statuses": {
+      "BLOCKED": 849
+    },
+    "selection": "NO_SELECTION",
+    "quality": {
+      "rows": 6109214,
+      "duplicate_keys": 0,
+      "invalid_date_rows": 0,
+      "invalid_ohlcv_rows": 72072,
+      "zero_volume_rows": 211623,
+      "grade": "BLOCKED",
+      "reasons": [
+        "INVALID_OHLCV",
+        "MIXED_VENDOR_ADJUSTMENT_UNVERIFIED",
+        "PRICE_SEMANTICS_UNVERIFIED"
+      ],
+      "symbols": 4025,
+      "invalid_ohlcv_symbols": 453,
+      "vendor_rows": {
+        "KIWOOM": 5564973,
+        "KRX": 544241
+      },
+      "limitations": [
+        "RAW_PRICE_AND_ACTIONS_UNVERIFIED",
+        "HISTORICAL_UNIVERSE_UNVERIFIED",
+        "OFFICIAL_CALENDAR_UNVERIFIED",
+        "HISTORICAL_STATUS_UNVERIFIED",
+        "HISTORICAL_TICKS_UNVERIFIED",
+        "COST_MODEL_UNVERIFIED"
+      ],
+      "first_date": "2015-01-02",
+      "last_date": "2023-12-31"
+    },
+    "observed_price_range_independently_checked": [
+      "2015-01-02",
+      "2023-12-28"
+    ],
+    "returns_computed": false
+  },
+  "synthetic": {
+    "experiment": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\krx-lab-synthetic-20260913-final",
+    "total": 849,
+    "statuses": {
+      "SUCCEEDED": 64,
+      "PLANNED": 752,
+      "BLOCKED": 33
+    },
+    "market_performance": false,
+    "orders_reconciled": 14680,
+    "eod_rows_reconciled": 54716,
+    "fresh_run_metric_matches": 64,
+    "development_strategies": 48,
+    "validation_slots": 16,
+    "sum_run_elapsed_seconds": 115.65213930013124,
+    "max_recorded_rss_bytes": 377176064
+  },
+  "diagnostic": {
+    "status": "DIAGNOSTIC_ONLY",
+    "price_grade": "BLOCKED",
+    "source_manifest_sha256": "b31a8f62953a2fb0be5d7b2469e8faa1b8ecc53c59c2ae1996683b4b901a98c1",
+    "symbols": 4025,
+    "elapsed_seconds": 287.92366369999945,
+    "observed_sessions": 2214,
+    "returns_computed": false,
+    "invalid_row_policy": "mask diagnostic OHLCV only; retain dates",
+    "survivorship_filter_applied": false,
+    "files": {
+      "signal-counts-by-stock-year.parquet": "a608356e043ae90f5584135a3637c9eba1302b5869202204c5b43cba831b837f",
+      "signal-counts.csv": "0b39e511958da53316a699b4b34d20bb6fba475cef5a700bda041408671c4ba3"
+    }
+  },
+  "checks": {
+    "pytest_command": ".venv/Scripts/python.exe -X utf8 -m pytest tests/research docs/strategy-research/test_research_backtest.py -q",
+    "pytest_passed": 64,
+    "pytest_seconds": 19.05,
+    "ruff_command": "uv run --no-sync ruff check research/krx_lab tests/research",
+    "ruff": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "test_result_provenance": "이번 세션의 실제 실행 결과 기록; 이 검산기는 pytest 자체를 재실행하지 않음"
+  },
+  "artifacts": {
+    "real_report": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\krx-lab-real-20260913-final\\report.html",
+    "synthetic_report": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\krx-lab-synthetic-20260913-final\\report.html",
+    "snapshot": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\krx-lab-db-20260913-1542",
+    "diagnostic": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\krx-lab-diagnostic-20260913-v2"
+  },
+  "not_implemented_or_not_verified": [
+    "EXECUTION_ELIGIBLE admission",
+    "historical corporate-action settlement",
+    "realistic cost adapter",
+    "conditional phase execution",
+    "freeze/finalize",
+    "actual strategy returns",
+    "final strategy selection",
+    "paper/live orders"
+  ],
+  "old_example_sha256": "50eefb17c5850158e4ba6fc35c265b3fef249cf0089eba41bdd835ef95a38408"
+}

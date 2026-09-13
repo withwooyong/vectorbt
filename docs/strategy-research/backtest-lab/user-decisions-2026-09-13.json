@@ -1,0 +1,23 @@
+{
+  "recorded_date": "2026-09-13",
+  "evidence_source": "explicit_user_messages",
+  "data_policy": {
+    "require_data_validation_before_return_backtests": true,
+    "allow_unverified_exploratory_returns": false
+  },
+  "holdout": {
+    "start": "2024-01-01",
+    "end": "2026-09-10",
+    "unused_confirmed_by_user": true,
+    "user_statement": "전략 선택·튜닝에 사용한 적 없음",
+    "independently_audited": false,
+    "unlocked": false,
+    "required_before_opening": [
+      "data_validation_passed",
+      "candidate_and_allocation_policy_frozen",
+      "realistic_cost_validation_passed",
+      "holdout_execution_implemented_and_verified"
+    ]
+  },
+  "application": "Input for the next experiment; existing hashed experiments remain unchanged."
+}

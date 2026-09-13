@@ -1,0 +1,61 @@
+{
+  "scope": "document_design_only_no_strategy_returns",
+  "markdown_files": 6,
+  "local_links_checked": 32,
+  "primary_candidates": 48,
+  "logical_slots": 849,
+  "max_unique_calculations_with_reuse": 845,
+  "initial_capital_krw": 100000000,
+  "compound_scenarios": [
+    {
+      "monthly_return_assumption": 0.005,
+      "after_12m_krw": 106167781.18644983,
+      "after_36m_krw": 119668052.48234147
+    },
+    {
+      "monthly_return_assumption": 0.01,
+      "after_12m_krw": 112682503.01319697,
+      "after_36m_krw": 143076878.3591581
+    },
+    {
+      "monthly_return_assumption": 0.02,
+      "after_12m_krw": 126824179.45625454,
+      "after_36m_krw": 203988734.37157056
+    }
+  ],
+  "calendar_month_cases": 3,
+  "existing_runner_unchanged_sha256": "50eefb17c5850158e4ba6fc35c265b3fef249cf0089eba41bdd835ef95a38408",
+  "not_executed": [
+    "new_program",
+    "real_market_backtests",
+    "selection",
+    "broker_orders",
+    "database_refresh"
+  ],
+  "files": [
+    {
+      "path": "prd.md",
+      "sha256": "1dba5e026662c099f0d8d2aeb435ca93ac3001e13e06ca29462409150307cf26"
+    },
+    {
+      "path": "README.md",
+      "sha256": "9437d0363a8462856675654191b6f78e8183c5423bebddbb842953ac55ac1c20"
+    },
+    {
+      "path": "requirements.md",
+      "sha256": "441ec01211233e83b3d6fc6216461768291ded80c76f4245d337bc248400c3e6"
+    },
+    {
+      "path": "strategy-spec.md",
+      "sha256": "1cfd61ed94017b1663f42aeed135df1f3b18834da343875563554d5eab13da5a"
+    },
+    {
+      "path": "technical-spec.md",
+      "sha256": "830103e7efdbfc9297682b8a33d7841fc2392189410c00033ed8fdc1000a6840"
+    },
+    {
+      "path": "wbs.md",
+      "sha256": "493b5fb17082d779b76e4923bbfa7e6254c9b06ba0792174abd239a7fa056a64"
+    }
+  ]
+}

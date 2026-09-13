@@ -1,0 +1,20 @@
+{
+  "synthetic_only": true,
+  "code_sha256": "50eefb17c5850158e4ba6fc35c265b3fef249cf0089eba41bdd835ef95a38408",
+  "runs": [
+    {
+      "name": "demo",
+      "strategies": 6,
+      "orders_rows_including_rejections": 68,
+      "closed_trades": 12,
+      "output": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\guide-validation-20260913-121731\\demo"
+    },
+    {
+      "name": "csv-synthetic",
+      "strategies": 6,
+      "orders_rows_including_rejections": 66,
+      "closed_trades": 12,
+      "output": "C:\\Users\\aeby\\AppData\\Local\\vectorbt-research\\guide-validation-20260913-121731\\csv-synthetic"
+    }
+  ]
+}

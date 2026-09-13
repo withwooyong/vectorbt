@@ -1,0 +1,168 @@
+{
+  "schema_version": "design-v1",
+  "status": "DESIGN_EXAMPLE_NOT_EXECUTABLE",
+  "research_proposals_not_live_limits": true,
+  "initial_cash_krw": 100000000,
+  "external_cashflows": [],
+  "withdrawals": [],
+  "reserve_funds_included": false,
+  "max_hold": {
+    "unit": "calendar_month",
+    "value": 1,
+    "missing_day": "clamp_month_end",
+    "nontrading_expiry": "previous_official_session_open",
+    "unfillable": "overdue_retry_no_fake_fill"
+  },
+  "price_plan": {
+    "reference": "signal_day_close_mapped_to_raw",
+    "entry_cap": "floor_tick(min(C+0.5*ATR14_SMA,1.01*C))",
+    "sl_round": "floor_tick",
+    "tp_round": "ceil_tick",
+    "entry_session_delay": 1,
+    "same_bar_collision": "stop_first"
+  },
+  "warmup_sessions": 250,
+  "universe": "point_in_time_KOSPI_KOSDAQ_common_stocks",
+  "entries": [
+    {
+      "id": "CROSS_5_20",
+      "family": "CROSS",
+      "fast": 5,
+      "slow": 20
+    },
+    {
+      "id": "CROSS_10_20",
+      "family": "CROSS",
+      "fast": 10,
+      "slow": 20
+    },
+    {
+      "id": "BREAKOUT_20",
+      "family": "BREAKOUT",
+      "window": 20
+    },
+    {
+      "id": "BREAKOUT_60",
+      "family": "BREAKOUT",
+      "window": 60
+    },
+    {
+      "id": "TREND_PULLBACK_3",
+      "family": "TREND_PULLBACK",
+      "decline_pct": 3
+    },
+    {
+      "id": "TREND_PULLBACK_5",
+      "family": "TREND_PULLBACK",
+      "decline_pct": 5
+    },
+    {
+      "id": "RSI_REENTRY_30",
+      "family": "RSI_REENTRY",
+      "threshold": 30
+    },
+    {
+      "id": "RSI_REENTRY_40",
+      "family": "RSI_REENTRY",
+      "threshold": 40
+    },
+    {
+      "id": "BOLLINGER_REENTRY_1_5",
+      "family": "BOLLINGER_REENTRY",
+      "k": 1.5
+    },
+    {
+      "id": "BOLLINGER_REENTRY_2",
+      "family": "BOLLINGER_REENTRY",
+      "k": 2.0
+    },
+    {
+      "id": "MACD_CROSS_SMA60",
+      "family": "MACD_CROSS",
+      "trend_window": 60
+    },
+    {
+      "id": "MACD_CROSS_SMA120",
+      "family": "MACD_CROSS",
+      "trend_window": 120
+    }
+  ],
+  "exits": [
+    {
+      "id": "PCT_3_6",
+      "kind": "pct",
+      "sl": 0.03,
+      "tp": 0.06
+    },
+    {
+      "id": "PCT_5_10",
+      "kind": "pct",
+      "sl": 0.05,
+      "tp": 0.1
+    },
+    {
+      "id": "ATR_1_5_3",
+      "kind": "atr14_sma",
+      "sl": 1.5,
+      "tp": 3
+    },
+    {
+      "id": "ATR_2_4",
+      "kind": "atr14_sma",
+      "sl": 2,
+      "tp": 4
+    }
+  ],
+  "portfolio": {
+    "default_policy": "fixed20",
+    "max_symbols": 20,
+    "target_exposure": 0.8,
+    "symbol_cap": 0.05,
+    "sector_cap": 0.25,
+    "planned_trade_risk_cap": 0.005,
+    "whole_shares": true,
+    "candidate_priority_seed": "lab-v1|20260913"
+  },
+  "allocation_policies": [
+    "fixed20",
+    "staged10_15_20"
+  ],
+  "development": [
+    "2015-01-02",
+    "2019-12-31"
+  ],
+  "validation_years": [
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "holdout": {
+    "start": "2024-01-01",
+    "end": "2026-09-10",
+    "prior_use_confirmed": false,
+    "enabled_by_default": false
+  },
+  "fees_sensitivity_bps_one_way": [
+    10,
+    30,
+    50
+  ],
+  "base_cost_bps": 30,
+  "delay_stress": 2,
+  "realistic_cost_profile": null,
+  "selection_policy": "technical-spec.md#6",
+  "research_mdd_limit": 0.2,
+  "expected_logical_slots": {
+    "development": 48,
+    "validation_costs": 576,
+    "validation_delay": 192,
+    "allocation": 8,
+    "holdout_common": 4,
+    "controls": 12,
+    "realistic_costs": 5,
+    "intrabar_upper_bound": 4,
+    "total": 849
+  },
+  "worker_count": 1
+}

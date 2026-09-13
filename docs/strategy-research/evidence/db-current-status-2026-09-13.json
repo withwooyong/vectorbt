@@ -1,0 +1,1 @@
+{"observed_at" : "2026-09-13T14:12:56.174102+09:00", "read_only" : "on", "database" : "kiwoom_db", "groups" : [{"adjusted":true,"rows":8789127,"stocks":5011,"first_date":"2015-01-02","last_date":"2026-09-10","nonpositive_close":1201,"nonpositive_ohlc":89239,"null_ohlc":0,"zero_volume":332193}]}
