@@ -1,0 +1,28 @@
+  File: /tmp/backfill_delisted.log
+  Size: 79783     	Blocks: 168        IO Block: 4096   regular file
+Device: 0,54	Inode: 5779303     Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1001/ appuser)   Gid: ( 1001/ appuser)
+Access: 2026-09-14 08:38:59.824038935 +0900
+Modify: 2026-09-13 01:38:34.539362516 +0900
+Change: 2026-09-13 01:38:34.539362516 +0900
+ Birth: 2026-09-12 22:18:12.800373463 +0900
+b915261fd75c63ea96dc0dba25a412d0c13647800431f538f38dc083072c4da9  /tmp/backfill_delisted.log
+2026-09-12 22:26:08,859 INFO app.application.service.delisted_ingestion_service 폐지 후보 식별 완료 snapshots=141 observed=3301 active=4412 candidates=535
+2026-09-12 22:26:41,328 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=000030 rows=1008 delisted_date=2019-02-12
+2026-09-12 22:27:17,138 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=000060 rows=2003 delisted_date=2023-02-20
+2026-09-12 22:28:01,308 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=000075 rows=2611 delisted_date=2025-08-19
+2026-09-12 22:28:14,712 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=000327 rows=678 delisted_date=2017-09-27
+2026-09-13 01:37:27,622 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=900280 rows=2020 delisted_date=2025-01-07
+2026-09-13 01:37:33,655 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=950010 rows=209 delisted_date=2015-11-04
+2026-09-13 01:38:17,498 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=950110 rows=2593 delisted_date=2025-07-23
+2026-09-13 01:38:34,276 INFO app.application.service.delisted_ingestion_service 적재 완료 stock_code=950180 rows=750 delisted_date=2022-05-17
+2026-09-13 01:38:34,323 INFO backfill_delisted ============================================================
+2026-09-13 01:38:34,323 INFO backfill_delisted 후보 종목        : 535
+2026-09-13 01:38:34,323 INFO backfill_delisted 적재한 종목      : 530
+2026-09-13 01:38:34,324 INFO backfill_delisted 적재한 행        : 612607
+2026-09-13 01:38:34,324 INFO backfill_delisted 시세 없어 건너뜀 : 0 []
+2026-09-13 01:38:34,324 INFO backfill_delisted 코드 충돌로 건너뜀: 0 []
+2026-09-13 01:38:34,324 INFO backfill_delisted 상장주식수 누락  : 0 []
+2026-09-13 01:38:34,324 INFO backfill_delisted 실패한 종목      : 0
+2026-09-13 01:38:34,324 INFO backfill_delisted ============================================================
+EXIT=0

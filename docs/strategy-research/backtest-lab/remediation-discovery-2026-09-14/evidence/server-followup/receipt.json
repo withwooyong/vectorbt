@@ -1,0 +1,20 @@
+[
+  {
+    "name": "repository_state",
+    "command": "git -C /srv/ted-startup rev-parse HEAD; git -C /srv/ted-startup status --short",
+    "observed_at": "2026-09-13T23:30:58.056448+00:00",
+    "error": null,
+    "returncode": 0,
+    "stdout_sha256": "ac5921d1eca407966b9a6bc42c89eff66bf279cb5817f8053ce4dff8e01d21b8",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "log_inventory",
+    "command": "find /srv/ted-startup -maxdepth 4 -type f -name '*.log'; find /home/ted -maxdepth 1 -type f -name '*delist*'",
+    "observed_at": "2026-09-13T23:30:58.568296+00:00",
+    "error": null,
+    "returncode": 0,
+    "stdout_sha256": "268bc89c395552b5b0f6027b9135a9f3a6e2b612e91c4fed8125ee1d4fc43452",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

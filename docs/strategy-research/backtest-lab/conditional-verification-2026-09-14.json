@@ -1,0 +1,45 @@
+{
+  "source_kind": "SYNTHETIC",
+  "experiment_id": "8f04af3e57b964f83aa0c5f8273ea538b62f9ce0a2bbe46f8f09d592733e9fdc",
+  "code_hash": "09a56d94e8fa31fdfdddc4b47e29e583715dd6f94c6011b71ecfdcae29a8f3c9",
+  "input_hashes": {
+    "delivery": "5e6d68f325e62b99744c4666c740bdcde2d56b57f8d4810c86892ec421d13380",
+    "signals": "3f06d57925d38343b429378a593a9e58ca9c50722f38cc78c2a7736d72757790",
+    "windows": "4577d5ab5cf89fca01747efd9889eb31922a2576d09b300b72c4c16c53da5d7b"
+  },
+  "slots": 33,
+  "statuses": {
+    "SUCCEEDED": 33
+  },
+  "real_holdout_opened": false,
+  "output_directory": "C:\\Users\\aeby\\AppData\\Local\\Temp\\krx-conditional-final-mzifva7i\\experiment",
+  "report_sha256": "77b60dae8e3c0f99fde573d0eeb7423d58054d4a232e78fee4d4722d8cd9022d",
+  "new_modules": [
+    "conditional_plan.py",
+    "conditional_execution.py",
+    "conditional_runner.py"
+  ],
+  "independent_review": {
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "critical": 0,
+    "major": 0,
+    "initial_major_fixed": 2,
+    "targeted_tests_passed": 186,
+    "targeted_seconds": 59.87
+  },
+  "tests": {
+    "command": ".venv/Scripts/python.exe -X utf8 -m pytest tests/research -q",
+    "passed": 370,
+    "seconds": 94.91
+  },
+  "ruff": "passed",
+  "visual_check": {
+    "browser": "Chrome headless",
+    "viewport": [
+      1800,
+      2400
+    ],
+    "passed": true
+  }
+}

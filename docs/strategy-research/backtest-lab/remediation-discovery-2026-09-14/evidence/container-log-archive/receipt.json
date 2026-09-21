@@ -1,0 +1,11 @@
+[
+  {
+    "name": "container_backfill_log_full",
+    "command": "docker exec kiwoom-app cat /tmp/backfill_delisted.log",
+    "observed_at": "2026-09-13T23:39:46.080451+00:00",
+    "error": null,
+    "returncode": 0,
+    "stdout_sha256": "b915261fd75c63ea96dc0dba25a412d0c13647800431f538f38dc083072c4da9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

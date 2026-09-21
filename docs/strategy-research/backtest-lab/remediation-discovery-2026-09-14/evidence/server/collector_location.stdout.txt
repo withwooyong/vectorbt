@@ -1,0 +1,1 @@
+/srv/ted-startup/src/backend_kiwoom

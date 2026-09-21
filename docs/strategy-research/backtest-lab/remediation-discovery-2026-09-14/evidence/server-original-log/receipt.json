@@ -1,0 +1,11 @@
+[
+  {
+    "name": "original_backfill_log",
+    "command": "if test -f /tmp/backfill_delisted.log; then stat --format='%n %s %y' /tmp/backfill_delisted.log && sha256sum /tmp/backfill_delisted.log && head -n 4 /tmp/backfill_delisted.log && tail -n 12 /tmp/backfill_delisted.log; else printf 'NOT_FOUND /tmp/backfill_delisted.log\n'; fi",
+    "observed_at": "2026-09-13T23:38:14.519443+00:00",
+    "error": null,
+    "returncode": 0,
+    "stdout_sha256": "be261ecde83bf35218dc0d2166965a399c0d1cd17ab4996a057984b49cb3f2a7",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

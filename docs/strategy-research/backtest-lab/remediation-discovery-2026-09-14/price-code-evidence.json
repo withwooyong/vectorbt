@@ -1,0 +1,507 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-14T08:31:50.149270+09:00",
+  "scope": {
+    "price_period": {
+      "start": "2015-01-02",
+      "end": "2023-12-31"
+    },
+    "included": [
+      "local and server source provenance",
+      "installed pykrx 1.2.8 source route",
+      "fixed database samples already collected read-only",
+      "git execution summaries and artifact availability"
+    ],
+    "excluded": [
+      "collection API calls",
+      "database writes",
+      "recollection",
+      "2024-and-later price inspection",
+      "strategy performance"
+    ]
+  },
+  "repository_state": {
+    "vectorbt": {
+      "path": "C:/Users/aeby/vscode/stock/vectorbt",
+      "head": "6015ecbd95aa5267afe2fed6f24451fd6609264f",
+      "status": "pre-existing modified and untracked files present; only the two assigned price provenance files were written"
+    },
+    "ted_startup_local": {
+      "path": "C:/Users/aeby/vscode/ted-startup",
+      "head": "771936bfd47099647e1ad9410576d6f4043c5b8f",
+      "status": "clean",
+      "access": "read-only"
+    },
+    "ted_startup_server": {
+      "path": "/srv/ted-startup/src/backend_kiwoom",
+      "head": "771936bfd47099647e1ad9410576d6f4043c5b8f",
+      "status": "clean",
+      "limitation": "repository HEAD and current container files do not prove the source of the historical 2026-09-12 run"
+    }
+  },
+  "path_resolution": {
+    "requested_name": "수집chart.py",
+    "exact_file_found_in_current_or_git_history": false,
+    "resolved_implementation": "src/backend_kiwoom/app/adapter/out/kiwoom/chart.py"
+  },
+  "verdicts": [
+    {
+      "id": "KRX_LABEL_IS_NOT_UPSTREAM_SOURCE",
+      "status": "confirmed",
+      "finding": "pykrx 1.2.8 routes adjusted=True daily OHLCV to Naver fchart XML; data_vendor=KRX is an ingestion-path label, not an upstream-source proof."
+    },
+    {
+      "id": "NO_LOCAL_INTEGER_ORDER_INVERSION",
+      "status": "confirmed",
+      "finding": "The adjusted daily path parses Naver XML fields to np.int64, performs no daily resampling, and applies Python int. It preserves 10428 < 10430 and cannot create that ordering from correctly ordered integer inputs."
+    },
+    {
+      "id": "KRX_INVALID_OHLC_ACCEPTED",
+      "status": "confirmed",
+      "finding": "The mapper rejects only close_price <= 0; high < close and zero OHL with a positive close pass to upsert."
+    },
+    {
+      "id": "KRX_ZERO_OHL_EXACT_UPSTREAM_CAUSE",
+      "status": "unconfirmed",
+      "finding": "The app has NaN-to-zero logic, but the Naver wrapper converts XML strings directly to np.int64. Historical XML bytes are absent, so the exact upstream representation and semantics cannot be proven."
+    },
+    {
+      "id": "KIWOOM_ZERO_CREATED_BY_LOCAL_DECIMAL_TRUNCATION",
+      "status": "decimal_truncation_hypothesis_excluded_for_current_parser_only",
+      "finding": "The current Kiwoom parser maps integer strings 0 and 1 exactly and maps 0.4 to null, not zero; this does not establish what code or input produced the historical rows."
+    },
+    {
+      "id": "KIWOOM_ZERO_UPSTREAM_CAUSE",
+      "status": "unconfirmed",
+      "finding": "No ka10081 raw response or immutable execution manifest is available for the 102950 rows."
+    },
+    {
+      "id": "PRICE_ADMISSION",
+      "status": "blocked",
+      "finding": "The fixed dataset cannot be admitted until source-faithful revisioned data passes OHLC validation and provenance requirements."
+    }
+  ],
+  "source_chains": {
+    "current_krx_labeled_adjusted_daily_code_path": [
+      {
+        "step": 1,
+        "path": "src/backend_kiwoom/app/adapter/out/krx/client.py",
+        "lines": "148-177",
+        "operation": "calls pykrx.stock.get_market_ohlcv_by_date with adjusted=True"
+      },
+      {
+        "step": 2,
+        "path": "pykrx/stock/stock_api.py",
+        "lines": "195-252",
+        "operation": "adjusted=True delegates to pykrx.website.naver.get_market_ohlcv_by_date"
+      },
+      {
+        "step": 3,
+        "path": "pykrx/website/naver/core.py",
+        "lines": "4-25",
+        "operation": "GET http://fchart.stock.naver.com/sise.nhn with symbol, timeframe, count, requestType=0"
+      },
+      {
+        "step": 4,
+        "path": "pykrx/website/naver/wrap.py",
+        "lines": "12-34",
+        "operation": "splits XML item data into date/open/high/low/close/volume and casts all values to np.int64"
+      },
+      {
+        "step": 5,
+        "path": "pykrx/stock/stock_api.py",
+        "lines": "42-56",
+        "operation": "daily frequency returns without resampling"
+      },
+      {
+        "step": 6,
+        "path": "src/backend_kiwoom/app/adapter/out/krx/mapper.py",
+        "lines": "27-73",
+        "operation": "skips only close <= 0 and accepts all other OHLC combinations"
+      },
+      {
+        "step": 7,
+        "path": "src/backend_kiwoom/app/application/service/delisted_ingestion_service.py",
+        "lines": "331-366",
+        "operation": "upserts accepted rows with data_vendor=KRX"
+      },
+      {
+        "step": 8,
+        "path": "src/backend_kiwoom/app/adapter/out/persistence/repositories/stock_price.py",
+        "lines": "55-137",
+        "operation": "filters only date.min and upserts price fields without OHLC validation"
+      }
+    ],
+    "kiwoom_adjusted_daily": [
+      {
+        "step": 1,
+        "path": "src/backend_kiwoom/app/adapter/out/kiwoom/chart.py",
+        "lines": "367-475",
+        "operation": "sends upd_stkpc_tp=1 when adjusted=True"
+      },
+      {
+        "step": 2,
+        "path": "src/backend_kiwoom/app/adapter/out/kiwoom/chart.py",
+        "lines": "51-97",
+        "operation": "maps response string fields through _to_int"
+      },
+      {
+        "step": 3,
+        "path": "src/backend_kiwoom/app/adapter/out/kiwoom/stkinfo.py",
+        "lines": "428-458",
+        "operation": "parses integer strings exactly; invalid decimal strings become null"
+      },
+      {
+        "step": 4,
+        "path": "src/backend_kiwoom/app/adapter/out/persistence/repositories/stock_price.py",
+        "lines": "55-137",
+        "operation": "upserts zero/one values without price validation"
+      }
+    ]
+  },
+  "fixed_samples": [
+    {
+      "stock_code": "032980",
+      "trading_date": "2015-01-06",
+      "source_label": "KRX",
+      "open": 10066,
+      "high": 10428,
+      "low": 9958,
+      "close": 10430,
+      "volume": 193371,
+      "finding": "high is 2 below close and the mapper accepts the row"
+    },
+    {
+      "stock_code": "032980",
+      "trading_date": "2015-02-25",
+      "source_label": "KRX",
+      "high": 9724,
+      "close": 9726,
+      "finding": "high is 2 below close"
+    },
+    {
+      "stock_code": "032980",
+      "trading_date": "2015-03-19",
+      "source_label": "KRX",
+      "high": 8700,
+      "close": 8702,
+      "finding": "high is 2 below close"
+    },
+    {
+      "stock_code": "032980",
+      "trading_date": "2015-09-04",
+      "source_label": "KRX",
+      "open": 0,
+      "high": 0,
+      "low": 0,
+      "close": 5374,
+      "volume": 0,
+      "finding": "positive close makes the mapper accept the zero-OHL row"
+    },
+    {
+      "stock_code": "102950",
+      "source_label": "KIWOOM",
+      "rows": 2214,
+      "zero_close_rows": 1201,
+      "first_zero": "2015-01-02",
+      "last_zero": "2019-11-29",
+      "first_positive": "2019-09-20",
+      "common_fetched_at": "2026-09-10T21:29:04.568666+09:00",
+      "finding": "a single fetch timestamp identifies a cohort but does not provide an execution ID or raw response"
+    }
+  ],
+  "pure_transform_reproduction": {
+    "network_used": false,
+    "application_imported": false,
+    "operations": [
+      "ElementTree split of fixed synthetic XML item strings",
+      "pandas DataFrame.astype(np.int64)",
+      "Python int cast",
+      "mapper close > 0 acceptance predicate"
+    ],
+    "results": [
+      {
+        "date": "20150106",
+        "high": 10428,
+        "close": 10430,
+        "high_lt_close": true,
+        "mapper_accepts": true
+      },
+      {
+        "date": "20150904",
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "close": 5374,
+        "volume": 0,
+        "high_lt_close": true,
+        "mapper_accepts": true
+      }
+    ],
+    "kiwoom_integer_results": {
+      "0": 0,
+      "1": 1,
+      "+001": 1,
+      "-0": 0,
+      "0.4": null
+    }
+  },
+  "runtime_and_hash_evidence": {
+    "server_versions": {
+      "pykrx": "1.2.8",
+      "pandas": "2.3.3",
+      "numpy": "2.5.3"
+    },
+    "lock": {
+      "path": "src/backend_kiwoom/uv.lock",
+      "git_blob": "149d96a68ba70c182683e3fa17b32f9c83bebd16",
+      "pykrx_version": "1.2.8",
+      "wheel_sha256": "e6d6e206d81575fedfa6a6bcea2d3843ea880f24bc79c1059121829975a9bd70"
+    },
+    "installed_pykrx_files": [
+      {
+        "path": "pykrx/stock/stock_api.py",
+        "sha256_local": "4c1523da5302ad79bb0c6d9d098a5b4e03af6744df484a0c508f71167d560c01",
+        "sha256_server": "4c1523da5302ad79bb0c6d9d098a5b4e03af6744df484a0c508f71167d560c01"
+      },
+      {
+        "path": "pykrx/website/naver/wrap.py",
+        "sha256_local": "67501e8ca4ff4314dbb6f6bcf5ba2217a6da6eee146e70fbdbddfa26c11268dd",
+        "sha256_server": "67501e8ca4ff4314dbb6f6bcf5ba2217a6da6eee146e70fbdbddfa26c11268dd"
+      },
+      {
+        "path": "pykrx/website/naver/core.py",
+        "sha256_local": "2f33e37e44f1de93e07b90ccc0586f693fcf16612ee9d281d47e65edc20f9357",
+        "sha256_server": "2f33e37e44f1de93e07b90ccc0586f693fcf16612ee9d281d47e65edc20f9357"
+      },
+      {
+        "path": "pykrx/website/krx/market/wrap.py",
+        "sha256_local": "0f90e4ebb0a507d410ca0c11102cf392740fdb26a886a2e89f11cdfb5051414d",
+        "sha256_server": "0f90e4ebb0a507d410ca0c11102cf392740fdb26a886a2e89f11cdfb5051414d"
+      }
+    ],
+    "application_files": [
+      {
+        "path": "src/backend_kiwoom/app/adapter/out/kiwoom/chart.py",
+        "git_blob": "f0761235eb119dc3f6e6e7d9c0802567c4146394",
+        "sha256_local_crlf": "5c15a78f9feeac4dab4d9f65b81384490b19b62b7980b687f16f3b6a9568d8f5",
+        "sha256_local_lf_normalized": "9050c4a9c0c0069e531d44b5e38222e08f62ee6cd0bdd1a6f7354a5500737560",
+        "sha256_server_lf": "9050c4a9c0c0069e531d44b5e38222e08f62ee6cd0bdd1a6f7354a5500737560",
+        "last_change_commit": "1a2d70d7dead5f01a51ee6e6823e783ac219e19f"
+      },
+      {
+        "path": "src/backend_kiwoom/app/adapter/out/kiwoom/stkinfo.py",
+        "git_blob": "75a89363b65d7d962a1f65e4c5573dc7a21f9d62",
+        "sha256_local_crlf": "7ec4a4f74cdeebc6f8e57e0fae47bc6d8fc752ce38c119a1896387282b671fc1",
+        "last_change_commit": "e8c901df75eae24c1327db694fe3cc763d3b8e7c"
+      },
+      {
+        "path": "src/backend_kiwoom/app/adapter/out/krx/client.py",
+        "git_blob": "6be7ac64ce0e3626c208c7dc28774611d2d4ee78",
+        "sha256_local_crlf": "ae4104927eec52a3461f0afe0af3875d5c6b7c60a52612ad16fbed2712c4de07",
+        "sha256_local_lf_normalized": "3b711de2cae954b2d3fa211ba83404e2d9d1b21fff4ba0e73e74c7a63bf0dcd7",
+        "sha256_server_lf": "3b711de2cae954b2d3fa211ba83404e2d9d1b21fff4ba0e73e74c7a63bf0dcd7",
+        "last_change_commit": "ad0718643aee32677f7cc8019dc85f3c4358a668"
+      },
+      {
+        "path": "src/backend_kiwoom/app/adapter/out/krx/mapper.py",
+        "git_blob": "124a9e137e01e7b6b8b7b78810e7bc1126edcac7",
+        "sha256_local_crlf": "6d5738070e178080bd87672ccd4e1f48d4cd4bd8bf3b45fe40e2d8e6874718cd",
+        "sha256_local_lf_normalized": "74bc038c1019efcc9563bcfbe316e43d05ab9d7ff53ff9a0d2dfdeb7db7b985f",
+        "sha256_server_lf": "74bc038c1019efcc9563bcfbe316e43d05ab9d7ff53ff9a0d2dfdeb7db7b985f",
+        "last_change_commit": "b572069898f770d02c2e8ee0f55c31a38d5cc403"
+      },
+      {
+        "path": "src/backend_kiwoom/app/application/service/delisted_ingestion_service.py",
+        "sha256_local_crlf": "8b3a5863dfa9d6b34fcfbf29098ecde326ecdad2052f1196e36bf934eb28c76f",
+        "last_change_commit": "e2d51f7f876949d967a5a1f55e539cec672b62e5"
+      },
+      {
+        "path": "src/backend_kiwoom/scripts/backfill_delisted.py",
+        "git_blob": "b8d9f15413a8ac30bbf42b20ed4750d0bda281b1",
+        "sha256_local_crlf": "720de50304547c18f94fad810b284b8ac0fd1b890bde0f20080b6b2f79c38776",
+        "sha256_local_lf_normalized": "25fdac54988af327d47ba8d79b7339d9f3a8f089ff07bb841e211375ecbfe6e8",
+        "sha256_server_lf": "25fdac54988af327d47ba8d79b7339d9f3a8f089ff07bb841e211375ecbfe6e8",
+        "last_change_commit": "ad0718643aee32677f7cc8019dc85f3c4358a668"
+      },
+      {
+        "path": "src/backend_kiwoom/app/adapter/out/persistence/repositories/stock_price.py",
+        "git_blob": "7a961d23fa1b1db1acf59a0e1287d6909f4567bd",
+        "sha256_local_crlf": "17fb7f8c27e1590d1a4cd7c4ad572624e20626035a4a24f71b2c951d2cf0b259",
+        "last_change_commit": "b3ed0484472edbffe3f3aadc99fb62a42d041b80"
+      },
+      {
+        "path": "src/backend_kiwoom/app/adapter/out/persistence/models/raw_response.py",
+        "git_blob": "59f6a6fc61ccc2d37a6f50bcf19ce6648471e441",
+        "sha256_local_crlf": "a192e6671b1c59a38de6db9b267c19c89c443e9938f24b331d5bff490c79f7a9",
+        "last_change_commit": "12f46aa72eeff2e60e411b419cc521fd54bf85e3"
+      }
+    ],
+    "cross_commit_blob_check": {
+      "commits": [
+        "63c1e2753267260724779aa045e5ca3696e3c911",
+        "69747e6cc658ac3cda4f20ffd4410feb0c930a87",
+        "771936bfd47099647e1ad9410576d6f4043c5b8f"
+      ],
+      "result": "chart.py, stkinfo.py, krx/client.py, krx/mapper.py, backfill_delisted.py, stock_price repository, and raw_response model have identical Git blobs at all three commits"
+    }
+  },
+  "execution_record": {
+    "summary_commit": "4323ac1e98d4852a9f2ed290805dc70d9e2d89bb",
+    "reported_started_at": "2026-09-12T22:19:56+09:00",
+    "reported_finished_at": "2026-09-13T01:38:34+09:00",
+    "reported_candidates": 535,
+    "reported_ingested_stocks": 530,
+    "reported_ingested_rows": 612607,
+    "reported_failures": 0,
+    "reported_exit_code": 0,
+    "planned_log_path": "kiwoom-app:/tmp/backfill_delisted.log",
+    "original_log_currently_found": true,
+    "original_log_size_bytes": 79783,
+    "original_log_birth_at": "2026-09-12T22:18:12.800373463+09:00",
+    "original_log_modified_at": "2026-09-13T01:38:34.539362516+09:00",
+    "original_log_sha256": "b915261fd75c63ea96dc0dba25a412d0c13647800431f538f38dc083072c4da9",
+    "full_log_archive_path": "evidence/container-log-archive/container_backfill_log_full.stdout.txt",
+    "full_log_archive_receipt_path": "evidence/container-log-archive/receipt.json",
+    "summary_capture_path": "evidence/container-original-log/container_backfill_log.stdout.txt",
+    "original_log_summary": {
+      "candidates": 535,
+      "ingested_stocks": 530,
+      "ingested_rows": 612607,
+      "skipped_no_data": 0,
+      "skipped_code_reused": 0,
+      "missing_listed_shares": 0,
+      "failed": 0
+    },
+    "original_log_manifest_identity_pattern_matches": 0,
+    "original_log_contains_raw_vendor_response_payload": false,
+    "host_tmp_is_log_location": false,
+    "ted_startup_git_log_artifact_found": false,
+    "vectorbt_evidence_archive_created_during_investigation": true,
+    "server_repository_logs_inventory_contains_planned_log": false,
+    "immutable_manifest_found": false,
+    "missing_fields": [
+      "run_id",
+      "versioned raw stdout/stderr receipt in the repository",
+      "running image digest",
+      "git and source blob manifest captured at run time",
+      "pykrx wheel and installed-source hashes captured at run time",
+      "raw Naver XML hashes",
+      "per-fetch source and adjustment metadata"
+    ]
+  },
+  "raw_response_availability": {
+    "ka10081_rows": 0,
+    "krx_adjusted_raw_xml_files": 0,
+    "model_exists": true,
+    "chart_write_path_found": false,
+    "operational_retention": "90-day hard-delete path exists",
+    "consequence": "historical source-to-row reconstruction is unavailable"
+  },
+  "required_changes": [
+    {
+      "files": [
+        "src/backend_kiwoom/app/adapter/out/krx/client.py"
+      ],
+      "change": "Record actual upstream as PYKRX_NAVER_ADJUSTED, retain missing values rather than coercing them to zero, and capture raw XML or a source-provided immutable export with SHA-256."
+    },
+    {
+      "files": [
+        "src/backend_kiwoom/app/adapter/out/krx/mapper.py"
+      ],
+      "change": "Validate OHLC invariants and quarantine invalid or non-trading representations with reason codes."
+    },
+    {
+      "files": [
+        "src/backend_kiwoom/app/application/service/delisted_ingestion_service.py",
+        "src/backend_kiwoom/scripts/backfill_delisted.py"
+      ],
+      "change": "Create an immutable run manifest containing run ID, code and image identity, dependency hashes, input range, raw/output hashes, and quarantine counts."
+    },
+    {
+      "files": [
+        "src/backend_kiwoom/app/adapter/out/persistence/models/stock_price.py",
+        "new migration",
+        "src/backend_kiwoom/app/adapter/out/persistence/repositories/stock_price.py"
+      ],
+      "change": "Separate ingestion label from upstream source and persist adjustment type, dataset revision, and ingestion_run_id; enforce OHLC invariants before write."
+    },
+    {
+      "files": [
+        "src/backend_kiwoom/app/adapter/out/kiwoom/_client.py",
+        "src/backend_kiwoom/app/adapter/out/kiwoom/chart.py",
+        "immutable raw archive"
+      ],
+      "change": "Persist page-level ka10081 request and raw response hashes, adjustment flag, parser/code hash, and durable source payload beyond the operational 90-day retention."
+    }
+  ],
+  "required_tests": [
+    {
+      "path": "src/backend_kiwoom/tests/test_krx_client_nan.py",
+      "condition": "NaN and non-finite OHLC remain missing/quarantined and never silently become valid zeros."
+    },
+    {
+      "path": "src/backend_kiwoom/tests/test_krx_mapper.py",
+      "condition": "The three fixed 032980 high-below-close rows and the zero-OHL positive-close row are rejected or quarantined with stable reason codes."
+    },
+    {
+      "path": "src/backend_kiwoom/tests/test_stock_price_repository.py",
+      "condition": "Direct invalid OHLC input is rejected as a second defensive layer and valid rows retain source/revision/run identity."
+    },
+    {
+      "path": "src/backend_kiwoom/tests/test_backfill_delisted_cli.py and service tests",
+      "condition": "The receipt has all required hashes and counts; any quarantined price row blocks dataset admission."
+    },
+    {
+      "path": "src/backend_kiwoom/tests/test_kiwoom_chart_client.py",
+      "condition": "0 and 1 remain exact, decimal strings do not become zero, and normalized rows reference the captured raw-response hash."
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "evidence/samples/results.json",
+      "sha256": "677ae1ef3821c56222925a42ca0e0e0824597aed8842db0ad1a41971bfef8104",
+      "use": "fixed 2015-2023 DB samples and ka10081 raw-response count"
+    },
+    {
+      "path": "evidence/server/code_hashes.stdout.txt",
+      "use": "server application source SHA-256"
+    },
+    {
+      "path": "evidence/server/package_versions.stdout.txt",
+      "use": "server pykrx, pandas, and numpy versions"
+    },
+    {
+      "path": "evidence/server-followup/log_inventory.stdout.txt",
+      "use": "current server log inventory"
+    },
+    {
+      "path": "evidence/container-log-archive/container_backfill_log_full.stdout.txt",
+      "sha256": "b915261fd75c63ea96dc0dba25a412d0c13647800431f538f38dc083072c4da9",
+      "use": "full recovered container backfill log"
+    },
+    {
+      "path": "evidence/container-log-archive/receipt.json",
+      "use": "full log capture command, time, return code, and hashes"
+    },
+    {
+      "path": "evidence/container-original-log/container_backfill_log.stdout.txt",
+      "use": "container log stat, SHA-256, and head/tail summary"
+    },
+    {
+      "path": "evidence/server-original-log/original_backfill_log.stdout.txt",
+      "use": "preserved failed host /tmp namespace check; not evidence that the container log was absent"
+    },
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup Git commit 4323ac1e98d4852a9f2ed290805dc70d9e2d89bb",
+      "use": "documented backfill execution summary"
+    }
+  ],
+  "limitations": [
+    "No historical Naver XML payload is stored.",
+    "No ka10081 raw payload is stored for the target rows.",
+    "Current or future re-query cannot replace the missing historical response because upstream data may be revised.",
+    "Naver adjustment and per-field rounding semantics are not documented in the local evidence.",
+    "Current repository and container source identity is not an immutable execution-time manifest."
+  ]
+}

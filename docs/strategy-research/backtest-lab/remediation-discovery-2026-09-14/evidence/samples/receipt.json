@@ -1,0 +1,17 @@
+{
+  "started_at": "2026-09-13T23:28:01.850419+00:00",
+  "status": "COMPLETE",
+  "source": "ssh home / kiwoom-db / kiwoom_db",
+  "holdout_prices_queried": false,
+  "sql_sha256": "ac8d9cb7d663a7e16b9d136250311bca19a39038e686b2e519016b25b8afb380",
+  "parser_sha256": "e1d77c5750bfc718b799ab368aa644a420eccb2972df65740309c2cdaa57d05b",
+  "returncode": 0,
+  "checks": 8,
+  "elapsed_seconds": 2.231,
+  "finished_at": "2026-09-13T23:28:04.090332+00:00",
+  "evidence_sha256": {
+    "stdout.txt": "6ad579b325ceee43c6939c3edb2d0705767663d733190e4913a6eb7eebfd707a",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results.json": "677ae1ef3821c56222925a42ca0e0e0824597aed8842db0ad1a41971bfef8104"
+  }
+}

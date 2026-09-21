@@ -1,2 +1,14 @@
 *.ipynb linguist-language=Python
 *.rs linguist-language=Rust
+
+# Audit receipts hash exact bytes; preserve evidence across Windows checkouts.
+# Raw command output contains intentional whitespace covered by receipt hashes.
+docs/strategy-research/backtest-lab/table-audit-2026-09-13/evidence/** -text -whitespace
+docs/strategy-research/backtest-lab/remediation-discovery-2026-09-14/evidence/** -text -whitespace
+docs/strategy-research/backtest-lab/postgresql-admission-2026-09-15/evidence/** -text -whitespace
+docs/strategy-research/backtest-lab/postgresql-revision-review-2026-09-15/evidence/** -text -whitespace
+docs/strategy-research/backtest-lab/session-reform-review-2026-09-16/evidence/** -text -whitespace
+docs/strategy-research/backtest-lab/postgresql-readiness-2026-09-21/data/** -text -whitespace
+docs/strategy-research/backtest-lab/postgresql-readiness-2026-09-21/metadata/** -text -whitespace
+# Preserve unedited Matplotlib SVG output; source documents still use normal checks.
+docs/strategy-research/backtest-lab/assets/strategy-samples/*.svg -whitespace

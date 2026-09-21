@@ -1,0 +1,11 @@
+[
+  {
+    "name": "container_backfill_log",
+    "command": "docker exec kiwoom-app sh -c 'stat /tmp/backfill_delisted.log && sha256sum /tmp/backfill_delisted.log && head -n 5 /tmp/backfill_delisted.log && tail -n 14 /tmp/backfill_delisted.log'",
+    "observed_at": "2026-09-13T23:39:13.499859+00:00",
+    "error": null,
+    "returncode": 0,
+    "stdout_sha256": "26cd66375c1924b086f278bd22ffaec491dcc0ebefc2a497cd9e64f9b4d1ff5e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

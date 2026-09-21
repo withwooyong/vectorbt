@@ -1,0 +1,14 @@
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-mid-20260510-183802.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-smoke-daily-20260510-095547.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-resume-20260511-073731.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-nxt-3y-010950-20260511-071420.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-resume-failed166-20260511-073923.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-nxt-2026-05-11.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-full-daily-20260510-133821.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-nxt-investigate-010950-20260511-071353.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-smoke-retry-20260510-182450.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-smoke-daily-20260510-102516.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-mid-daily-20260510-132825.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-smoke-daily-20260510-092133.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-full-20260510-194545.log
+/srv/ted-startup/src/backend_kiwoom/logs/backfill-daily-flow-smoke-20260510-180059.log

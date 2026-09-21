@@ -1,0 +1,50 @@
+[
+  {
+    "name": "containers",
+    "command": "docker ps --format '{{.Names}} {{.Status}}'",
+    "observed_at": "2026-09-13T23:29:18.686337+00:00",
+    "returncode": 0,
+    "stdout_sha256": "4f6bef8664b42ab3f117044073f8f684887225d90d373ff8721501f0dbb92f88",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "collector_location",
+    "command": "docker inspect kiwoom-app --format '{{index .Config.Labels \"com.docker.compose.project.working_dir\"}}'",
+    "observed_at": "2026-09-13T23:29:19.172236+00:00",
+    "returncode": 0,
+    "stdout_sha256": "e9e4bc1fcc3c22d90f4e1a06c5be7d41a33c5b9c5e98e713f3e6606d5bf77f93",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "collector_image",
+    "command": "docker inspect kiwoom-app --format '{{.Image}}'",
+    "observed_at": "2026-09-13T23:29:19.444287+00:00",
+    "returncode": 0,
+    "stdout_sha256": "5c1ecdac483ad4053f9f99d37736883734d37ea3e530a98f50eb3db0268f7c24",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "package_versions",
+    "command": "docker exec kiwoom-app python -c 'import importlib.metadata as m; print({p:m.version(p) for p in [\"pykrx\",\"pandas\",\"numpy\"]}); print(m.distribution(\"pykrx\").locate_file(\"pykrx\"))'",
+    "observed_at": "2026-09-13T23:29:20.020138+00:00",
+    "returncode": 0,
+    "stdout_sha256": "d05f0798c08beca4a35fd273aac5cf065a3ee273b7a6ca0337bda87d301736f5",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "code_hashes",
+    "command": "docker exec kiwoom-app sha256sum /app/app/adapter/out/krx/client.py /app/app/adapter/out/krx/mapper.py /app/app/adapter/out/kiwoom/chart.py /app/scripts/backfill_delisted.py",
+    "observed_at": "2026-09-13T23:29:20.324138+00:00",
+    "returncode": 0,
+    "stdout_sha256": "af8af93de92160ad770ff57958514b238bceb38dbfdb8aa68299d2f35343f648",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "log_metadata",
+    "command": "stat --format='%n %s %y' /home/ted/backfill-phase1.log /home/ted/backfill-phase2-pilot.log /home/ted/backfill-phase2.log; sha256sum /home/ted/backfill-phase1.log /home/ted/backfill-phase2-pilot.log /home/ted/backfill-phase2.log",
+    "observed_at": "2026-09-13T23:29:20.799255+00:00",
+    "returncode": 0,
+    "stdout_sha256": "dfeeb42de9b5943cf908d1c675b5877f5fcfb9ed2d0de7e21fd64a26f40671e9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

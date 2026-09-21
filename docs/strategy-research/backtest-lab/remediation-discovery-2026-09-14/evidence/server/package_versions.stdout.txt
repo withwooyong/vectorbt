@@ -1,0 +1,2 @@
+{'pykrx': '1.2.8', 'pandas': '2.3.3', 'numpy': '2.5.3'}
+/app/.venv/lib/python3.12/site-packages/pykrx

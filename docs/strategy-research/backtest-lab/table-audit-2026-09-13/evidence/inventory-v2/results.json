@@ -1,0 +1,1442 @@
+[
+  {
+    "check": "context",
+    "data": {
+      "observed_at": "2026-09-13T22:34:25.566679+09:00",
+      "database": "signal_db",
+      "read_only": "on"
+    }
+  },
+  {
+    "check": "tables",
+    "data": [
+      {
+        "table_schema": "public",
+        "table_name": "alembic_version"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "analysis_report"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "backtest_metrics"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "backtest_result"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_job_execution"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_job_execution_context"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_job_execution_params"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_job_instance"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_job_log"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_step_execution"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "batch_step_execution_context"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "brokerage_account"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "brokerage_account_credential"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "composite_metric"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "composite_rule"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "composite_signal"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "corporate_event"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "dart_corp_mapping"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "dart_disclosure"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "event_signal"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "event_strategy_metric"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "kis_balance_reconcile"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "kis_order_log"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2023_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2024_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2025_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "lending_balance_2026_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "notification_preference"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "paper_account"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "paper_pnl_daily"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "paper_position"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "paper_trade"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "portfolio_backtest_daily_equity"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "portfolio_backtest_result"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "portfolio_backtest_trade"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "portfolio_holding"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "portfolio_snapshot"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "portfolio_transaction"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2023_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2024_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2025_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "short_selling_2026_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "signal"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2015_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2016_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2017_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2018_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2019_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2020_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2021_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2022_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2023_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2024_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2025_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_01"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_02"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_03"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_04"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_05"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_06"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_07"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_08"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_09"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_10"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_11"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "stock_price_2026_12"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "walk_forward_run"
+      },
+      {
+        "table_schema": "public",
+        "table_name": "walk_forward_window"
+      }
+    ]
+  },
+  {
+    "check": "columns",
+    "data": [
+      {
+        "table_name": "corporate_event",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO",
+        "ordinal_position": 1
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "rcept_no",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 2
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "corp_code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 3
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "stock_code",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "ordinal_position": 4
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "event_type",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 5
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "decision_date",
+        "data_type": "date",
+        "is_nullable": "NO",
+        "ordinal_position": 6
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "ex_date",
+        "data_type": "date",
+        "is_nullable": "YES",
+        "ordinal_position": 7
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "record_date",
+        "data_type": "date",
+        "is_nullable": "YES",
+        "ordinal_position": 8
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "ratio",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "ordinal_position": 9
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "new_share_count",
+        "data_type": "bigint",
+        "is_nullable": "YES",
+        "ordinal_position": 10
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "per_share_amount",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "ordinal_position": 11
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "ex_date_source",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 12
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "parse_status",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 13
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "raw_payload",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "ordinal_position": 14
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 15
+      },
+      {
+        "table_name": "corporate_event",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 16
+      },
+      {
+        "table_name": "dart_corp_mapping",
+        "column_name": "stock_code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 1
+      },
+      {
+        "table_name": "dart_corp_mapping",
+        "column_name": "corp_code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 2
+      },
+      {
+        "table_name": "dart_corp_mapping",
+        "column_name": "corp_name",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 3
+      },
+      {
+        "table_name": "dart_corp_mapping",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 4
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "rcept_no",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 1
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "corp_code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 2
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "corp_name",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 3
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "stock_code",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "ordinal_position": 4
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "report_nm",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "ordinal_position": 5
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "rcept_dt",
+        "data_type": "date",
+        "is_nullable": "NO",
+        "ordinal_position": 6
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "flr_nm",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "ordinal_position": 7
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "rm",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "ordinal_position": 8
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "category",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 9
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "raw_payload",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "ordinal_position": 10
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 11
+      },
+      {
+        "table_name": "dart_disclosure",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 12
+      },
+      {
+        "table_name": "stock",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO",
+        "ordinal_position": 1
+      },
+      {
+        "table_name": "stock",
+        "column_name": "stock_code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 2
+      },
+      {
+        "table_name": "stock",
+        "column_name": "stock_name",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 3
+      },
+      {
+        "table_name": "stock",
+        "column_name": "market_type",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "ordinal_position": 4
+      },
+      {
+        "table_name": "stock",
+        "column_name": "sector",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "ordinal_position": 5
+      },
+      {
+        "table_name": "stock",
+        "column_name": "is_active",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "ordinal_position": 6
+      },
+      {
+        "table_name": "stock",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 7
+      },
+      {
+        "table_name": "stock",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "ordinal_position": 8
+      },
+      {
+        "table_name": "stock",
+        "column_name": "deleted_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "ordinal_position": 9
+      },
+      {
+        "table_name": "stock",
+        "column_name": "delisted_date",
+        "data_type": "date",
+        "is_nullable": "YES",
+        "ordinal_position": 10
+      }
+    ]
+  },
+  {
+    "check": "audit_complete",
+    "data": true
+  }
+]

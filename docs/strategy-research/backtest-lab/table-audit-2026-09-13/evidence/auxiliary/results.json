@@ -1,0 +1,178 @@
+[
+  {
+    "check": "context",
+    "data": {
+      "observed_at": "2026-09-13T22:35:53.251+09:00",
+      "database": "signal_db",
+      "read_only": "on"
+    }
+  },
+  {
+    "check": "event_availability",
+    "data": {
+      "total_rows": 510,
+      "first_decision_date": "2026-06-01",
+      "last_decision_date": "2026-09-11",
+      "development_decision_rows": 0,
+      "development_effective_rows": 0
+    }
+  },
+  {
+    "check": "development_events",
+    "data": []
+  },
+  {
+    "check": "event_links",
+    "data": {
+      "rows": 0,
+      "missing_disclosure": 0,
+      "missing_current_stock": 0,
+      "missing_current_mapping": 0,
+      "current_mapping_corp_mismatch": 0,
+      "disclosure_stock_mismatch": 0,
+      "disclosure_after_ex_date": 0
+    }
+  },
+  {
+    "check": "event_duplicate_keys",
+    "data": {
+      "groups": 0,
+      "extra_rows": 0
+    }
+  },
+  {
+    "check": "disclosure_availability",
+    "data": {
+      "total_rows": 56100,
+      "first_receipt_date": "2026-05-29",
+      "last_receipt_date": "2026-09-11",
+      "development_rows": 0
+    }
+  },
+  {
+    "check": "development_disclosures",
+    "data": {
+      "rows": 0,
+      "symbols": 0,
+      "missing_stock_code": 0,
+      "missing_payload": 0
+    }
+  },
+  {
+    "check": "current_stock",
+    "data": {
+      "rows": 4312,
+      "distinct_codes": 4312,
+      "missing_code": 0,
+      "non_six_digit_code": 75,
+      "missing_sector": 4307,
+      "active": 3784,
+      "inactive": 528,
+      "inactive_missing_delisted_date": 0,
+      "active_with_delisted_date": 0
+    }
+  },
+  {
+    "check": "current_mapping",
+    "data": {
+      "rows": 3654,
+      "distinct_stock_codes": 3654,
+      "distinct_corps": 3654,
+      "missing_stock_code": 0,
+      "missing_corp_code": 0
+    }
+  },
+  {
+    "check": "current_stock_mapping",
+    "data": {
+      "stock_rows": 4312,
+      "stocks_without_mapping": 1335
+    }
+  },
+  {
+    "check": "constraints",
+    "data": [
+      {
+        "table_name": "corporate_event",
+        "constraint_name": "ck_corporate_event_ex_date_source",
+        "type": "c",
+        "definition": "CHECK (((ex_date_source)::text = ANY (ARRAY[('NONE'::character varying)::text, ('DART'::character varying)::text, ('KRX'::character varying)::text, ('RECONCILED'::character varying)::text, ('CONFLICT'::character varying)::text])))",
+        "validated": true
+      },
+      {
+        "table_name": "corporate_event",
+        "constraint_name": "ck_corporate_event_parse_status",
+        "type": "c",
+        "definition": "CHECK (((parse_status)::text = ANY (ARRAY[('PENDING'::character varying)::text, ('PARSED'::character varying)::text, ('PARTIAL'::character varying)::text, ('FAILED'::character varying)::text])))",
+        "validated": true
+      },
+      {
+        "table_name": "corporate_event",
+        "constraint_name": "corporate_event_pkey",
+        "type": "p",
+        "definition": "PRIMARY KEY (id)",
+        "validated": true
+      },
+      {
+        "table_name": "corporate_event",
+        "constraint_name": "corporate_event_rcept_no_fkey",
+        "type": "f",
+        "definition": "FOREIGN KEY (rcept_no) REFERENCES dart_disclosure(rcept_no) ON DELETE CASCADE",
+        "validated": true
+      },
+      {
+        "table_name": "corporate_event",
+        "constraint_name": "uq_corporate_event_rcept_type",
+        "type": "u",
+        "definition": "UNIQUE (rcept_no, event_type)",
+        "validated": true
+      },
+      {
+        "table_name": "dart_corp_mapping",
+        "constraint_name": "dart_corp_mapping_corp_code_key",
+        "type": "u",
+        "definition": "UNIQUE (corp_code)",
+        "validated": true
+      },
+      {
+        "table_name": "dart_corp_mapping",
+        "constraint_name": "dart_corp_mapping_pkey",
+        "type": "p",
+        "definition": "PRIMARY KEY (stock_code)",
+        "validated": true
+      },
+      {
+        "table_name": "dart_disclosure",
+        "constraint_name": "dart_disclosure_pkey",
+        "type": "p",
+        "definition": "PRIMARY KEY (rcept_no)",
+        "validated": true
+      },
+      {
+        "table_name": "stock",
+        "constraint_name": "stock_market_type_check",
+        "type": "c",
+        "definition": "CHECK (((market_type)::text = ANY (ARRAY[('KOSPI'::character varying)::text, ('KOSDAQ'::character varying)::text])))",
+        "validated": true
+      },
+      {
+        "table_name": "stock",
+        "constraint_name": "stock_pkey",
+        "type": "p",
+        "definition": "PRIMARY KEY (id)",
+        "validated": true
+      },
+      {
+        "table_name": "stock",
+        "constraint_name": "stock_stock_code_key",
+        "type": "u",
+        "definition": "UNIQUE (stock_code)",
+        "validated": true
+      }
+    ]
+  },
+  {
+    "check": "audit_complete",
+    "data": true
+  }
+]

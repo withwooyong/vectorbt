@@ -1,0 +1,864 @@
+{
+  "schema_version": "krx-strategy-sample-charts-v1",
+  "purpose": "deterministic_synthetic_strategy_explanation",
+  "warning": "not real market data and not performance evidence",
+  "common_future_returns": [
+    0.004,
+    0.015,
+    0.03,
+    0.052,
+    0.066,
+    0.04,
+    0.012,
+    -0.015,
+    -0.036,
+    -0.056,
+    -0.03,
+    0.0,
+    0.02,
+    0.035,
+    0.015,
+    -0.005,
+    0.01,
+    0.025,
+    0.018,
+    0.005,
+    -0.01,
+    0.004,
+    0.012,
+    0.006,
+    -0.004,
+    0.008,
+    0.002,
+    0.01
+  ],
+  "entries": [
+    {
+      "entry_id": "CROSS_5_20",
+      "formula": "SMA5[t-1] < SMA20[t-1], SMA5[t] > SMA20[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-04-05",
+      "signal_close": 9686.900152077931,
+      "atr14": 190.64296469912733,
+      "previous_volume": 320594,
+      "co_signals": [
+        "CROSS_5_20"
+      ],
+      "prefix_sha256": "75735db2dde73e65c969f938de94a40ccdf64a04dbf54bb9a6a04be6e3bd218d",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/cross_5_20.svg",
+      "panels": [
+        {
+          "strategy_id": "CROSS_5_20__PCT_3_6",
+          "entry_cap": 9782.0,
+          "stop": 9396.0,
+          "target": 10269.0,
+          "expiry": "2021-05-06",
+          "entry_date": "2021-04-06",
+          "entry_price": 9686.900152077931,
+          "exit_date": "2021-04-12",
+          "exit_price": 10269.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "CROSS_5_20__PCT_5_10",
+          "entry_cap": 9782.0,
+          "stop": 9202.0,
+          "target": 10656.0,
+          "expiry": "2021-05-06",
+          "entry_date": "2021-04-06",
+          "entry_price": 9686.900152077931,
+          "exit_date": "2021-04-19",
+          "exit_price": 9202.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "CROSS_5_20__ATR_1_5_3",
+          "entry_cap": 9782.0,
+          "stop": 9400.0,
+          "target": 10259.0,
+          "expiry": "2021-05-06",
+          "entry_date": "2021-04-06",
+          "entry_price": 9686.900152077931,
+          "exit_date": "2021-04-12",
+          "exit_price": 10259.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "CROSS_5_20__ATR_2_4",
+          "entry_cap": 9782.0,
+          "stop": 9305.0,
+          "target": 10450.0,
+          "expiry": "2021-05-06",
+          "entry_date": "2021-04-06",
+          "entry_price": 9686.900152077931,
+          "exit_date": "2021-04-19",
+          "exit_price": 9305.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "CROSS_10_20",
+      "formula": "SMA10[t-1] < SMA20[t-1], SMA10[t] > SMA20[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-04-12",
+      "signal_close": 9645.954964103703,
+      "atr14": 191.5782461680319,
+      "previous_volume": 341104,
+      "co_signals": [
+        "CROSS_10_20"
+      ],
+      "prefix_sha256": "6478962c39c43632707a64931788aae181c6c9d2c3d00c316a900f938d860535",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/cross_10_20.svg",
+      "panels": [
+        {
+          "strategy_id": "CROSS_10_20__PCT_3_6",
+          "entry_cap": 9741.0,
+          "stop": 9356.0,
+          "target": 10225.0,
+          "expiry": "2021-05-13",
+          "entry_date": "2021-04-13",
+          "entry_price": 9645.954964103703,
+          "exit_date": "2021-04-19",
+          "exit_price": 10225.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "CROSS_10_20__PCT_5_10",
+          "entry_cap": 9741.0,
+          "stop": 9163.0,
+          "target": 10611.0,
+          "expiry": "2021-05-13",
+          "entry_date": "2021-04-13",
+          "entry_price": 9645.954964103703,
+          "exit_date": "2021-04-26",
+          "exit_price": 9163.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "CROSS_10_20__ATR_1_5_3",
+          "entry_cap": 9741.0,
+          "stop": 9358.0,
+          "target": 10221.0,
+          "expiry": "2021-05-13",
+          "entry_date": "2021-04-13",
+          "entry_price": 9645.954964103703,
+          "exit_date": "2021-04-19",
+          "exit_price": 10221.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "CROSS_10_20__ATR_2_4",
+          "entry_cap": 9741.0,
+          "stop": 9262.0,
+          "target": 10413.0,
+          "expiry": "2021-05-13",
+          "entry_date": "2021-04-13",
+          "entry_price": 9645.954964103703,
+          "exit_date": "2021-04-26",
+          "exit_price": 9262.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "BREAKOUT_20",
+      "formula": "C[t] > max(C[t-20:t-1])",
+      "synthetic_only": true,
+      "signal_date": "2021-04-15",
+      "signal_close": 9715.593267767194,
+      "atr14": 178.18517723492616,
+      "previous_volume": 541420,
+      "co_signals": [
+        "BREAKOUT_20"
+      ],
+      "prefix_sha256": "3aea6030cf8c3bba522ebd4be4cecf387edde1a5151e907d1d73541b59e8424e",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/breakout_20.svg",
+      "panels": [
+        {
+          "strategy_id": "BREAKOUT_20__PCT_3_6",
+          "entry_cap": 9804.0,
+          "stop": 9424.0,
+          "target": 10299.0,
+          "expiry": "2021-05-14",
+          "entry_date": "2021-04-16",
+          "entry_price": 9715.593267767194,
+          "exit_date": "2021-04-22",
+          "exit_price": 10299.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BREAKOUT_20__PCT_5_10",
+          "entry_cap": 9804.0,
+          "stop": 9229.0,
+          "target": 10688.0,
+          "expiry": "2021-05-14",
+          "entry_date": "2021-04-16",
+          "entry_price": 9715.593267767194,
+          "exit_date": "2021-04-29",
+          "exit_price": 9229.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "BREAKOUT_20__ATR_1_5_3",
+          "entry_cap": 9804.0,
+          "stop": 9448.0,
+          "target": 10251.0,
+          "expiry": "2021-05-14",
+          "entry_date": "2021-04-16",
+          "entry_price": 9715.593267767194,
+          "exit_date": "2021-04-22",
+          "exit_price": 10251.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BREAKOUT_20__ATR_2_4",
+          "entry_cap": 9804.0,
+          "stop": 9359.0,
+          "target": 10429.0,
+          "expiry": "2021-05-14",
+          "entry_date": "2021-04-16",
+          "entry_price": 9715.593267767194,
+          "exit_date": "2021-04-28",
+          "exit_price": 9359.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "BREAKOUT_60",
+      "formula": "C[t] > max(C[t-60:t-1])",
+      "synthetic_only": true,
+      "signal_date": "2021-05-17",
+      "signal_close": 10176.556945937758,
+      "atr14": 199.59831246175222,
+      "previous_volume": 194468,
+      "co_signals": [
+        "BREAKOUT_20",
+        "BREAKOUT_60"
+      ],
+      "prefix_sha256": "5df190a4979590ec3e18bd365370701d8eb89de11cfd8f76178e6b82f7b66a7e",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/breakout_60.svg",
+      "panels": [
+        {
+          "strategy_id": "BREAKOUT_60__PCT_3_6",
+          "entry_cap": 10276.0,
+          "stop": 9871.0,
+          "target": 10788.0,
+          "expiry": "2021-06-18",
+          "entry_date": "2021-05-18",
+          "entry_price": 10176.556945937758,
+          "exit_date": "2021-05-24",
+          "exit_price": 10788.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BREAKOUT_60__PCT_5_10",
+          "entry_cap": 10276.0,
+          "stop": 9667.0,
+          "target": 11195.0,
+          "expiry": "2021-06-18",
+          "entry_date": "2021-05-18",
+          "entry_price": 10176.556945937758,
+          "exit_date": "2021-05-31",
+          "exit_price": 9667.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "BREAKOUT_60__ATR_1_5_3",
+          "entry_cap": 10276.0,
+          "stop": 9877.0,
+          "target": 10776.0,
+          "expiry": "2021-06-18",
+          "entry_date": "2021-05-18",
+          "entry_price": 10176.556945937758,
+          "exit_date": "2021-05-24",
+          "exit_price": 10776.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BREAKOUT_60__ATR_2_4",
+          "entry_cap": 10276.0,
+          "stop": 9777.0,
+          "target": 10975.0,
+          "expiry": "2021-06-18",
+          "entry_date": "2021-05-18",
+          "entry_price": 10176.556945937758,
+          "exit_date": "2021-05-31",
+          "exit_price": 9777.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "TREND_PULLBACK_3",
+      "formula": "C[t] > SMA60[t], return(3 bars) <= -3%",
+      "synthetic_only": true,
+      "signal_date": "2021-06-18",
+      "signal_close": 10295.89421200474,
+      "atr14": 232.85184902784945,
+      "previous_volume": 288465,
+      "co_signals": [
+        "TREND_PULLBACK_3"
+      ],
+      "prefix_sha256": "c00d20faef40a4a3754aeb286df65c1b718b9d02bf508a4b5620d93eb87b3a67",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/trend_pullback_3.svg",
+      "panels": [
+        {
+          "strategy_id": "TREND_PULLBACK_3__PCT_3_6",
+          "entry_cap": 10398.0,
+          "stop": 9987.0,
+          "target": 10914.0,
+          "expiry": "2021-07-21",
+          "entry_date": "2021-06-21",
+          "entry_price": 10295.89421200474,
+          "exit_date": "2021-06-25",
+          "exit_price": 10914.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "TREND_PULLBACK_3__PCT_5_10",
+          "entry_cap": 10398.0,
+          "stop": 9781.0,
+          "target": 11326.0,
+          "expiry": "2021-07-21",
+          "entry_date": "2021-06-21",
+          "entry_price": 10295.89421200474,
+          "exit_date": "2021-07-02",
+          "exit_price": 9781.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "TREND_PULLBACK_3__ATR_1_5_3",
+          "entry_cap": 10398.0,
+          "stop": 9946.0,
+          "target": 10995.0,
+          "expiry": "2021-07-21",
+          "entry_date": "2021-06-21",
+          "entry_price": 10295.89421200474,
+          "exit_date": "2021-07-01",
+          "exit_price": 9946.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "TREND_PULLBACK_3__ATR_2_4",
+          "entry_cap": 10398.0,
+          "stop": 9830.0,
+          "target": 11228.0,
+          "expiry": "2021-07-21",
+          "entry_date": "2021-06-21",
+          "entry_price": 10295.89421200474,
+          "exit_date": "2021-07-02",
+          "exit_price": 9830.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "TREND_PULLBACK_5",
+      "formula": "C[t] > SMA60[t], return(3 bars) <= -5%",
+      "synthetic_only": true,
+      "signal_date": "2021-02-15",
+      "signal_close": 10615.64516587832,
+      "atr14": 257.03192038311016,
+      "previous_volume": 471762,
+      "co_signals": [
+        "TREND_PULLBACK_3",
+        "TREND_PULLBACK_5"
+      ],
+      "prefix_sha256": "5b5d68a48e0613a95eea954f8f2e2f505e6407ac2afe8c4113eaa4a2dabd2c60",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/trend_pullback_5.svg",
+      "panels": [
+        {
+          "strategy_id": "TREND_PULLBACK_5__PCT_3_6",
+          "entry_cap": 10721.0,
+          "stop": 10297.0,
+          "target": 11253.0,
+          "expiry": "2021-03-16",
+          "entry_date": "2021-02-16",
+          "entry_price": 10615.64516587832,
+          "exit_date": "2021-02-22",
+          "exit_price": 11253.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "TREND_PULLBACK_5__PCT_5_10",
+          "entry_cap": 10721.0,
+          "stop": 10084.0,
+          "target": 11678.0,
+          "expiry": "2021-03-16",
+          "entry_date": "2021-02-16",
+          "entry_price": 10615.64516587832,
+          "exit_date": "2021-03-01",
+          "exit_price": 10084.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "TREND_PULLBACK_5__ATR_1_5_3",
+          "entry_cap": 10721.0,
+          "stop": 10230.0,
+          "target": 11387.0,
+          "expiry": "2021-03-16",
+          "entry_date": "2021-02-16",
+          "entry_price": 10615.64516587832,
+          "exit_date": "2021-02-26",
+          "exit_price": 10230.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "TREND_PULLBACK_5__ATR_2_4",
+          "entry_cap": 10721.0,
+          "stop": 10101.0,
+          "target": 11644.0,
+          "expiry": "2021-03-16",
+          "entry_date": "2021-02-16",
+          "entry_price": 10615.64516587832,
+          "exit_date": "2021-03-01",
+          "exit_price": 10101.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "RSI_REENTRY_30",
+      "formula": "C[t] > SMA60[t], RSI[t-1] < 30 <= RSI[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-02-18",
+      "signal_close": 14572.499999999998,
+      "atr14": 499.4480540293013,
+      "previous_volume": 200000,
+      "co_signals": [
+        "TREND_PULLBACK_3",
+        "TREND_PULLBACK_5",
+        "RSI_REENTRY_30"
+      ],
+      "prefix_sha256": "1be3393381f98ea4ae077b1b453ba6f3810bd0690d148d6ae0ebf2ea5684733c",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/rsi_reentry_30.svg",
+      "panels": [
+        {
+          "strategy_id": "RSI_REENTRY_30__PCT_3_6",
+          "entry_cap": 14718.0,
+          "stop": 14135.0,
+          "target": 15447.0,
+          "expiry": "2021-03-19",
+          "entry_date": "2021-02-19",
+          "entry_price": 14572.499999999998,
+          "exit_date": "2021-02-25",
+          "exit_price": 15447.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "RSI_REENTRY_30__PCT_5_10",
+          "entry_cap": 14718.0,
+          "stop": 13843.0,
+          "target": 16030.0,
+          "expiry": "2021-03-19",
+          "entry_date": "2021-02-19",
+          "entry_price": 14572.499999999998,
+          "exit_date": "2021-03-04",
+          "exit_price": 13843.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "RSI_REENTRY_30__ATR_1_5_3",
+          "entry_cap": 14718.0,
+          "stop": 13823.0,
+          "target": 16071.0,
+          "expiry": "2021-03-19",
+          "entry_date": "2021-02-19",
+          "entry_price": 14572.499999999998,
+          "exit_date": "2021-03-04",
+          "exit_price": 13823.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "RSI_REENTRY_30__ATR_2_4",
+          "entry_cap": 14718.0,
+          "stop": 13573.0,
+          "target": 16571.0,
+          "expiry": "2021-03-19",
+          "entry_date": "2021-02-19",
+          "entry_price": 14572.499999999998,
+          "exit_date": "2021-03-19",
+          "exit_price": 14645.362499999997,
+          "exit_reason": "time_open",
+          "exit_reason_ko": "보유기간 만료 시가"
+        }
+      ]
+    },
+    {
+      "entry_id": "RSI_REENTRY_40",
+      "formula": "C[t] > SMA60[t], RSI[t-1] < 40 <= RSI[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-03-25",
+      "signal_close": 13783.921036652817,
+      "atr14": 302.610068649629,
+      "previous_volume": 186830,
+      "co_signals": [
+        "RSI_REENTRY_40",
+        "BOLLINGER_REENTRY_1_5"
+      ],
+      "prefix_sha256": "ad21bc51b8bd00f3d646b29c5d34df6a8c59b35a17971186e0f5ee73d3506bad",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/rsi_reentry_40.svg",
+      "panels": [
+        {
+          "strategy_id": "RSI_REENTRY_40__PCT_3_6",
+          "entry_cap": 13921.0,
+          "stop": 13370.0,
+          "target": 14611.0,
+          "expiry": "2021-04-26",
+          "entry_date": "2021-03-26",
+          "entry_price": 13783.921036652817,
+          "exit_date": "2021-04-01",
+          "exit_price": 14611.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "RSI_REENTRY_40__PCT_5_10",
+          "entry_cap": 13921.0,
+          "stop": 13094.0,
+          "target": 15163.0,
+          "expiry": "2021-04-26",
+          "entry_date": "2021-03-26",
+          "entry_price": 13783.921036652817,
+          "exit_date": "2021-04-08",
+          "exit_price": 13094.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "RSI_REENTRY_40__ATR_1_5_3",
+          "entry_cap": 13921.0,
+          "stop": 13330.0,
+          "target": 14692.0,
+          "expiry": "2021-04-26",
+          "entry_date": "2021-03-26",
+          "entry_price": 13783.921036652817,
+          "exit_date": "2021-04-01",
+          "exit_price": 14692.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "RSI_REENTRY_40__ATR_2_4",
+          "entry_cap": 13921.0,
+          "stop": 13178.0,
+          "target": 14995.0,
+          "expiry": "2021-04-26",
+          "entry_date": "2021-03-26",
+          "entry_price": 13783.921036652817,
+          "exit_date": "2021-04-08",
+          "exit_price": 13178.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "BOLLINGER_REENTRY_1_5",
+      "formula": "C[t] > SMA60[t], C[t-1] < Lower(1.5σ)[t-1], C[t] >= Lower(1.5σ)[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-01-13",
+      "signal_close": 11194.668769442103,
+      "atr14": 260.15863639189945,
+      "previous_volume": 442836,
+      "co_signals": [
+        "BOLLINGER_REENTRY_1_5"
+      ],
+      "prefix_sha256": "f9648b4c110ef776f5540afeeca0b7effed6b88baea919b97face42829e23914",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/bollinger_reentry_1_5.svg",
+      "panels": [
+        {
+          "strategy_id": "BOLLINGER_REENTRY_1_5__PCT_3_6",
+          "entry_cap": 11306.0,
+          "stop": 10858.0,
+          "target": 11867.0,
+          "expiry": "2021-02-12",
+          "entry_date": "2021-01-14",
+          "entry_price": 11194.668769442103,
+          "exit_date": "2021-01-20",
+          "exit_price": 11867.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BOLLINGER_REENTRY_1_5__PCT_5_10",
+          "entry_cap": 11306.0,
+          "stop": 10634.0,
+          "target": 12315.0,
+          "expiry": "2021-02-12",
+          "entry_date": "2021-01-14",
+          "entry_price": 11194.668769442103,
+          "exit_date": "2021-01-27",
+          "exit_price": 10634.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "BOLLINGER_REENTRY_1_5__ATR_1_5_3",
+          "entry_cap": 11306.0,
+          "stop": 10804.0,
+          "target": 11976.0,
+          "expiry": "2021-02-12",
+          "entry_date": "2021-01-14",
+          "entry_price": 11194.668769442103,
+          "exit_date": "2021-01-26",
+          "exit_price": 10804.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "BOLLINGER_REENTRY_1_5__ATR_2_4",
+          "entry_cap": 11306.0,
+          "stop": 10674.0,
+          "target": 12236.0,
+          "expiry": "2021-02-12",
+          "entry_date": "2021-01-14",
+          "entry_price": 11194.668769442103,
+          "exit_date": "2021-01-27",
+          "exit_price": 10674.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "BOLLINGER_REENTRY_2",
+      "formula": "C[t] > SMA60[t], C[t-1] < Lower(2σ)[t-1], C[t] >= Lower(2σ)[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-03-22",
+      "signal_close": 13797.594424179113,
+      "atr14": 291.2040271089153,
+      "previous_volume": 415134,
+      "co_signals": [
+        "BOLLINGER_REENTRY_2"
+      ],
+      "prefix_sha256": "ca4d9c7d92c76f05f6ed91f12219d14e514be1be6f8e6fcb85a2be3480994908",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/bollinger_reentry_2.svg",
+      "panels": [
+        {
+          "strategy_id": "BOLLINGER_REENTRY_2__PCT_3_6",
+          "entry_cap": 13935.0,
+          "stop": 13383.0,
+          "target": 14626.0,
+          "expiry": "2021-04-23",
+          "entry_date": "2021-03-23",
+          "entry_price": 13797.594424179113,
+          "exit_date": "2021-03-29",
+          "exit_price": 14626.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BOLLINGER_REENTRY_2__PCT_5_10",
+          "entry_cap": 13935.0,
+          "stop": 13107.0,
+          "target": 15178.0,
+          "expiry": "2021-04-23",
+          "entry_date": "2021-03-23",
+          "entry_price": 13797.594424179113,
+          "exit_date": "2021-04-05",
+          "exit_price": 13107.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "BOLLINGER_REENTRY_2__ATR_1_5_3",
+          "entry_cap": 13935.0,
+          "stop": 13360.0,
+          "target": 14672.0,
+          "expiry": "2021-04-23",
+          "entry_date": "2021-03-23",
+          "entry_price": 13797.594424179113,
+          "exit_date": "2021-03-29",
+          "exit_price": 14672.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "BOLLINGER_REENTRY_2__ATR_2_4",
+          "entry_cap": 13935.0,
+          "stop": 13215.0,
+          "target": 14963.0,
+          "expiry": "2021-04-23",
+          "entry_date": "2021-03-23",
+          "entry_price": 13797.594424179113,
+          "exit_date": "2021-04-05",
+          "exit_price": 13215.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "MACD_CROSS_SMA60",
+      "formula": "C[t] > SMA60[t], MACD[t-1] <= Signal[t-1], MACD[t] > Signal[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-06-15",
+      "signal_close": 10630.585198640943,
+      "atr14": 217.1237596749943,
+      "previous_volume": 252140,
+      "co_signals": [
+        "BREAKOUT_20",
+        "BREAKOUT_60",
+        "MACD_CROSS_SMA60",
+        "MACD_CROSS_SMA120"
+      ],
+      "prefix_sha256": "43cb4f18ee0568c70d545dbcffdab146a774332b487be2acde44078e5263ea85",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/macd_cross_sma60.svg",
+      "panels": [
+        {
+          "strategy_id": "MACD_CROSS_SMA60__PCT_3_6",
+          "entry_cap": 10736.0,
+          "stop": 10311.0,
+          "target": 11269.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-22",
+          "exit_price": 11269.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "MACD_CROSS_SMA60__PCT_5_10",
+          "entry_cap": 10736.0,
+          "stop": 10099.0,
+          "target": 11694.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-29",
+          "exit_price": 10099.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "MACD_CROSS_SMA60__ATR_1_5_3",
+          "entry_cap": 10736.0,
+          "stop": 10304.0,
+          "target": 11282.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-22",
+          "exit_price": 11282.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "MACD_CROSS_SMA60__ATR_2_4",
+          "entry_cap": 10736.0,
+          "stop": 10196.0,
+          "target": 11500.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-29",
+          "exit_price": 10196.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    },
+    {
+      "entry_id": "MACD_CROSS_SMA120",
+      "formula": "C[t] > SMA120[t], MACD[t-1] <= Signal[t-1], MACD[t] > Signal[t]",
+      "synthetic_only": true,
+      "signal_date": "2021-06-15",
+      "signal_close": 10630.585198640943,
+      "atr14": 217.1237596749943,
+      "previous_volume": 252140,
+      "co_signals": [
+        "BREAKOUT_20",
+        "BREAKOUT_60",
+        "MACD_CROSS_SMA60",
+        "MACD_CROSS_SMA120"
+      ],
+      "prefix_sha256": "43cb4f18ee0568c70d545dbcffdab146a774332b487be2acde44078e5263ea85",
+      "image": "docs/strategy-research/backtest-lab/assets/strategy-samples/macd_cross_sma120.svg",
+      "panels": [
+        {
+          "strategy_id": "MACD_CROSS_SMA120__PCT_3_6",
+          "entry_cap": 10736.0,
+          "stop": 10311.0,
+          "target": 11269.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-22",
+          "exit_price": 11269.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "MACD_CROSS_SMA120__PCT_5_10",
+          "entry_cap": 10736.0,
+          "stop": 10099.0,
+          "target": 11694.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-29",
+          "exit_price": 10099.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        },
+        {
+          "strategy_id": "MACD_CROSS_SMA120__ATR_1_5_3",
+          "entry_cap": 10736.0,
+          "stop": 10304.0,
+          "target": 11282.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-22",
+          "exit_price": 11282.0,
+          "exit_reason": "target_intraday",
+          "exit_reason_ko": "목표가 장중"
+        },
+        {
+          "strategy_id": "MACD_CROSS_SMA120__ATR_2_4",
+          "entry_cap": 10736.0,
+          "stop": 10196.0,
+          "target": 11500.0,
+          "expiry": "2021-07-16",
+          "entry_date": "2021-06-16",
+          "entry_price": 10630.585198640943,
+          "exit_date": "2021-06-29",
+          "exit_price": 10196.0,
+          "exit_reason": "stop_intraday",
+          "exit_reason_ko": "손절가 장중"
+        }
+      ]
+    }
+  ]
+}

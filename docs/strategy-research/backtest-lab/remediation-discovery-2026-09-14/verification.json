@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-09-13T23:46:01.497754+00:00",
+  "verification_status": "PASS",
+  "data_admission": "BLOCKED",
+  "sample_rows": 34,
+  "server_metadata_commands": 11,
+  "archived_log_bytes": 79783,
+  "archived_log_sha256": "b915261fd75c63ea96dc0dba25a412d0c13647800431f538f38dc083072c4da9",
+  "log_stocks": 530,
+  "log_ingested_rows": 612607,
+  "local_links_checked": 31,
+  "json_files_parsed": 10,
+  "limits": [
+    "Saved-evidence consistency only; not an independent historical source or execution identity proof",
+    "The original log covers a broader ingestion period than the 2015-2023 price audit",
+    "External documentation access is recorded by the source review, not re-fetched by this verifier"
+  ]
+}

@@ -1,0 +1,576 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-09-14",
+  "timezone": "Asia/Seoul",
+  "scope": {
+    "target_period": {
+      "from": "2015-01-01",
+      "to": "2023-12-31",
+      "purpose": "corporate-action, disclosure and market-state metadata boundary; distinct from the price-audit start date of 2015-01-02"
+    },
+    "read_only": true,
+    "api_data_calls_performed": false,
+    "downloads_performed": false,
+    "credentials_inspected": false,
+    "database_writes_performed": false,
+    "post_2023_prices_or_performance_queried": false
+  },
+  "current_gap": {
+    "corporate_event_target_rows": 0,
+    "dart_disclosure_target_rows": 0,
+    "master_history_status": "current_only_or_no_validity_range",
+    "observed_at": "2026-09-13 table-audit snapshot; not re-counted on 2026-09-14",
+    "source": "../table-audit-2026-09-13/README.md"
+  },
+  "overall_verdict": {
+    "status": "candidate_paths_confirmed_backfill_feasibility_unconfirmed",
+    "confirmed": [
+      "OpenDART structured APIs for selected corporate actions explicitly document availability since 2015",
+      "KIND dividend page explicitly documents availability since 2010",
+      "Adjacent ted-startup has reusable OpenDART list, document, corp-code clients and best-effort parsers"
+    ],
+    "unconfirmed": [
+      "Complete 2015-2023 availability for generic OpenDART disclosure list and original documents",
+      "Complete historical listing, halt-resume, delisting, code succession, product and industry coverage from KRX or KIND",
+      "Complete official trading calendar including a verified machine-readable 2021 path",
+      "Complete delisted-security coverage and history limit of Kiwoom ka10081"
+    ]
+  },
+  "availability_class_definitions": {
+    "documented_period_path": "An official guide or page states a lower bound covering 2015-2023; no data call was made, so returned-row completeness remains unconfirmed.",
+    "candidate_auth_or_range_unconfirmed": "An official URL, fields or access process was identified, but authentication, target-period lower bound or returned coverage is unconfirmed.",
+    "current_snapshot_insufficient_for_history": "The documented object has current-state semantics and does not supply valid-time history.",
+    "partial_period_evidence": "Only part of 2015-2023 was visible in the public rendering; it cannot establish complete target-period availability."
+  },
+  "sources": [
+    {
+      "id": "opendart-disclosure-list",
+      "availability_class": "candidate_auth_or_range_unconfirmed",
+      "authority": "Financial Supervisory Service OpenDART",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS001&apiId=2019001",
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "issued 40-character crtfc_key required"
+      },
+      "provides": [
+        "corp_code",
+        "stock_code",
+        "report_nm",
+        "rcept_no",
+        "rcept_dt",
+        "rm",
+        "pagination metadata",
+        "correction and withdrawal labels"
+      ],
+      "constraints": [
+        "corp_code omitted limits each search window to 3 months",
+        "page_count maximum 100",
+        "last_reprt_at=N is required to retain correction submissions",
+        "rcept_dt has date precision in the documented response"
+      ],
+      "period_evidence": "No earliest year is stated on this generic search guide",
+      "target_period_status": "unconfirmed",
+      "recommended_role": "canonical filing ledger and knowledge-date source"
+    },
+    {
+      "id": "opendart-original-document",
+      "availability_class": "candidate_auth_or_range_unconfirmed",
+      "authority": "Financial Supervisory Service OpenDART",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS001&apiId=2019003",
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "crtfc_key and 14-character rcept_no required"
+      },
+      "provides": [
+        "original filing document ZIP"
+      ],
+      "constraints": [
+        "guide does not state retention start date",
+        "raw bytes must be hashed and retained separately from parsed fields"
+      ],
+      "period_evidence": "unconfirmed",
+      "target_period_status": "unconfirmed",
+      "recommended_role": "immutable source object for event extraction and correction audit"
+    },
+    {
+      "id": "opendart-corp-code",
+      "availability_class": "current_snapshot_insufficient_for_history",
+      "authority": "Financial Supervisory Service OpenDART",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS001&apiId=2019018",
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "crtfc_key required"
+      },
+      "provides": [
+        "corp_code",
+        "corp_name",
+        "stock_code",
+        "modify_date"
+      ],
+      "constraints": [
+        "modify_date is the last change date for corporate overview",
+        "no documented valid-from or valid-to history for stock codes",
+        "not a sufficient code-succession ledger"
+      ],
+      "period_evidence": "current file semantics only",
+      "target_period_status": "insufficient_for_history",
+      "recommended_role": "current crosswalk seed only"
+    },
+    {
+      "id": "opendart-free-and-combined-capital-increase",
+      "availability_class": "documented_period_path_data_not_called",
+      "authority": "Financial Supervisory Service OpenDART",
+      "urls": [
+        "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS005&apiId=2020024",
+        "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS005&apiId=2020025"
+      ],
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "crtfc_key and corp_code required"
+      },
+      "provides": [
+        "new share counts",
+        "pre-event issued shares",
+        "record date",
+        "new shares per old share",
+        "new share listing scheduled date",
+        "board decision date",
+        "rcept_no"
+      ],
+      "period_evidence": "Guides state information is provided since 2015",
+      "target_period_status": "documented_since_2015",
+      "recommended_role": "structured event terms, reconciled to original filing"
+    },
+    {
+      "id": "opendart-capital-reduction",
+      "availability_class": "documented_period_path_data_not_called",
+      "authority": "Financial Supervisory Service OpenDART",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS005&apiId=2020026",
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "crtfc_key and corp_code required"
+      },
+      "provides": [
+        "reduced share counts",
+        "before and after issued shares",
+        "reduction ratio",
+        "record date",
+        "scheduled halt range",
+        "new share listing scheduled date",
+        "board decision date",
+        "rcept_no"
+      ],
+      "schema_change": {
+        "through": "2019-12-08",
+        "old_fields": [
+          "crsc_osprpd",
+          "crsc_trspprpd"
+        ],
+        "from": "2019-12-09",
+        "new_fields": [
+          "crsc_osprpd_bgd",
+          "crsc_osprpd_edd",
+          "crsc_trspprpd_bgd",
+          "crsc_trspprpd_edd"
+        ]
+      },
+      "period_evidence": "Guide states information is provided since 2015",
+      "target_period_status": "documented_since_2015",
+      "recommended_role": "structured reduction and planned-halt terms, reconciled to actual market status"
+    },
+    {
+      "id": "opendart-merger-and-division-merger",
+      "availability_class": "documented_period_path_data_not_called",
+      "authority": "Financial Supervisory Service OpenDART",
+      "urls": [
+        "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS005&apiId=2020050",
+        "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS005&apiId=2020052"
+      ],
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "crtfc_key and corp_code required"
+      },
+      "provides": [
+        "merger method and ratio",
+        "counterparty",
+        "new shares",
+        "surviving and newly formed company information",
+        "rcept_no"
+      ],
+      "period_evidence": "Guides state information is provided since 2015",
+      "target_period_status": "documented_since_2015",
+      "recommended_role": "event terms and entity-succession evidence, not a complete permanent-ID map by itself"
+    },
+    {
+      "id": "opendart-dividend-summary",
+      "availability_class": "documented_period_path_with_semantic_limit_data_not_called",
+      "authority": "Financial Supervisory Service OpenDART",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS002&apiId=2019005",
+      "access": {
+        "documentation_http_status": 200,
+        "data_endpoint_called": false,
+        "authentication": "crtfc_key, corp_code, business year and report code required"
+      },
+      "provides": [
+        "annual report dividend-related summary",
+        "rcept_no",
+        "business year values"
+      ],
+      "constraints": [
+        "not a substitute for the dividend-decision filing knowledge date and effective dates"
+      ],
+      "period_evidence": "Guide states business-year information is provided since 2015",
+      "target_period_status": "documented_since_2015_with_semantic_limit",
+      "recommended_role": "dividend reconciliation"
+    },
+    {
+      "id": "kind-dividend",
+      "availability_class": "documented_period_path_data_not_queried",
+      "authority": "Korea Exchange KIND",
+      "url": "https://kind.krx.co.kr/disclosureinfo/dividendinfo.do?method=searchDividendInfoMain",
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "public initial page; export behavior not tested"
+      },
+      "provides": [
+        "dividend information based on stock-dividend decisions and annual general meeting result disclosures"
+      ],
+      "constraints": [
+        "current fiscal month is displayed regardless of queried business year",
+        "industry changes are reflected under the changed industry from the following year"
+      ],
+      "period_evidence": "Page explicitly states 2010 through the latest business year",
+      "target_period_status": "documented_for_2015_2023",
+      "recommended_role": "official cross-check, not historical industry source"
+    },
+    {
+      "id": "kind-delisting",
+      "availability_class": "candidate_range_unconfirmed",
+      "authority": "Korea Exchange KIND",
+      "url": "https://kind.krx.co.kr/investwarn/delcompany.do?method=searchDelCompanyMain",
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "public initial page; Excel export not tested"
+      },
+      "provides": [
+        "market, company and period filters",
+        "Excel export entry point"
+      ],
+      "constraints": [
+        "earliest available date and output schema are not documented on the initial page"
+      ],
+      "period_evidence": "unconfirmed",
+      "target_period_status": "unconfirmed",
+      "recommended_role": "delisting cross-check after bounded coverage test"
+    },
+    {
+      "id": "kind-listed-issue-snapshot",
+      "availability_class": "candidate_range_and_fields_unconfirmed",
+      "authority": "Korea Exchange KIND",
+      "url": "https://kind.krx.co.kr/corpgeneral/listedIssueStatus.do?method=loadInitPage",
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "public initial page; Excel export not tested"
+      },
+      "provides": [
+        "as-of-date input",
+        "Excel export entry point"
+      ],
+      "constraints": [
+        "historical lower bound and historical output fields not documented on the initial page"
+      ],
+      "period_evidence": "unconfirmed",
+      "target_period_status": "unconfirmed",
+      "recommended_role": "candidate daily universe snapshot"
+    },
+    {
+      "id": "kind-trading-halt",
+      "availability_class": "candidate_insufficient_as_single_source",
+      "authority": "Korea Exchange KIND",
+      "url": "https://kind.krx.co.kr/investwarn/tradinghaltissue.do?method=searchTradingHaltIssueMain",
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "public initial page; Excel export not tested"
+      },
+      "provides": [
+        "current market and issue filters",
+        "Excel export entry point"
+      ],
+      "constraints": [
+        "no date-range input was visible on the initial page",
+        "does not prove complete historical halt-resume intervals"
+      ],
+      "period_evidence": "unconfirmed",
+      "target_period_status": "insufficient_as_single_source",
+      "recommended_role": "current cross-check only unless a historical endpoint is documented"
+    },
+    {
+      "id": "krx-data-marketplace",
+      "availability_class": "candidate_range_and_access_unconfirmed",
+      "authority": "Korea Exchange",
+      "urls": [
+        "https://data.krx.co.kr/contents/MDC/MDI/outerLoader/index.cmd?screenId=MDCSTAT015",
+        "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+      ],
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "site access public; long-range data access conditions not verified"
+      },
+      "provides": [
+        "all-issue daily prices and listed shares",
+        "menu candidates for all-issue basic information, designations and industry classification"
+      ],
+      "constraints": [
+        "historical lower bound and machine-access terms were not established without querying data",
+        "presence of all-issue rows can cross-check an open session, but absence cannot distinguish an official closure from missing source data"
+      ],
+      "period_evidence": "unconfirmed",
+      "target_period_status": "unconfirmed",
+      "recommended_role": "official market-state and observed-open-session cross-check after field and coverage proof; not a substitute for an official closure calendar"
+    },
+    {
+      "id": "krx-open-api",
+      "availability_class": "candidate_auth_and_range_unconfirmed",
+      "authority": "Korea Exchange",
+      "url": "https://openapi.krx.co.kr/contents/OPP/INFO/OPPINFO003.jsp",
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "Data Marketplace registration, key application, per-service application and administrator approval"
+      },
+      "provides": [
+        "approved API-service access process"
+      ],
+      "constraints": [
+        "public unauthenticated dynamic service list did not expose target field and period specifications"
+      ],
+      "period_evidence": "unconfirmed",
+      "target_period_status": "unconfirmed",
+      "recommended_role": "preferred automation channel if KRX confirms matching services and historical bounds"
+    },
+    {
+      "id": "krx-yearly-calendar",
+      "availability_class": "partial_period_evidence",
+      "authority": "Korea Exchange",
+      "url": "https://global.krx.co.kr/contents/GLB/05/0501/0501060000/GLB0501060000T3.jsp",
+      "access": {
+        "documentation_rendered": true,
+        "data_download_performed": false,
+        "authentication": "public page"
+      },
+      "provides": [
+        "year selector and schedule download"
+      ],
+      "constraints": [
+        "rendered public page exposed 2015-2020 and 2022-2023 but did not expose 2021 during this review",
+        "a complete calendar also requires official closure and exceptional-session evidence, not inference from missing price rows"
+      ],
+      "period_evidence": "partial",
+      "target_period_status": "unconfirmed_for_full_period",
+      "recommended_role": "calendar cross-check, combined with official market-level daily records"
+    },
+    {
+      "id": "kiwoom-ka10081",
+      "availability_class": "candidate_auth_and_range_unconfirmed",
+      "authority": "Kiwoom Securities",
+      "urls": [
+        "https://openapi.kiwoom.com/guide/apiguide",
+        "https://raw.githubusercontent.com/Kiwoom-Securities/Kiwoom-REST-API/main/examples/%EA%B5%AD%EB%82%B4%EC%A3%BC%EC%8B%9D/%EC%B0%A8%ED%8A%B8/get_domestic_stock_daily_chart.py"
+      ],
+      "access": {
+        "documentation_http_status": 200,
+        "data_query_performed": false,
+        "authentication": "App Key and Secret exchanged for OAuth bearer token"
+      },
+      "provides": [
+        "stock code",
+        "base date",
+        "raw or adjusted-price flag",
+        "daily OHLCV and continuation"
+      ],
+      "constraints": [
+        "official example shows adjustment behavior around a 2018 Samsung Electronics split",
+        "no event type, effective date, quantity factor, revision lineage, delisting settlement or historical classification",
+        "complete 2015-2023 and delisted-instrument retention is not documented"
+      ],
+      "period_evidence": "single documented 2018 example only",
+      "target_period_status": "unconfirmed_and_insufficient_for_event_ledger",
+      "recommended_role": "raw-versus-adjusted price cross-check only"
+    }
+  ],
+  "adjacent_reuse": [
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup/src/backend_py/app/adapter/out/external/dart_client.py",
+      "reuse": [
+        "disclosure list",
+        "pagination metadata",
+        "original document ZIP",
+        "corp-code ZIP",
+        "response-size and status-code guards"
+      ],
+      "gaps": [
+        "no structured corporate-action API DTOs",
+        "no immutable raw-object manifest"
+      ]
+    },
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup/src/backend_py/app/application/service/dart_disclosure_service.py",
+      "reuse": [
+        "100-row pagination",
+        "daily whole-market ingestion",
+        "receipt-number validation"
+      ],
+      "gaps": [
+        "daily-current workflow only",
+        "no 2015-2023 resumable partition manifest",
+        "raw payload is capped and may be truncated"
+      ]
+    },
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup/src/backend_py/app/domain/dart/disclosure_classifier.py",
+      "reuse": [
+        "correction-prefix tolerant classification for ten event categories"
+      ],
+      "gaps": [
+        "correction prefix is removed rather than preserved as lineage metadata",
+        "no supersedes chain",
+        "unclassified reports need a review queue"
+      ]
+    },
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup/src/backend_py/app/domain/dart/document_parser.py",
+      "reuse": [
+        "ZIP safety guards",
+        "best-effort extraction of ex date, record date, ratio and new shares",
+        "PARSED, PARTIAL and FAILED status"
+      ],
+      "gaps": [
+        "parser explicitly does not guarantee complete extraction",
+        "cash amount and payment date missing",
+        "field-level provenance offsets and original SHA-256 missing"
+      ]
+    },
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup/src/backend_py/scripts/sync_dart_corp_mapping.py",
+      "reuse": [
+        "corp-code ZIP parsing"
+      ],
+      "gaps": [
+        "default current-KRX cross-filter excludes historical delisted instruments",
+        "no valid-time code mapping",
+        "current product-name filters are not historical classifications"
+      ]
+    },
+    {
+      "path": "C:/Users/aeby/vscode/ted-startup/src/backend_py/app/adapter/out/external/krx_client.py",
+      "reuse": [
+        "raw-adjusted close comparison"
+      ],
+      "gaps": [
+        "the parallel price investigation confirmed that the deployed pykrx 1.2.8 adjusted=True path calls Naver fchart XML and it must not be labeled a KRX official API",
+        "the original XML, historical execution provenance and Naver adjustment definition remain unconfirmed in this source investigation",
+        "price step cannot establish event cause or official effective date",
+        "current login and upstream schema dependencies"
+      ]
+    }
+  ],
+  "required_delivery_fields": {
+    "identifier_history": [
+      "instrument_id",
+      "isin_or_standard_code",
+      "stock_code",
+      "corp_code",
+      "valid_from",
+      "valid_to",
+      "mapping_reason",
+      "source_url"
+    ],
+    "filing_revision": [
+      "rcept_no",
+      "corp_code",
+      "stock_code_as_filed",
+      "report_nm_raw",
+      "rcept_date",
+      "known_at",
+      "known_at_precision",
+      "correction_type",
+      "withdrawn",
+      "supersedes_rcept_no"
+    ],
+    "corporate_event": [
+      "event_id",
+      "event_type",
+      "decision_date",
+      "record_date",
+      "effective_date",
+      "ex_date",
+      "settlement_date",
+      "listing_date",
+      "price_factor",
+      "quantity_factor",
+      "cash_per_share",
+      "currency",
+      "rounding_rule"
+    ],
+    "market_state": [
+      "instrument_id",
+      "market",
+      "product_type",
+      "industry_code",
+      "status",
+      "status_reason",
+      "valid_from",
+      "valid_to"
+    ],
+    "halt_interval": [
+      "instrument_id",
+      "halt_start_at",
+      "resume_at",
+      "reason",
+      "announcement_id",
+      "source_url"
+    ],
+    "trading_session": [
+      "market",
+      "session_date",
+      "is_open",
+      "session_type",
+      "open_at",
+      "close_at",
+      "source_url"
+    ],
+    "provenance": [
+      "source_system",
+      "source_url",
+      "retrieved_at",
+      "source_published_at",
+      "raw_object_uri",
+      "raw_sha256",
+      "parser_version",
+      "row_payload_sha256"
+    ]
+  },
+  "completion_checks": [
+    "official_or_receipted_source_lower_bound_covers_each_year_2015_through_2023",
+    "source_total_count_equals_unique_collected_keys_and_page_totals",
+    "all_correction_and_withdrawal_submissions_retained_and_linked",
+    "known_at_is_separate_from_effective_date_and_precision_is_explicit",
+    "every_derived_row_traces_to_rcept_no_raw_sha256_and_parser_version",
+    "price_and_quantity_factor_direction_and_boundary_verified_against_source",
+    "daily_historical_universe_includes_delisted_instruments_and_excludes_prelisting_postdelisting_dates",
+    "halt_start_resume_or_delisting_intervals_are_nonoverlapping_and_reconciled",
+    "code_product_market_and_industry_validity_ranges_do_not_overlap_inconsistently",
+    "cross_source_conflicts_are_preserved_instead_of_overwritten"
+  ]
+}

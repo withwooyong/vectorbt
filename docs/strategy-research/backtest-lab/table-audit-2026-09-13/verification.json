@@ -1,0 +1,22 @@
+{
+  "verified_at": "2026-09-13T13:38:50.855083+00:00",
+  "verification_status": "PASS",
+  "data_admission": "BLOCKED",
+  "successful_runs": 3,
+  "sql_result_records": 30,
+  "price_rows": 6109214,
+  "price_stock_ids": 4025,
+  "invalid_ohlcv_rows": 72072,
+  "invalid_ohlcv_percent": 1.1797,
+  "prior_aggregate_comparison": {
+    "vendor_rows_equal": true,
+    "invalid_ohlcv_count_equal": true,
+    "zero_close_count_equal": true,
+    "row_level_equality_checked": false
+  },
+  "limits": [
+    "This checks saved evidence consistency, not market-source accuracy or complete data admission",
+    "Read-only and date scope are checked in reviewed SQL; receipt flags alone do not enforce scope",
+    "No row-by-row cross-database or snapshot equivalence was tested"
+  ]
+}

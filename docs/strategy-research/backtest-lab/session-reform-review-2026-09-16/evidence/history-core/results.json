@@ -1,0 +1,814 @@
+[
+  {
+    "check": "context",
+    "data": {
+      "observed_at": "2026-09-16T10:12:54.983461+09:00",
+      "database": "kiwoom_db",
+      "read_only": "on",
+      "date_from": "2015-01-02",
+      "date_to": "2023-12-31"
+    }
+  },
+  {
+    "check": "tables",
+    "data": [
+      {
+        "table_name": "alembic_version"
+      },
+      {
+        "table_name": "frgn_orgn_consecutive"
+      },
+      {
+        "table_name": "investor_flow_daily"
+      },
+      {
+        "table_name": "kiwoom_credential"
+      },
+      {
+        "table_name": "kiwoom_token"
+      },
+      {
+        "table_name": "lending_balance_kw"
+      },
+      {
+        "table_name": "ranking_snapshot"
+      },
+      {
+        "table_name": "raw_response"
+      },
+      {
+        "table_name": "sector"
+      },
+      {
+        "table_name": "sector_price_daily"
+      },
+      {
+        "table_name": "short_selling_kw"
+      },
+      {
+        "table_name": "stock"
+      },
+      {
+        "table_name": "stock_daily_flow"
+      },
+      {
+        "table_name": "stock_fundamental"
+      },
+      {
+        "table_name": "stock_investor_breakdown"
+      },
+      {
+        "table_name": "stock_minute_price"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m05"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m06"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m07"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m08"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m09"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m10"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m11"
+      },
+      {
+        "table_name": "stock_minute_price_y2026m12"
+      },
+      {
+        "table_name": "stock_minute_price_y2027m01"
+      },
+      {
+        "table_name": "stock_minute_price_y2027m02"
+      },
+      {
+        "table_name": "stock_minute_price_y2027m03"
+      },
+      {
+        "table_name": "stock_minute_price_y2027m04"
+      },
+      {
+        "table_name": "stock_price_krx"
+      },
+      {
+        "table_name": "stock_price_krx_prelisting"
+      },
+      {
+        "table_name": "stock_price_monthly_krx"
+      },
+      {
+        "table_name": "stock_price_monthly_nxt"
+      },
+      {
+        "table_name": "stock_price_nxt"
+      },
+      {
+        "table_name": "stock_price_weekly_krx"
+      },
+      {
+        "table_name": "stock_price_weekly_nxt"
+      },
+      {
+        "table_name": "stock_price_yearly_krx"
+      },
+      {
+        "table_name": "stock_price_yearly_nxt"
+      },
+      {
+        "table_name": "trading_halt"
+      }
+    ]
+  },
+  {
+    "check": "reference_columns",
+    "data": [
+      {
+        "table_name": "raw_response",
+        "column_name": "id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "api_id",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "request_hash",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "request_payload",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "response_payload",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "http_status",
+        "data_type": "integer"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "fetched_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "stock_code",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "stock_name",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "list_count",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "audit_info",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "listed_date",
+        "data_type": "date"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "last_price",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "state",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "market_code",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "market_name",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "up_name",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "up_size_name",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "company_class_name",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "order_warning",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "nxt_enable",
+        "data_type": "boolean"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "is_active",
+        "data_type": "boolean"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "fetched_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "delisted_date",
+        "data_type": "date"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "pre_listing_verdict",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock",
+        "column_name": "pre_listing_audited_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "stock_id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "trading_date",
+        "data_type": "date"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "adjusted",
+        "data_type": "boolean"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "open_price",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "high_price",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "low_price",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "close_price",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "trade_volume",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "trade_amount",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "prev_compare_amount",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "prev_compare_sign",
+        "data_type": "character"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "turnover_rate",
+        "data_type": "numeric"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "fetched_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "data_vendor",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "stock_price_krx",
+        "column_name": "price_state",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "stock_id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "notice_type",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "halt_date",
+        "data_type": "date"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "resume_date",
+        "data_type": "date"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "period_text",
+        "data_type": "text"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "disclosed_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "acpt_no",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "doc_no",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "stock_name_raw",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "reason",
+        "data_type": "text"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "rule_basis",
+        "data_type": "text"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "source_url",
+        "data_type": "text"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "fetched_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "trading_halt",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone"
+      }
+    ]
+  },
+  {
+    "check": "price_state_quality",
+    "data": [
+      {
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "HALTED",
+        "rows": 55071,
+        "stock_ids": 343,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 55071,
+        "inconsistent_ohlc": 55071,
+        "negative_volume": 0,
+        "zero_volume": 55071,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "NO_TRADE",
+        "rows": 13494,
+        "stock_ids": 287,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 13494,
+        "inconsistent_ohlc": 13494,
+        "negative_volume": 0,
+        "zero_volume": 13494,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "rows": 475676,
+        "stock_ids": 526,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 13,
+        "inconsistent_ohlc": 13,
+        "negative_volume": 0,
+        "zero_volume": 0,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": true,
+        "data_vendor": "KIWOOM",
+        "price_state": "NO_TRADE",
+        "rows": 141598,
+        "stock_ids": 1293,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 0,
+        "inconsistent_ohlc": 0,
+        "negative_volume": 0,
+        "zero_volume": 141598,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": true,
+        "data_vendor": "KIWOOM",
+        "price_state": "TRADED",
+        "rows": 5415046,
+        "stock_ids": 3496,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 0,
+        "inconsistent_ohlc": 0,
+        "negative_volume": 0,
+        "zero_volume": 0,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "HALTED",
+        "rows": 55071,
+        "stock_ids": 343,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 55062,
+        "inconsistent_ohlc": 55062,
+        "negative_volume": 0,
+        "zero_volume": 55071,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "NO_TRADE",
+        "rows": 13530,
+        "stock_ids": 288,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 7585,
+        "inconsistent_ohlc": 7869,
+        "negative_volume": 0,
+        "zero_volume": 13530,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      },
+      {
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "rows": 475640,
+        "stock_ids": 526,
+        "first_date": "2015-01-02",
+        "last_date": "2023-12-28",
+        "null_ohlcv": 0,
+        "nonpositive_ohlc": 4,
+        "inconsistent_ohlc": 4,
+        "negative_volume": 0,
+        "zero_volume": 0,
+        "traded_zero_volume": 0,
+        "nontraded_positive_volume": 0
+      }
+    ]
+  },
+  {
+    "check": "unexplained_traded_keys",
+    "data": [
+      {
+        "stock_code": "015540",
+        "stock_id": 362138,
+        "trading_date": "2016-03-25",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 1700,
+        "trade_volume": 5161
+      },
+      {
+        "stock_code": "015540",
+        "stock_id": 362138,
+        "trading_date": "2016-03-25",
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 18074,
+        "trade_volume": 5161
+      },
+      {
+        "stock_code": "016385",
+        "stock_id": 362140,
+        "trading_date": "2016-02-16",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 3620,
+        "trade_volume": 131
+      },
+      {
+        "stock_code": "016385",
+        "stock_id": 362140,
+        "trading_date": "2016-02-16",
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 131015,
+        "trade_volume": 131
+      },
+      {
+        "stock_code": "053870",
+        "stock_id": 362214,
+        "trading_date": "2015-08-17",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 1220,
+        "trade_volume": 5234
+      },
+      {
+        "stock_code": "053870",
+        "stock_id": 362214,
+        "trading_date": "2015-08-17",
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 1220,
+        "trade_volume": 5234
+      },
+      {
+        "stock_code": "082240",
+        "stock_id": 362262,
+        "trading_date": "2015-01-27",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5000,
+        "trade_volume": 10000
+      },
+      {
+        "stock_code": "082250",
+        "stock_id": 362263,
+        "trading_date": "2015-01-16",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5000,
+        "trade_volume": 10000
+      },
+      {
+        "stock_code": "083610",
+        "stock_id": 362275,
+        "trading_date": "2017-01-31",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5000,
+        "trade_volume": 940
+      },
+      {
+        "stock_code": "083620",
+        "stock_id": 362276,
+        "trading_date": "2016-10-26",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5030,
+        "trade_volume": 13130
+      },
+      {
+        "stock_code": "089530",
+        "stock_id": 362284,
+        "trading_date": "2023-04-24",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 600,
+        "trade_volume": 120
+      },
+      {
+        "stock_code": "090970",
+        "stock_id": 362288,
+        "trading_date": "2015-09-18",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5030,
+        "trade_volume": 316
+      },
+      {
+        "stock_code": "090980",
+        "stock_id": 362289,
+        "trading_date": "2015-04-21",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5160,
+        "trade_volume": 4
+      },
+      {
+        "stock_code": "091000",
+        "stock_id": 362291,
+        "trading_date": "2015-09-01",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 5030,
+        "trade_volume": 303
+      },
+      {
+        "stock_code": "141070",
+        "stock_id": 362345,
+        "trading_date": "2021-02-01",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 1365,
+        "trade_volume": 177
+      },
+      {
+        "stock_code": "141070",
+        "stock_id": 362345,
+        "trading_date": "2021-02-01",
+        "adjusted": true,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 1365,
+        "trade_volume": 177
+      },
+      {
+        "stock_code": "349720",
+        "stock_id": 362463,
+        "trading_date": "2020-10-07",
+        "adjusted": false,
+        "data_vendor": "KRX",
+        "price_state": "TRADED",
+        "open_price": 0,
+        "high_price": 0,
+        "low_price": 0,
+        "close_price": 1995,
+        "trade_volume": 147946
+      }
+    ]
+  },
+  {
+    "check": "audit_complete",
+    "data": true
+  }
+]
