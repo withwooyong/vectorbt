@@ -118,3 +118,43 @@ def test_reconcile_current_execution_result_with_same_day_entry_and_exit():
         calendar=["2026-01-02", "2026-01-05"],
     )
     assert reconcile(result)["ok"] is True
+
+
+def test_contract_replay_matches_hand_calculated_corporate_fixture():
+    from pathlib import Path
+    from research.krx_lab.io import read_json
+    from research.krx_lab.vectorbt_check import reconcile_ledger
+    ledger = read_json(Path(__file__).parent / "fixtures/contracts_v1/expected-ledger.json")
+    assert reconcile_ledger(ledger)["ok"]
+    assert ledger["equity"][-1]["cash"] == 517
+    assert ledger["equity"][-1]["equity"] == 997
+    ledger["cashflows"][-1]["cash_delta"] += 18
+    check = reconcile_ledger(ledger)
+    assert not check["ok"]
+    assert any("payment_balance" in mismatch for mismatch in check["mismatches"])
+
+
+def test_contract_replay_detects_unreported_share_change():
+    from pathlib import Path
+    from research.krx_lab.io import read_json
+    from research.krx_lab.vectorbt_check import reconcile_ledger
+    ledger = read_json(Path(__file__).parent / "fixtures/contracts_v1/expected-ledger.json")
+    ledger["events"][0]["quantity_delta"] += 1
+    assert any("eod_quantity" in mismatch for mismatch in reconcile_ledger(ledger)["mismatches"])
+
+
+@pytest.mark.parametrize("mutation", ["payment_instrument", "payment_event", "flow_fee", "order_instrument"])
+def test_contract_replay_rejects_balanced_but_mislinked_transitions(mutation):
+    from pathlib import Path
+    from research.krx_lab.io import read_json
+    from research.krx_lab.vectorbt_check import reconcile_ledger
+    ledger = read_json(Path(__file__).parent / "fixtures/contracts_v1/expected-ledger.json")
+    if mutation == "payment_instrument":
+        ledger["cashflows"][-1]["instrument_id"] = "OTHER"
+    elif mutation == "payment_event":
+        ledger["cashflows"][-1]["event_id"] = "split-1"
+    elif mutation == "flow_fee":
+        ledger["cashflows"][0]["fee"] = 10_000
+    else:
+        ledger["orders"][0]["instrument_id"] = "OTHER"
+    assert not reconcile_ledger(ledger)["ok"]

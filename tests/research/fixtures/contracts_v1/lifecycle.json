@@ -1,0 +1,21 @@
+{
+  "schema_version": "krx-lab-contracts-v1",
+  "source_kind": "SYNTHETIC",
+  "experiment_id": "synthetic-fixture",
+  "state": "DRAFT",
+  "candidate_id": null,
+  "growth_policy": "fixed20",
+  "selection_policy": "selection_policy_v1",
+  "code_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+  "data_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+  "cost_profile_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+  "validation_hash": "4444444444444444444444444444444444444444444444444444444444444444",
+  "prerequisites": {
+    "data_verified": false,
+    "candidate_policy_frozen": false,
+    "realistic_costs_verified": false,
+    "holdout_implementation_verified": false
+  },
+  "holdout_access": [],
+  "attempts": []
+}

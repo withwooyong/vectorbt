@@ -59,6 +59,7 @@ class _Position:
     sector: str
     last_price: float
     stale: bool = False
+    action_pnl: float = 0.0
 
 
 def simulate(
@@ -75,6 +76,8 @@ def simulate(
     policy: str = "fixed20",
     calendar: Sequence[str] | None = None,
     optimistic: bool = False,
+    hooks=None,
+    _account=None,
 ) -> dict:
     """Simulate one technical variant with causal OHLCV access and shared cash.
 
@@ -137,6 +140,10 @@ def simulate(
         all_dates = sorted(pd.to_datetime(pd.Series(calendar)).dt.normalize().unique())
     all_dates = [pd.Timestamp(day) for day in all_dates]
     dates = [day for day in all_dates if start_ts <= day <= end_ts]
+    if _account is not None:
+        payment_dates = [pd.Timestamp(event["pay_date"]) for event in _account.market.delivery["events"]
+                         if event.get("pay_date") is not None]
+        dates = sorted(set(dates) | {day for day in payment_dates if start_ts <= day <= end_ts})
     if not dates:
         return {
             "signals": _empty(["date", "code", "entry_id", "entry_signal"]),
@@ -219,6 +226,8 @@ def simulate(
         if start_ts <= entry_date <= end_ts:
             plans_by_day.setdefault(entry_date, []).append(plan)
 
+    if _account:
+        _account.prepare_plans(start_ts, plans)
     cash = float(initial_cash)
     fee_rate = float(cost_bps) / 10_000.0
     positions: dict[str, _Position] = {}
@@ -247,18 +256,62 @@ def simulate(
     def close_position(day: pd.Timestamp, pos: _Position, price: float, phase: str) -> None:
         nonlocal cash, fill_sequence
         proceeds = pos.size * price
-        fees = _fee(proceeds, fee_rate)
-        cash += proceeds - fees
+        profile = _account.market.profile(pos.code, day) if _account else None
+        fees = _fee(proceeds, profile["sell_fee_rate"] if profile else fee_rate)
+        tax = proceeds * profile["sell_tax_rate"] if profile else 0.0
+        cash += proceeds - fees - tax
         orders.append({"date": day, "code": pos.code, "side": "sell", "size": pos.size, "price": price, "fees": fees, "phase": phase, "status": "filled", "reason": ""})
         fills.append({"fill_seq": fill_sequence, "date": day, "code": pos.code, "side": "sell", "size": pos.size, "price": price, "fees": fees, "phase": phase})
+        if _account:
+            fill_id, order_id = f"fill-{fill_sequence:08d}", f"order-{fill_sequence:08d}"
+            seq = _account.record(day, pos.code, "SELL", cash_delta=proceeds - fees - tax,
+                                  fee=fees, tax=tax, fill_id=fill_id)
+            fills[-1].update(ledger_seq=seq, fill_id=fill_id, order_id=order_id, fee=fees, tax=tax)
+            orders[-1].update(order_id=order_id, status="FILLED")
         fill_sequence += 1
-        pnl = proceeds - fees - (pos.size * pos.entry_price + pos.entry_fees)
+        pnl = proceeds - fees - tax - (pos.size * pos.entry_price + pos.entry_fees) + pos.action_pnl
         trades.append({"code": pos.code, "pnl": pnl, "entry_date": pos.entry_date, "exit_date": day})
         del positions[pos.code]
 
+    def snapshot(day):
+        exposure = 0.0
+        for pos in positions.values():
+            exposure += pos.size * pos.last_price
+            daily_positions.append({"date": day, "code": pos.code, "size": pos.size, "entry_price": pos.entry_price,
+                "stop_price": pos.stop_price, "target_price": pos.target_price, "mark_price": pos.last_price,
+                "expiry": pos.expiry_anchor, "overdue": day > pos.expiry_anchor, "stale": pos.stale})
+            if _account:
+                daily_positions[-1]["cost_basis"] = pos.size * pos.entry_price + pos.entry_fees
+        current_equity = cash + exposure + (_account.receivables if _account else 0.0)
+        equity_rows.append({"date": day, "cash": cash, "equity": current_equity, "exposure": exposure,
+                            "positions_count": len(positions)})
+        if _account:
+            equity_rows[-1].update(receivables=_account.receivables, payables=0.0)
+        return current_equity
+
     for day in dates:
+        if hooks is not None:
+            hooks("simulation_day", {"date": day.date().isoformat()})
         day_rows = rows_by_day.get(day)
         exited_today: set[str] = set()
+        if _account:
+            prior_codes = set(positions)
+            cash += _account.process(day, positions, plans, trades)
+            exited_today.update(prior_codes - set(positions))
+            if day not in date_index:
+                previous_equity = snapshot(day)
+                continue
+            # Explicit status is authoritative even when a raw row is missing.
+            for code in list(positions):
+                status = _account.market.status(code, day)
+                if status == "DELISTED" and code not in _account.delisted:
+                    raise ValueError(f"UNSETTLED_DELISTING:{day.date()}:{code}")
+                if status == "TRADING" and (day_rows is None or code not in day_rows.index):
+                    raise ValueError(f"UNEXPLAINED_MISSING_TRADING_PRICE:{day.date()}:{code}")
+                profile = _account.market.profile(code, day)
+                positions[code].stop_price = _tick_floor(positions[code].stop_price, profile["tick_size"])
+                positions[code].target_price = _tick_ceil(positions[code].target_price, profile["tick_size"])
+            exited_today.update(_account.delisted)
         # Existing positions: time exit, then gap exits.  No later OHLC is read.
         for code, pos in list(positions.items()):
             row = day_rows.loc[code] if day_rows is not None and code in day_rows.index else None
@@ -306,6 +359,13 @@ def simulate(
                 plan["status"], plan["reason"] = "rejected", "INELIGIBLE_OR_INVALID_ENTRY_ROW"
                 continue
             entry_price, tick = float(row["open"]), float(row["tick_size"])
+            profile = _account.market.profile(code, day) if _account else None
+            buy_rate = profile["buy_fee_rate"] if profile else fee_rate
+            sell_rate = profile["sell_fee_rate"] + profile["sell_tax_rate"] if profile else fee_rate
+            if _account:
+                plan["entry_cap"] = _tick_floor(plan["entry_cap"], tick)
+                plan["stop_price"] = _tick_floor(plan["stop_price"], tick)
+                plan["target_price"] = _tick_ceil(plan["target_price"], tick)
             if entry_price > plan["entry_cap"] or not (0 < plan["stop_price"] < entry_price <= plan["entry_cap"] < plan["target_price"]):
                 plan["status"], plan["reason"] = "rejected", "ENTRY_RANGE_OR_PRICE_RELATION"
                 continue
@@ -316,18 +376,18 @@ def simulate(
             sector = str(row["sector"])
             target_cash = previous_equity * 0.80 / slot_limit
             sector_remaining = max(previous_equity * 0.25 - sector_value.get(sector, 0.0), 0.0)
-            risk_per_share = max(entry_price - float(plan["stop_price"]), 0.0) + entry_price * fee_rate + float(plan["stop_price"]) * fee_rate
+            risk_per_share = max(entry_price - float(plan["stop_price"]), 0.0) + entry_price * buy_rate + float(plan["stop_price"]) * sell_rate
             risk_cash = previous_equity * 0.005
             exposure_remaining = max(previous_equity * 0.80 - existing_exposure, 0.0)
             limits = [target_cash, previous_equity * 0.05, sector_remaining, exposure_remaining, cash]
-            quantity_limits = [int(limit / (entry_price * (1.0 + fee_rate))) for limit in limits]
+            quantity_limits = [int(limit / (entry_price * (1.0 + buy_rate))) for limit in limits]
             quantity_limits.append(int(risk_cash / risk_per_share) if risk_per_share > 0 else 0)
             quantity_limits.append(int(np.floor(avg_volume_value * 0.001)))
             size = max(0, min(quantity_limits))
             if size < 1:
                 plan["status"], plan["reason"] = "rejected", "RISK_CASH_SECTOR_OR_VOLUME_LIMIT"
                 continue
-            fees = _fee(size * entry_price, fee_rate)
+            fees = _fee(size * entry_price, buy_rate)
             total_cost = size * entry_price + fees
             cash -= total_cost
             positions[code] = _Position(code, size, day, entry_price, fees, float(plan["stop_price"]), float(plan["target_price"]), pd.Timestamp(plan["expiry_date"]), sector, entry_price)
@@ -336,6 +396,11 @@ def simulate(
             plan["status"], plan["reason"], plan["size"], plan["fill_seq"] = "filled", "", size, fill_sequence
             orders.append({"date": day, "code": code, "side": "buy", "size": size, "price": entry_price, "fees": fees, "phase": "entry_open", "status": "filled", "reason": ""})
             fills.append({"fill_seq": fill_sequence, "date": day, "code": code, "side": "buy", "size": size, "price": entry_price, "fees": fees, "phase": "entry_open"})
+            if _account:
+                fill_id, order_id = f"fill-{fill_sequence:08d}", f"order-{fill_sequence:08d}"
+                seq = _account.record(day, code, "BUY", cash_delta=-total_cost, fee=fees, fill_id=fill_id)
+                fills[-1].update(ledger_seq=seq, fill_id=fill_id, order_id=order_id, fee=fees, tax=0.0)
+                orders[-1].update(order_id=order_id, status="FILLED")
             fill_sequence += 1
 
         # Intraday exits.  Stop wins an ambiguous daily candle unless optimistic is requested.
@@ -364,21 +429,55 @@ def simulate(
             elif not pos.stale:
                 pos.last_price = close
 
-        exposure = 0.0
-        for pos in positions.values():
-            exposure += pos.size * pos.last_price
-            daily_positions.append({"date": day, "code": pos.code, "size": pos.size, "entry_price": pos.entry_price, "stop_price": pos.stop_price, "target_price": pos.target_price, "mark_price": pos.last_price, "expiry": pos.expiry_anchor, "overdue": day > pos.expiry_anchor, "stale": pos.stale})
-        current_equity = cash + exposure
-        equity_rows.append({"date": day, "cash": cash, "equity": current_equity, "exposure": exposure, "positions_count": len(positions)})
-        previous_equity = current_equity
+        previous_equity = snapshot(day)
 
-    return {
+    result = {
         "signals": pd.DataFrame(signal_events, columns=["date", "code", "entry_id", "entry_signal"]),
         "plans": pd.DataFrame(plans),
-        "orders": pd.DataFrame(orders, columns=["date", "code", "side", "size", "price", "fees", "phase", "status", "reason"]),
-        "fills": pd.DataFrame(fills, columns=["fill_seq", "date", "code", "side", "size", "price", "fees", "phase"]),
-        "positions": pd.DataFrame(daily_positions, columns=["date", "code", "size", "entry_price", "stop_price", "target_price", "mark_price", "expiry", "overdue", "stale"]),
-        "equity": pd.DataFrame(equity_rows, columns=["date", "cash", "equity", "exposure", "positions_count"]),
+        "orders": pd.DataFrame(orders, columns=["date", "code", "side", "size", "price", "fees", "phase", "status", "reason"] + (["order_id"] if _account else [])),
+        "fills": pd.DataFrame(fills, columns=["fill_seq", "date", "code", "side", "size", "price", "fees", "phase"] + (["ledger_seq", "fill_id", "order_id", "fee", "tax"] if _account else [])),
+        "positions": pd.DataFrame(daily_positions, columns=["date", "code", "size", "entry_price", "stop_price", "target_price", "mark_price", "expiry", "overdue", "stale"] + (["cost_basis"] if _account else [])),
+        "equity": pd.DataFrame(equity_rows, columns=["date", "cash", "equity", "exposure", "positions_count"] + (["receivables", "payables"] if _account else [])),
         "trades": pd.DataFrame(trades, columns=["code", "pnl", "entry_date", "exit_date"]),
         "issues": list(dict.fromkeys(issues)),
     }
+    return _account.result(result, initial_cash) if _account else result
+
+
+def simulate_delivery(delivery, signals, *, entry_id, exit_id, start, end, delay=1,
+                      initial_cash=100_000_000, policy="fixed20", optimistic=False, hooks=None,
+                      run_id="synthetic-run"):
+    """Execute C1 synthetic raw prices with explicit events and dated profiles.
+
+    Signals must identify permanent ``instrument_id`` and express close/ATR in
+    signal-day raw-price units. Corporate actions transform pending plans only
+    when effective. Unsupported market policies and real input fail closed.
+    """
+    from .corporate_actions import CorporateActionBook, contract_ledger
+    from .market_model import MarketModel
+
+    market = MarketModel(delivery)
+    if pd.Timestamp(start) < pd.Timestamp(market.delivery["metadata"]["start"]) or pd.Timestamp(end) > pd.Timestamp(market.delivery["metadata"]["end"]):
+        raise ValueError("EXECUTION_OUTSIDE_DELIVERY_RANGE")
+    if "instrument_id" not in signals:
+        raise ValueError("signals requires instrument_id")
+    signal_df = signals.copy()
+    signal_df["code"] = signal_df["instrument_id"]
+    raw_closes = {(row["instrument_id"], row["date"]): row["close"] for row in market.delivery["prices"]}
+    for signal in signal_df.to_dict("records"):
+        day = pd.Timestamp(signal["date"]).date().isoformat()
+        market.instrument(signal["instrument_id"], day)
+        if "close" in signal and not pd.isna(signal["close"]):
+            raw_close = raw_closes.get((signal["instrument_id"], day))
+            if raw_close is None or not np.isclose(signal["close"], raw_close, rtol=1e-12, atol=1e-12):
+                raise ValueError("SIGNAL_RAW_PRICE_BASIS_MISMATCH")
+    account = CorporateActionBook(market)
+    result = simulate(market.prepare_prices(), signal_df, entry_id=entry_id, exit_id=exit_id,
+                      start=start, end=end, cost_bps=0, delay=delay, initial_cash=initial_cash,
+                      policy=policy, optimistic=optimistic, calendar=market.trading_dates,
+                      hooks=hooks, _account=account)
+    if "events" not in result:
+        result = account.result(result, initial_cash)
+    result["contract_ledger"] = contract_ledger(result, market.delivery, run_id)
+    result["contract_ledger"].update(strategy_id=f"{entry_id}__{exit_id}", growth_policy=policy)
+    return result

@@ -1,0 +1,20 @@
+[
+  {
+    "elapsed_seconds": 0,
+    "rss_bytes": 100,
+    "peak_rss_bytes": 100,
+    "disk_free_bytes": 1000
+  },
+  {
+    "elapsed_seconds": 1,
+    "rss_bytes": 200,
+    "peak_rss_bytes": 200,
+    "disk_free_bytes": 900
+  },
+  {
+    "elapsed_seconds": 2,
+    "rss_bytes": 150,
+    "peak_rss_bytes": 200,
+    "disk_free_bytes": 800
+  }
+]

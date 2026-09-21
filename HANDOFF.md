@@ -1,3 +1,83 @@
+# 다음 세션 인수인계: v3로 56개 전략 실행 준비
+
+> 2026-09-21 KST 현재 판단은 [v3·56개 전략 핸드오프](docs/strategy-research/backtest-lab/handoff-v3-56-2026-09-21.md)를 우선한다. 아래 9월 15일 이전 기록의 ted-startup 납품 대기·업종 필수 차단 판단은 현재 작업 지시가 아니다. v3 데이터에 대한 추가 ted-startup 작업을 선행조건으로 만들지 말고, vectorbt의 실데이터 실행 구현과 검증을 진행한다. 56개 실자료 결과는 아직 없다. 사용자의 요청 없이 `AGENTS.md`를 수정하지 않는다.
+
+---
+
+# 이전 인수인계: PostgreSQL 재인수 진단
+
+> 최신 갱신: 2026-09-15 KST. 아래 9월 14일 기록보다 이 단락을 우선한다.
+
+사용자 안내로 납품 대기를 해제하고 home DB를 읽기 전용 재검사했다. **실제 연구 인수는 여전히 `BLOCKED`다.** 2015~2023 수정주가 `TRADED` 행에 가격 0 이하 699개(KIWOOM `102950` 695개 + KRX 4개)가 남아 있다. ted-startup의 signal 정정 완료와는 공급자·모집단이 다르다. 전체 영향 키와 납품 계보·역사 입력 보완 조건은 [새 인수 결과](docs/strategy-research/backtest-lab/postgresql-admission-2026-09-15/README.md), 진행 상태는 [새 WBS](docs/strategy-research/backtest-lab/postgresql-admission-wbs-2026-09-15.md)를 따른다.
+
+다음 작업은 ted-startup에서 원문·단위·조정 정의 및 공식 상태 근거를 연결한 새 revision을 납품받고 실제 형식용 읽기 전용 어댑터를 검증하는 것이다. 이번에 수집·정정·실제 수익률·2024년 이후 가격 열람·푸시는 하지 않았다. 기존 미커밋 파일은 보존한다. 아래 모델 정책과 연구 잠금 기준은 유지한다.
+
+---
+
+# 이전 인수인계: ted-startup 납품 대기
+
+> 갱신: 2026-09-14 KST · 작업 폴더: `C:/Users/aeby/vscode/stock/vectorbt`
+> 브랜치: `master` · 현재 HEAD: `6015ecbd95aa5267afe2fed6f24451fd6609264f`
+
+**현재 판단:** 합성 소프트웨어 D0~D7과 후속 33슬롯 개발은 완료했다. 실제 데이터 인수와 전략 선정은 미완료다. **사용자는 ted-startup 납품 형식이 준비될 때까지 개발을 대기하고, 모델을 변경한 뒤 다음 세션에서 재개하기로 했다.** 새 개발·에이전트·자동 감시를 시작하지 않는다. 데이터 수집·적재·정정은 모두 ted-startup 담당이다.
+
+**보존 상태:** 이번 개발 변경은 로컬 미커밋 상태이며 push도 하지 않았다. 새 체크아웃에는 이 변경이 자동으로 따라오지 않으므로 **같은 작업 폴더에서 재개**한다. 기존 사용자 수정 `AGENTS.md`, 감사·재납품 문서 및 미추적 파일을 보존하고 reset/clean/일괄 덮어쓰기를 하지 않는다. 아래 이전 기록의 push 상태는 당시 기록이며 이번 미커밋 개발과 구분한다.
+
+## 완료한 범위와 검증
+
+| 범위 | 상태 | 근거 |
+| --- | --- | --- |
+| D0~D7 계약·계좌·인수 검사·상태 고정·복구·보고 | 8/8 · 100% 완료 | [개발 결과](docs/strategy-research/backtest-lab/implementation-results-2026-09-14.md), [개발 WBS](docs/strategy-research/backtest-lab/parallel-development-wbs-2026-09-14.md) |
+| 후속 33슬롯 합성 실행 연결 | 6/6 · 100% 완료 | [결과·재현 명령](docs/strategy-research/backtest-lab/conditional-results-2026-09-14.md), [WBS](docs/strategy-research/backtest-lab/conditional-development-wbs-2026-09-14.md) |
+| 실제 데이터 인수·실제 전략 선정 | 대기 / 차단 | ted-startup 납품 형식·새 revision 대기, [전체 WBS](docs/strategy-research/backtest-lab/wbs.md) |
+
+- 최종 회귀: `.venv/Scripts/python.exe -X utf8 -m pytest tests/research -q` → **370 passed, 94.91초**. Ruff 통과. 독립 검토 Sol high: Critical 0·Major 0, 최초 Major 2개 수정 후 신규 검사186개 재확인.
+- 후속 합성 실험은 선행26개와 합성 잠금7개를 분리해 **33/33 성공** 및 저장 장부 재검증을 통과했다. 고정된 정책·비용·데이터·주문 날짜·보고 지표 대조와 실패 로그 보존 회귀를 포함한다.
+- [검증 JSON](docs/strategy-research/backtest-lab/conditional-verification-2026-09-14.json)의 코드 해시 `09a56d94e8fa31fdfdddc4b47e29e583715dd6f94c6011b71ecfdcae29a8f3c9`와 종료 시 현재 소스 해시가 일치했다. 이번 종료 준비에서는 문서만 변경하므로 전체 테스트를 반복하지 않았다.
+- 임시 예제: `C:/Users/aeby/AppData/Local/Temp/krx-conditional-final-mzifva7i/experiment/conditional-report.html`. 임시 폴더는 정리될 수 있으므로 결과 문서의 fixture 명령으로 재현한다.
+- 실제 DB·실자료 수익률·2024년 이후 잠금 가격은 이번 개발에서 열람하지 않았다. vectorbt 본체·Rust·사이트 빌드는 이번 변경의 검증 범위 밖이다.
+
+## 다음 배정에 적용할 모델 정책
+
+비용 절감을 위한 사용자 최종 결정이다. **Sol을 상위 모델로 두고 Luna·Terra를 함께 사용한다. Astra는 새로 배정하거나 자동 상향하지 않는다.** 모든 작업을 Sol로 통일한다는 중간 해석은 폐기한다.
+
+| 담당 | 모델·추론 |
+| --- | --- |
+| 팀장 WBS·의존성·통합 | gpt-5.6-sol medium, 복잡한 최종 판단은 high |
+| 파일 탐색·정형 문서·단순 반복 수정 | gpt-5.6-luna low/medium |
+| 명세가 확정된 구현·테스트·보고서 | gpt-5.6-terra medium |
+| 수치 계산·잠금·중단 복구·독립 최종 검토 | gpt-5.6-sol high |
+
+실제 요청 모델과 실행 모델을 확인해 WBS에 기록한다. 구현자와 검토자를 분리한다. 현재 팀장 세션 모델을 자동으로 바꿨다고 가정하지 말고, 사용자가 변경한 다음 세션 설정을 확인한다. 이번 후속 문서는 Terra medium, 독립 검토는 Sol high로 실행했다.
+
+## 재개 조건과 첫 작업
+
+1. **현재는 대기한다.** ted-startup 납품 형식이 준비되었다는 사용자 안내 후 같은 폴더에서 이 문서와 `git status --short`를 확인한다. 미커밋 변경을 먼저 보존하고 실제 모델 설정을 확인한다.
+2. 제공된 형식·파일 위치·dataset_id/revision·원문 출처·파일 해시를 [재납품 명세](docs/strategy-research/backtest-lab/remediation-discovery-2026-09-14/delivery-spec.md), [계약 v1](docs/strategy-research/backtest-lab/contracts-v1.md)과 대조한다.
+3. 실제 납품 형식용 **읽기 전용 어댑터와 인수 검사**를 별도 WBS로 진행한다. 현재 내용 검사는 `synthetic-source-v1` JSON만 지원하므로 실제 파일을 합성으로 재표시해 실행하지 않는다. 부족한 수집·정정 항목은 ted-startup에서 처리하도록 먼저 알려준다.
+4. 자료 인수만으로 실제 실행·선정·잠금을 해제하지 않는다. 역사 시장 프로필·현실 비용·정책 고정 등 선행 기준을 확인한다. 합성 엔진은 단일 시장·종목별 하루 한 행사·정수1주·슬리피지0·거래 결제 지연0 지원에 한정된다.
+
+재개 메시지 예시:
+
+> HANDOFF.md부터 읽어줘. 팀장은 gpt-5.6-sol medium이고, Luna·Terra·Sol 배정 정책을 적용해. ted-startup 납품 형식이 준비됐으니 기존 미커밋 변경을 보존하고 읽기 전용 어댑터·인수 검사부터 진행하자.
+
+사용자에게 보고할 때는 완료/전체·검증 가중 진행률·남은 작업을 구분하고 **항상 다음 작업 선택지와 추천안을 제시**한다. 전체 프로젝트가 끝난 경우에만 전체 작업 완료라고 명시한다. 기본 설명은 한글이다.
+
+## 이번 종료 준비 WBS
+
+| ID | 산출물·담당 | 선행 | 완료 기준 | 가중치 | 상태 |
+| --- | --- | --- | --- | --- | --- |
+| H1 | 현황·검증 기록 대조 / 메인 | 없음 | Git·소스 해시·터미널 확인 | 1 | 완료 |
+| H2 | 최신 핸드오프 / 메인 | H1 | 대기 조건·모델·재개 지점·미커밋 보존 기록 | 1 | 완료 |
+| H3 | 문서·종료 안내 검증 / 메인 | H2 | 링크·diff·Orca 대기 메모 확인 | 1 | 완료 |
+
+종료 준비 진행률: **3/3 · 100%**, 남은 종료 준비 없음. 링크·diff 검증을 완료했다. 새 에이전트나 워크트리를 시작하지 않는 문서 인수인계다. 전체 전략 연구는 ted-startup 납품 대기 상태다.
+
+---
+
+<details>
+<summary>이전 기록: 2026-09-13 당시 상태 (최신 판단은 위 내용을 우선)</summary>
+
 # 다음 세션 인수인계
 
 > 갱신: 2026-09-13 KST
@@ -98,3 +178,5 @@ uv run --no-sync ruff check research/krx_lab tests/research
 이번 검증은 품질·실행 차단 회귀 **13 passed**, 감사 스크립트 `ruff` 통과, 스냅샷 62개 파일 해시·집계 내부 불변식·DB 집계 교차 검산·문서 링크·공백 검사 통과다. 같은 검증을 이유 없이 재실행하지 않았다. 전체 제품 테스트·Rust 빌드·MkDocs 빌드는 이번 문서·감사 작업에서 실행하지 않았다. 홈서버 컨테이너 6개는 종료 준비 재조회에서도 모두 healthy였다.
 
 이번 변경을 정상 커밋·push하고 최종 SHA·원격 동기화·작업 폴더·해당 SHA의 CI 여부를 종료 응답에서 실측해 보고한다. Tests 워크플로는 PR/수동 실행용으로 master push만으로 생성되지 않는다. 오래된 성공 run을 이번 변경의 검증으로 사용하지 않는다.
+
+</details>

@@ -172,6 +172,20 @@ def write_report(out: Path, records: list[dict[str, Any]], selection: dict[str, 
             "",
         ]
     )
+    from urllib.parse import quote
+    detail_links = []
+    for record in records:
+        if record.get("status") != "SUCCEEDED" or not record.get("artifacts"):
+            continue
+        detail = (out / record["artifacts"] / "detail-report.html").resolve()
+        if detail.is_relative_to(out.resolve()) and detail.is_file():
+            detail_links.append((str(record.get("run_id", "")), quote(detail.relative_to(out.resolve()).as_posix())))
+    if detail_links:
+        md_lines.extend(["", "## 실행별 상세 장부", ""])
+        md_lines.extend(f"- [{_md(run_id)}]({link})" for run_id, link in detail_links)
+    detail_section = "<h2>실행별 상세 장부</h2><ul>" + "".join(
+        f'<li><a href="{html.escape(link, quote=True)}">{html.escape(run_id)}</a></li>'
+        for run_id, link in detail_links) + "</ul>" if detail_links else ""
     (out / "report.md").write_text("\n".join(md_lines), encoding="utf-8")
 
     def td(value: Any) -> str:
@@ -200,6 +214,114 @@ def write_report(out: Path, records: list[dict[str, Any]], selection: dict[str, 
 <h2>후보 게이트와 선정 차단 원인</h2><table><thead><tr>{''.join(f'<th>{html.escape(h)}</th>' for h in ['전략','통과','순위','거래 수','양수 연도','성장점수','최악 MDD','집중도','차단 원인'])}</tr></thead><tbody>{''.join(candidate_html)}</tbody></table>
 <h2>비용별 성공 실행 평균 총수익률</h2>{cost_svg}<p>이 그래프는 실행 기록의 단순 비교이며 실제 시장 성과나 후보 선정 결과가 아니다.</p>
 <h2>전체 실행 비교</h2><table><thead><tr>{''.join(f'<th>{html.escape(h)}</th>' for h in headers)}</tr></thead><tbody>{''.join(run_html)}</tbody></table>
-<h2>판정 범위와 한계</h2><p>검증 16슬롯의 완전성, 거래 수, 연도별 수익, 비용·지연 스트레스, 최대낙폭, 종목 집중도를 검사한다. 과거 검증 통과는 미래 수익을 보장하지 않으며, <code>EXECUTION_ELIGIBLE</code> 이외의 데이터는 선정할 수 없다.</p>
+{detail_section}<h2>판정 범위와 한계</h2><p>검증 16슬롯의 완전성, 거래 수, 연도별 수익, 비용·지연 스트레스, 최대낙폭, 종목 집중도를 검사한다. 과거 검증 통과는 미래 수익을 보장하지 않으며, <code>EXECUTION_ELIGIBLE</code> 이외의 데이터는 선정할 수 없다.</p>
 <script type="application/json" id="selection-data">{html.escape(json.dumps(selection, ensure_ascii=False, allow_nan=False), quote=False)}</script></body></html>"""
     (out / "report.html").write_text(html_doc, encoding="utf-8")
+
+
+def _table(headers: list[str], rows: list[list[Any]], empty: str = "기록 없음") -> str:
+    head = "".join(f"<th>{html.escape(str(header), quote=True)}</th>" for header in headers)
+    if not rows:
+        body = f'<tr><td colspan="{len(headers)}">{html.escape(empty, quote=True)}</td></tr>'
+    else:
+        body = "".join("<tr>" + "".join(f"<td>{html.escape(_text(value), quote=True)}</td>" for value in row) + "</tr>"
+                       for row in rows)
+    return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
+
+
+def _nav_svg(equity, initial_cash: float) -> str:
+    """Render NAV and drawdown locally; empty ledgers intentionally have no chart."""
+    if equity.empty:
+        return "<p>유효한 일별 자산 기록이 없어 NAV·낙폭 그래프를 만들지 않았습니다.</p>"
+    import numpy as np
+    import pandas as pd
+
+    values = pd.to_numeric(equity["equity"], errors="coerce")
+    dates = pd.to_datetime(equity["date"], errors="coerce")
+    valid = values.notna() & dates.notna() & np.isfinite(values)
+    values, dates = values[valid].to_numpy(dtype=float), dates[valid]
+    if not len(values):
+        return "<p>유효한 일별 자산 기록이 없어 NAV·낙폭 그래프를 만들지 않았습니다.</p>"
+    peak = pd.Series(values).cummax().clip(lower=float(initial_cash)).to_numpy(dtype=float)
+    drawdown = values / peak - 1.0
+    low, high = min(values.min(), float(initial_cash)), max(values.max(), float(initial_cash))
+    span = high - low or 1.0
+    width, nav_top, nav_height, dd_top, dd_height = 760, 18, 150, 205, 78
+    def points(series, top, height, minimum, range_):
+        denominator = max(len(series) - 1, 1)
+        return " ".join(f"{20 + i * (width - 40) / denominator:.1f},{top + height - (item - minimum) / range_ * height:.1f}"
+                        for i, item in enumerate(series))
+    nav = points(values, nav_top, nav_height, low, span)
+    dd = points(drawdown, dd_top, dd_height, min(float(drawdown.min()), -0.01), max(0.01, -min(float(drawdown.min()), -0.01)))
+    return (f'<svg viewBox="0 0 {width} 310" role="img" aria-label="순자산과 낙폭 그래프">'
+            f'<text x="20" y="12">NAV</text><polyline fill="none" stroke="#315a8a" stroke-width="2" points="{nav}"/>'
+            f'<line x1="20" y1="{dd_top}" x2="{width - 20}" y2="{dd_top}" stroke="#667085"/>'
+            f'<text x="20" y="{dd_top - 6}">Drawdown</text><polyline fill="none" stroke="#b5473c" stroke-width="2" points="{dd}"/>'
+            f'<text x="20" y="300">{html.escape(str(dates.iloc[0].date()))}</text>'
+            f'<text x="{width - 20}" y="300" text-anchor="end">{html.escape(str(dates.iloc[-1].date()))}</text></svg>')
+
+
+def write_detail_report(out: Path, result: dict[str, Any], *, initial_cash: float, manifest: dict[str, Any] | None) -> dict[str, Any]:
+    """Write a self-contained, read-only per-run account report.
+
+    ``manifest`` is rendered as supplied provenance; this function never opens
+    or updates a registry, which keeps report regeneration side-effect free.
+    """
+    import pandas as pd
+
+    from .metrics import ledger_summary, monthly_stats
+
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    ledger = result.get("contract_ledger") if isinstance(result.get("contract_ledger"), dict) else result
+    summary = ledger_summary(result)
+    source_kind = str(ledger.get("source_kind", result.get("source_kind", "UNKNOWN")))
+    equity = pd.DataFrame(ledger.get("equity", result.get("equity", [])))
+    if not equity.empty and "date" in equity and "equity" in equity:
+        equity = equity.loc[:, [name for name in ["date", "cash", "receivables", "payables", "exposure", "equity"] if name in equity]]
+    else:
+        equity = pd.DataFrame(columns=["date", "equity"])
+    monthly = monthly_stats({"equity": equity}, initial_cash)
+    positions = pd.DataFrame(ledger.get("positions", result.get("positions", [])))
+    cashflows = pd.DataFrame(ledger.get("cashflows", result.get("cashflows", [])))
+    fills = pd.DataFrame(ledger.get("fills", result.get("fills", [])))
+    events = pd.DataFrame(ledger.get("events", result.get("events", [])))
+
+    trace_rows: list[list[Any]] = []
+    event_ids = set(events.get("event_id", pd.Series(dtype=str)).dropna().astype(str))
+    fill_ids = set(fills.get("fill_id", pd.Series(dtype=str)).dropna().astype(str))
+    if "code" in positions:
+        positions["instrument_id"] = positions.get("instrument_id", positions["code"])
+    if "size" in positions:
+        positions["quantity"] = positions.get("quantity", positions["size"])
+    if not positions.empty and "date" in positions:
+        positions = positions.loc[pd.to_datetime(positions["date"]).eq(pd.Timestamp(summary["date"]))]
+    manifest_reference = manifest.get("source") if isinstance(manifest, dict) else None
+    for _, row in cashflows.iterrows():
+        fill_id, event_id = row.get("fill_id"), row.get("event_id")
+        trace_rows.append([row.get("cashflow_id"), row.get("kind"), fill_id, event_id,
+                           "fill" if str(fill_id) in fill_ids else "-",
+                           "event" if str(event_id) in event_ids else "-", manifest_reference or "미제공"])
+    manifest = manifest or {}
+    manifest_rows = [[key, json.dumps(value, ensure_ascii=False, sort_keys=True) if isinstance(value, (dict, list)) else value]
+                     for key, value in manifest.items()]
+    account_rows = [["기초 현금", initial_cash], ["기말 순자산", summary["equity"]], ["현금", summary["cash"]],
+                    ["미수금", summary["receivables"]], ["미지급금", summary["payables"]], ["평가 노출", summary["exposure"]],
+                    ["미청산 포지션", summary["open_positions"]], ["평가 정체", summary["stale_positions"]],
+                    ["기한 경과", summary["overdue_positions"]], ["수수료", summary["total_fees"]], ["세금", summary["total_taxes"]],
+                    ["비용 원장", summary["cost_source"]]]
+    synthetic = source_kind == "SYNTHETIC"
+    document = f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>실행 상세 계좌 보고서</title><style>body{{font-family:system-ui,sans-serif;max-width:1200px;margin:2rem auto;padding:0 1rem;color:#172033}}table{{border-collapse:collapse;width:100%;font-size:.9rem;margin:.7rem 0 2rem}}th,td{{border:1px solid #ccd3dc;padding:.45rem;text-align:left;vertical-align:top;overflow-wrap:anywhere}}th{{background:#eef2f6}}svg{{width:100%;height:auto;background:#f8fafc}}.notice{{padding:1rem;background:#fff4e5;border-left:4px solid #b5473c}}code{{overflow-wrap:anywhere}}</style></head><body>
+<h1>실행 상세 계좌 보고서</h1><p>이 보고서는 단일 실행의 일별 순자산, 정산 상태, 비용과 체결·사건 추적을 표시합니다. 렌더링은 원장과 registry를 변경하지 않습니다.</p>
+<div class="notice"><strong>데이터 구분: {html.escape(source_kind, quote=True)}</strong>{' — 합성 자료이며 실제 시장 성과나 실행 가능성을 뜻하지 않습니다.' if synthetic else ''}</div>
+<h2>최종 계좌 상태</h2>{_table(['항목', '값'], account_rows)}
+<h2>NAV와 낙폭</h2>{_nav_svg(equity, initial_cash)}
+<h2>월별 손익</h2>{_table(['월', '기초', '기말', '손익', '수익률', '손실'], monthly.astype(object).where(monthly.notna(), None).values.tolist())}
+<h2>미청산·정체 포지션</h2>{_table(['날짜', '종목', '수량', '평가가', '정체', '기한 경과'], positions.reindex(columns=['date','instrument_id','quantity','mark_price','stale','overdue']).astype(object).where(positions.reindex(columns=['date','instrument_id','quantity','mark_price','stale','overdue']).notna(), None).values.tolist())}
+<h2>현금흐름에서 체결·사건으로 추적</h2><p>수수료·세금은 아래 현금흐름 원장을 기준으로 한 번만 집계합니다. 제공되지 않은 원출처 연결은 추정하지 않습니다.</p>{_table(['현금흐름 ID','종류','체결 ID','사건 ID','체결 확인','사건 확인','manifest 출처'], trace_rows)}
+<h2>입력 manifest·출처</h2>{_table(['키', '값'], manifest_rows, '전달된 manifest 없음')}
+</body></html>'''
+    path = out / "detail-report.html"
+    path.write_text(document, encoding="utf-8")
+    return {"paths": {"detail_report": str(path)}, "summary": {"source_kind": source_kind, **summary}}

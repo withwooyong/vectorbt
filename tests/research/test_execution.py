@@ -5,6 +5,20 @@ import pytest
 from research.krx_lab.execution import simulate
 
 
+def test_simulation_hook_propagates_cooperative_stop_before_day_execution():
+    from research.krx_lab.contracts import CooperativeStop, ExecutionHooks
+
+    visited = []
+    def checkpoint(stage, context):
+        visited.append((stage, context["date"]))
+        raise CooperativeStop("TEST_STOP")
+
+    with pytest.raises(CooperativeStop, match="TEST_STOP"):
+        simulate(_prices(_base_rows()), _signals(_base_signals()), entry_id="entry", exit_id="PCT_3_6",
+                 start="2026-01-02", end="2026-01-06", hooks=ExecutionHooks(checkpoint=checkpoint))
+    assert visited == [("simulation_day", "2026-01-02")]
+
+
 def _prices(rows):
     frame = pd.DataFrame(rows)
     frame["date"] = pd.to_datetime(frame["date"])

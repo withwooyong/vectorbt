@@ -4,6 +4,13 @@ import numpy as np
 import pandas as pd
 
 
+def delivery_grade(source_kind, issues):
+    """Grade a delivery inspection without ever promoting real data to execution."""
+    if issues:
+        return "BLOCKED"
+    return "SYNTHETIC" if source_kind == "SYNTHETIC" else "BLOCKED"
+
+
 def audit(prices, manifest):
     required = {"date", "code", "open", "high", "low", "close", "volume"}
     missing = sorted(required - set(prices))

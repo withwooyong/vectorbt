@@ -151,7 +151,11 @@ def _candidate(strategy_id: str, rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def select_candidate(records: list[dict[str, Any]]) -> dict[str, Any]:
-    """Apply ``selection_policy_v1`` and return one frozen candidate or none."""
+    """Rank validation records without persisting or authorizing a lifecycle change.
+
+    ``FROZEN_CANDIDATE`` is the legacy recommendation label, not evidence that
+    a candidate or its policies have been durably frozen by ``lifecycle``.
+    """
     grouped: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
     ignored_run_ids: list[str] = []
     for record in records:

@@ -205,3 +205,139 @@ def _compare(portfolio, fills, equity, positions, codes, eod_rows, fill_rows) ->
         if len(expected_positions) != int(expected.positions_count):
             mismatches.append(f"positions_count_contract:{expected.date.date()}")
     return mismatches
+
+
+def reconcile_ledger(ledger: dict) -> dict:
+    """Independently replay the C2 cash/quantity transitions and EOD balances.
+
+    This arithmetic check complements source-event/hand-calculated engine tests.
+    It does not claim vectorbt supports corporate actions or certify market data.
+    """
+    from .contracts import validate_ledger
+    checked = validate_ledger(ledger)
+    quantities = {}
+    bases = {}
+    cash = float(checked["initial_cash"])
+    receivables = payables = 0.0
+    mismatches = []
+    fills = checked["fills"]
+    events = checked["events"]
+    cashflows = checked["cashflows"]
+    orders = {row["order_id"]: row for row in checked["orders"]}
+    filled = {}
+    for fill in fills:
+        order = orders[fill["order_id"]]
+        filled[fill["order_id"]] = filled.get(fill["order_id"], 0) + fill["quantity"]
+        if (order["instrument_id"] != fill["instrument_id"] or order["side"] != fill["side"]
+                or order["date"] > fill["date"]):
+            mismatches.append(f"order_fill_link:{fill['fill_id']}")
+    for order_id, order in orders.items():
+        quantity = filled.get(order_id, 0)
+        if (quantity > order["quantity"] or (order["status"] == "FILLED" and quantity != order["quantity"])
+                or (order["status"] in {"REJECTED", "CANCELLED"} and quantity)):
+            mismatches.append(f"order_fill_quantity:{order_id}")
+    entitlements = {}
+    transitions = sorted([(row["ledger_seq"], "fill", row) for row in fills]
+                         + [(row["ledger_seq"], "event", row) for row in events])
+    seqs = [seq for seq, _, _ in transitions]
+    if len(seqs) != len(set(seqs)):
+        mismatches.append("duplicate_transition_seq")
+    by_seq = {}
+    for row in cashflows:
+        by_seq.setdefault(row["ledger_seq"], []).append(row)
+    source_events = {row["event_id"] for row in events}
+    for seq in set(by_seq) - set(seqs):
+        flows = by_seq[seq]
+        if (len(flows) != 1 or not flows[0]["kind"].endswith("PAYMENT")
+                or flows[0]["event_id"] not in source_events or flows[0]["fill_id"] is not None):
+            mismatches.append("cashflow_transition_coverage")
+        transitions.append((seq, "payment", flows[0]))
+    transitions.sort(key=lambda transition: transition[0])
+    previous_date = ""
+    for _, _, row in transitions:
+        if row["date"] < previous_date:
+            mismatches.append("nonchronological_transition")
+        previous_date = row["date"]
+    days = sorted(checked["equity"], key=lambda row: row["date"])
+    cursor = 0
+    for expected in days:
+        day = expected["date"]
+        while cursor < len(transitions) and transitions[cursor][2]["date"] <= day:
+            seq, kind, row = transitions[cursor]
+            instrument = row["instrument_id"]
+            flows = by_seq.get(seq, [])
+            dc = sum(flow["cash_delta"] for flow in flows)
+            dr = sum(flow["receivable_delta"] for flow in flows)
+            dp = sum(flow["payable_delta"] for flow in flows)
+            if any(flow["date"] != row["date"] for flow in flows):
+                mismatches.append(f"cashflow_date:{seq}")
+            if kind == "payment":
+                quantity = 0
+                entitlement = entitlements.get(row["event_id"])
+                if (entitlement is None or entitlement["instrument_id"] != instrument
+                        or dc > entitlement["remaining"] + 1e-8):
+                    mismatches.append(f"payment_entitlement:{seq}")
+                else:
+                    entitlement["remaining"] += dr
+                if any(flow["fee"] != 0 or flow["tax"] != 0 for flow in flows):
+                    mismatches.append(f"payment_cost:{seq}")
+                if dc < 0 or dr > 0 or not np.isclose(dc + dr - dp, 0, rtol=0, atol=1e-8):
+                    mismatches.append(f"payment_balance:{seq}")
+            elif kind == "fill":
+                sign = 1 if row["side"] == "buy" else -1
+                quantity = sign * row["quantity"]
+                expected_cash = -sign * row["quantity"] * row["price"] - row["fee"] - row["tax"]
+                if not np.isclose(dc + dr - dp, expected_cash, rtol=1e-12, atol=1e-8):
+                    mismatches.append(f"fill_cash:{row['fill_id']}")
+                if any(flow["fill_id"] != row["fill_id"] or flow["instrument_id"] != instrument for flow in flows):
+                    mismatches.append(f"fill_link:{row['fill_id']}")
+            else:
+                quantity = row["quantity_delta"]
+                if row["event_id"] in entitlements:
+                    mismatches.append(f"duplicate_entitlement:{row['event_id']}")
+                entitlements[row["event_id"]] = {"instrument_id": instrument, "remaining": dr}
+                if not np.allclose([dc, dr, dp],
+                                   [row["cash_delta"], row["receivable_delta"], row["payable_delta"]],
+                                   rtol=1e-12, atol=1e-8):
+                    mismatches.append(f"event_cash:{row['event_id']}")
+                if any(flow["event_id"] != row["event_id"] or flow["instrument_id"] != instrument for flow in flows):
+                    mismatches.append(f"event_link:{row['event_id']}")
+            if kind != "payment":
+                if not np.allclose([sum(flow["fee"] for flow in flows), sum(flow["tax"] for flow in flows)],
+                                   [row["fee"], row["tax"]], rtol=1e-12, atol=1e-8):
+                    mismatches.append(f"flow_cost:{seq}")
+            old_qty = quantities.get(instrument, 0.0)
+            if kind == "fill":
+                if row["side"] == "buy":
+                    basis_delta = row["quantity"] * row["price"] + row["fee"] + row["tax"]
+                else:
+                    basis_delta = -bases.get(instrument, 0.0) * row["quantity"] / old_qty if old_qty else 0
+            else:
+                basis_delta = row["cost_basis_delta"] if kind == "event" else 0
+            bases[instrument] = bases.get(instrument, 0.0) + basis_delta
+            quantities[instrument] = old_qty + quantity
+            cash, receivables, payables = cash + dc, receivables + dr, payables + dp
+            if quantities[instrument] < -1e-10 or min(cash, receivables, payables) < -1e-7:
+                mismatches.append(f"negative_balance:{seq}")
+            cursor += 1
+        positions = [row for row in checked["positions"] if row["date"] == day]
+        expected_qty = {row["instrument_id"]: row["quantity"] for row in positions}
+        for instrument in set(quantities) | set(expected_qty):
+            if not np.isclose(quantities.get(instrument, 0), expected_qty.get(instrument, 0), rtol=0, atol=1e-10):
+                mismatches.append(f"eod_quantity:{day}:{instrument}")
+        expected_basis = {row["instrument_id"]: row["cost_basis"] for row in positions}
+        for instrument in set(bases) | set(expected_basis):
+            if not np.isclose(bases.get(instrument, 0), expected_basis.get(instrument, 0), rtol=1e-12, atol=1e-7):
+                mismatches.append(f"eod_basis:{day}:{instrument}")
+        exposure = sum(row["quantity"] * row["mark_price"] for row in positions)
+        actual = [cash, receivables, payables, exposure, cash + receivables - payables + exposure]
+        wanted = [expected[key] for key in ("cash", "receivables", "payables", "exposure", "equity")]
+        if not np.allclose(actual, wanted, rtol=1e-12, atol=1e-7):
+            mismatches.append(f"eod_balance:{day}")
+    if cursor != len(transitions):
+        mismatches.append("transitions_without_eod")
+    if any(row["date"] not in {day["date"] for day in days} for row in checked["positions"]):
+        mismatches.append("positions_without_eod")
+    return {"ok": not mismatches, "engine": "independent_contract_replay",
+            "mismatches": list(dict.fromkeys(mismatches)), "transitions_checked": len(transitions),
+            "eod_checked": len(days)}

@@ -1,0 +1,222 @@
+{
+  "schema_version": "krx-lab-contracts-v1",
+  "source_kind": "SYNTHETIC",
+  "metadata": {
+    "dataset_id": "synthetic-contract-fixture",
+    "revision": "1",
+    "previous_revision": null,
+    "extracted_at": "2023-01-06T00:00:00+09:00",
+    "start": "2023-01-02",
+    "end": "2023-01-05",
+    "currency": "SYNTHETIC_UNIT",
+    "price_basis": "raw",
+    "adjustment_definition": "adjusted_price=raw_price*price_factor; adjusted_quantity=raw_quantity*quantity_factor; rounding=NONE",
+    "files": [
+      {
+        "file": "source.json",
+        "rows": 1,
+        "schema": "synthetic-source-v1",
+        "sha256": "39fd6b50c97b3745e6fdca6eebeb360abdceaf064cdbdce69749f5f6227f684d"
+      }
+    ],
+    "real_data_admitted": false,
+    "holdout_prices_included": false
+  },
+  "sources": [
+    {
+      "source_id": "synthetic-notice",
+      "source_url_or_document_id": "fixture:source.json",
+      "published_at": "2023-01-01T00:00:00+09:00",
+      "time_precision": "timestamp",
+      "captured_at": "2023-01-01T01:00:00+09:00",
+      "raw_file_sha256": "39fd6b50c97b3745e6fdca6eebeb360abdceaf064cdbdce69749f5f6227f684d",
+      "historical_capture": "synthetic"
+    }
+  ],
+  "prices": [
+    {
+      "instrument_id": "SYN-ID-001",
+      "code": "SYN001",
+      "date": "2023-01-02",
+      "volume": 10000,
+      "turnover": 500000,
+      "price_factor": 0.5,
+      "quantity_factor": 2.0,
+      "source_id": "synthetic-notice",
+      "open": 50,
+      "adjusted_open": 25.0,
+      "high": 50,
+      "adjusted_high": 25.0,
+      "low": 50,
+      "adjusted_low": 25.0,
+      "close": 50,
+      "adjusted_close": 25.0
+    },
+    {
+      "instrument_id": "SYN-ID-001",
+      "code": "SYN001",
+      "date": "2023-01-03",
+      "volume": 10000,
+      "turnover": 250000,
+      "price_factor": 1,
+      "quantity_factor": 1.0,
+      "source_id": "synthetic-notice",
+      "open": 25,
+      "adjusted_open": 25,
+      "high": 25,
+      "adjusted_high": 25,
+      "low": 25,
+      "adjusted_low": 25,
+      "close": 25,
+      "adjusted_close": 25
+    },
+    {
+      "instrument_id": "SYN-ID-001",
+      "code": "SYN001",
+      "date": "2023-01-04",
+      "volume": 10000,
+      "turnover": 240000,
+      "price_factor": 1,
+      "quantity_factor": 1.0,
+      "source_id": "synthetic-notice",
+      "open": 24,
+      "adjusted_open": 24,
+      "high": 24,
+      "adjusted_high": 24,
+      "low": 24,
+      "adjusted_low": 24,
+      "close": 24,
+      "adjusted_close": 24
+    },
+    {
+      "instrument_id": "SYN-ID-001",
+      "code": "SYN001",
+      "date": "2023-01-05",
+      "volume": 10000,
+      "turnover": 240000,
+      "price_factor": 1,
+      "quantity_factor": 1.0,
+      "source_id": "synthetic-notice",
+      "open": 24,
+      "adjusted_open": 24,
+      "high": 24,
+      "adjusted_high": 24,
+      "low": 24,
+      "adjusted_low": 24,
+      "close": 24,
+      "adjusted_close": 24
+    }
+  ],
+  "events": [
+    {
+      "instrument_id": "SYN-ID-001",
+      "source_id": "synthetic-notice",
+      "announced_at": "2023-01-01T00:00:00+09:00",
+      "record_date": null,
+      "pay_date": null,
+      "correction_of": null,
+      "cancelled": false,
+      "event_id": "split-1",
+      "event_type": "SPLIT",
+      "effective_date": "2023-01-03",
+      "quantity_ratio": 2,
+      "fractional_policy": "REJECT"
+    },
+    {
+      "instrument_id": "SYN-ID-001",
+      "source_id": "synthetic-notice",
+      "announced_at": "2023-01-01T00:00:00+09:00",
+      "record_date": "2023-01-04",
+      "pay_date": "2023-01-05",
+      "correction_of": null,
+      "cancelled": false,
+      "event_id": "dividend-1",
+      "event_type": "CASH_DIVIDEND",
+      "effective_date": "2023-01-04",
+      "cash_per_share": 1,
+      "withholding_rate": 0.1,
+      "entitlement_policy": "PRE_EVENT_HOLDINGS"
+    }
+  ],
+  "instruments": [
+    {
+      "instrument_id": "SYN-ID-001",
+      "code": "SYN001",
+      "market": "SYNTHETIC",
+      "product_type": "COMMON",
+      "sector": "SYNTHETIC",
+      "effective_from": "2023-01-02",
+      "effective_to": null,
+      "source_id": "synthetic-notice"
+    }
+  ],
+  "statuses": [
+    {
+      "status_id": "trading-1",
+      "instrument_id": "SYN-ID-001",
+      "effective_from": "2023-01-02",
+      "effective_to": "2023-01-05",
+      "status": "TRADING",
+      "reason": "synthetic",
+      "last_trade_date": null,
+      "official_delist_date": null,
+      "source_id": "synthetic-notice"
+    }
+  ],
+  "calendar": [
+    {
+      "market": "SYNTHETIC",
+      "date": "2023-01-02",
+      "is_open": true,
+      "opens_at": "2023-01-02T09:00:00+09:00",
+      "closes_at": "2023-01-02T15:30:00+09:00",
+      "reason": "synthetic session",
+      "source_id": "synthetic-notice"
+    },
+    {
+      "market": "SYNTHETIC",
+      "date": "2023-01-03",
+      "is_open": true,
+      "opens_at": "2023-01-03T09:00:00+09:00",
+      "closes_at": "2023-01-03T15:30:00+09:00",
+      "reason": "synthetic session",
+      "source_id": "synthetic-notice"
+    },
+    {
+      "market": "SYNTHETIC",
+      "date": "2023-01-04",
+      "is_open": true,
+      "opens_at": "2023-01-04T09:00:00+09:00",
+      "closes_at": "2023-01-04T15:30:00+09:00",
+      "reason": "synthetic session",
+      "source_id": "synthetic-notice"
+    },
+    {
+      "market": "SYNTHETIC",
+      "date": "2023-01-05",
+      "is_open": true,
+      "opens_at": "2023-01-05T09:00:00+09:00",
+      "closes_at": "2023-01-05T15:30:00+09:00",
+      "reason": "synthetic session",
+      "source_id": "synthetic-notice"
+    }
+  ],
+  "market_profiles": [
+    {
+      "profile_id": "fixed-zero",
+      "market": "SYNTHETIC",
+      "effective_from": "2023-01-02",
+      "effective_to": "2023-01-05",
+      "model": "SYNTHETIC_FIXED",
+      "tick_size": 1,
+      "lot_size": 1,
+      "buy_fee_rate": 0.002,
+      "sell_fee_rate": 0,
+      "sell_tax_rate": 0,
+      "slippage_bps": 0,
+      "settlement_delay_days": 0,
+      "rounding": "NONE",
+      "source_id": "synthetic-notice"
+    }
+  ]
+}

@@ -76,3 +76,58 @@ def test_reconciliation_failure_is_not_success(tmp_path, monkeypatch):
     assert summary["statuses"]["FAILED"] == 1
     failed = next(r for r in Registry(out / "registry.sqlite").records() if r["status"] == "FAILED")
     assert "VECTORBT_LEDGER_MISMATCH" in failed["reason"]
+
+
+def test_report_refuses_active_worker_and_preserves_registry(tmp_path):
+    from research.krx_lab.registry import worker_lock
+    out = _experiment(tmp_path)
+    before = Registry(out / "registry.sqlite").records()
+    with worker_lock(out):
+        with pytest.raises(RuntimeError, match="worker"):
+            update_report(out)
+    assert Registry(out / "registry.sqlite").records() == before
+
+
+def test_empty_artifact_manifest_cannot_hide_missing_ledgers(tmp_path):
+    from research.krx_lab.runner import verify_artifacts
+    write_json(tmp_path / "artifacts.json", {"complete": True, "files": []})
+    with pytest.raises(ValueError, match="MISSING_FILES"):
+        verify_artifacts(tmp_path)
+
+
+@pytest.mark.parametrize("stage", ["before_artifacts", "after_artifacts", "before_rename", "after_rename",
+                                   "before_registry_commit", "after_registry_commit"])
+def test_process_exit_at_persistence_boundaries_recovers_without_duplicate_success(tmp_path, stage):
+    import subprocess
+    import sys
+    from pathlib import Path
+    out = _experiment(tmp_path)
+    code = """
+import os
+import sys
+from research.krx_lab.contracts import ExecutionHooks
+from research.krx_lab.runner import run
+def checkpoint(stage, context):
+    if stage == sys.argv[2]:
+        os._exit(71)
+run(sys.argv[1], phases=("development",), limit=1, hooks=ExecutionHooks(checkpoint=checkpoint))
+"""
+    child = subprocess.run([sys.executable, "-c", code, str(out), stage],
+                           cwd=Path(__file__).resolve().parents[2], capture_output=True, text=True, timeout=90)
+    assert child.returncode == 71, child.stderr
+    registry = Registry(out / "registry.sqlite")
+    first = next(row for row in registry.records() if row["attempt"] == 1)
+    if stage == "after_registry_commit":
+        assert first["status"] == "SUCCEEDED"
+    else:
+        assert first["status"] == "RUNNING"
+    run(out, phases=("development",), limit=1)
+    recovered = next(row for row in registry.records() if row["run_id"] == first["run_id"])
+    assert recovered["status"] == "SUCCEEDED"
+    assert recovered["attempt"] == (1 if stage == "after_registry_commit" else 2)
+    with registry.connect() as db:
+        successes = db.execute("SELECT COUNT(*) FROM attempts WHERE run_id=? AND status='SUCCEEDED'",
+                               (first["run_id"],)).fetchone()[0]
+    assert successes == 1
+    from research.krx_lab.runner import verify_artifacts
+    verify_artifacts(out / recovered["artifacts"])

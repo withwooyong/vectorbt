@@ -1,10 +1,11 @@
 """프로그램 진입점. 실제 주문 기능은 포함하지 않는다."""
 
 import argparse
+import json
 from pathlib import Path
 
 from .config import default_config
-from .io import write_json
+from .io import read_json, write_json
 
 
 def main(argv=None):
@@ -28,13 +29,81 @@ def main(argv=None):
     for name in ("run", "resume", "status", "report", "select", "freeze", "finalize"):
         command = commands.add_parser(name)
         command.add_argument("--experiment", required=True, help="experiment.json이 있는 디렉터리")
+        if name in ("freeze", "finalize"):
+            command.add_argument("--attempt-id", default=name)
+        if name == "freeze":
+            command.add_argument("--evidence")
+            command.add_argument("--bindings")
+            command.add_argument("--artifact-root")
+        if name == "finalize":
+            command.add_argument("--result", required=True)
         if name in ("run", "resume"):
             command.add_argument("--phase", default="development,validation")
             command.add_argument("--limit", type=int, help="운영 smoke용 실행 건수; 나머지는 PLANNED로 보존")
+    inspect_parser = commands.add_parser("inspect-delivery", help="데이터 전달 JSON 읽기 전용 검사")
+    real_parser = commands.add_parser("inspect-real", help="실자료 입력 근거와 남은 공백을 읽기 전용으로 보고")
+    delivery_parser = commands.add_parser("run-delivery", help="합성 데이터·기업행사 장부 검증 전용")
+    for command in (inspect_parser, real_parser, delivery_parser):
+        command.add_argument("--delivery", required=True)
+        command.add_argument("--root")
+        command.add_argument("--previous")
+    inspect_parser.add_argument("--out", help="검사 결과를 새 JSON 파일에 저장")
+    real_parser.add_argument("--out", required=True, help="기존 파일을 덮어쓰지 않는 검사 결과 JSON 경로")
+    delivery_parser.add_argument("--signals", required=True, help="원가격 단위 합성 신호 JSON 배열")
+    delivery_parser.add_argument("--out", required=True)
+    delivery_parser.add_argument("--entry-id", required=True)
+    delivery_parser.add_argument("--exit-id", required=True)
+    delivery_parser.add_argument("--start", required=True)
+    delivery_parser.add_argument("--end", required=True)
+    conditional_plan = commands.add_parser("conditional-plan", help="합성 후속 33슬롯 별도 실험 생성")
+    for name in ("delivery", "signals", "windows", "lifecycle", "out", "benchmark-id"):
+        conditional_plan.add_argument("--" + name, required=True)
+    conditional_run = commands.add_parser("conditional-run", help="합성 후속 슬롯 실행·재개")
+    conditional_run.add_argument("--experiment", required=True)
+    conditional_run.add_argument("--include-synthetic-holdout", action="store_true")
+    conditional_run.add_argument("--limit", type=int)
+    conditional_status = commands.add_parser("conditional-status", help="합성 후속 산출물 검증·상태 보고")
+    conditional_status.add_argument("--experiment", required=True)
     args = parser.parse_args(argv)
     from . import runner
     from .snapshot import extract, synthetic_snapshot
-    if args.command == "snapshot":
+    if args.command.startswith("conditional-"):
+        from .conditional_runner import plan_conditional, run_conditional, conditional_status
+        if args.command == "conditional-plan":
+            result = plan_conditional(args.delivery, args.signals, args.windows, args.lifecycle, args.out,
+                                      benchmark_id=args.benchmark_id)
+        elif args.command == "conditional-run":
+            result = run_conditional(args.experiment, include_synthetic_holdout=args.include_synthetic_holdout,
+                                     limit=args.limit)
+        else:
+            result = conditional_status(args.experiment)
+    elif args.command == "inspect-delivery":
+        result = runner.inspect_delivery_file(args.delivery, root=args.root, previous_path=args.previous)
+        if args.out:
+            if Path(args.out).exists():
+                parser.error("기존 검사 결과를 덮어쓸 수 없습니다")
+            write_json(args.out, result)
+    elif args.command == "inspect-real":
+        from .real_admission import inspect_real_readiness
+
+        delivery_path = Path(args.delivery).resolve()
+        root = Path(args.root).resolve() if args.root else delivery_path.parent
+        output = Path(args.out).resolve()
+        if output.is_relative_to(root) or output.is_relative_to(delivery_path.parent):
+            parser.error("검사 결과는 데이터 전달 폴더 밖에 저장해야 합니다")
+        if output.exists():
+            parser.error("기존 검사 결과를 덮어쓸 수 없습니다")
+        previous = read_json(args.previous) if args.previous else None
+        result = inspect_real_readiness(read_json(delivery_path), root, previous)
+        rendered = json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False, default=str) + "\n"
+        output.parent.mkdir(parents=True, exist_ok=True)
+        with output.open("x", encoding="utf-8") as stream:
+            stream.write(rendered)
+    elif args.command == "run-delivery":
+        result = runner.run_delivery(args.delivery, args.signals, args.out, entry_id=args.entry_id,
+                                     exit_id=args.exit_id, start=args.start, end=args.end,
+                                     root=args.root, previous_path=args.previous)
+    elif args.command == "snapshot":
         result = extract(args.out, args.start, args.end)
         result = {k: result[k] for k in ("status", "rows", "created_at")}
     elif args.command == "synthetic":
@@ -61,9 +130,11 @@ def main(argv=None):
         runner.verify_experiment(args.experiment)
         result = runner.update_report(args.experiment)
         result = {k: result[k] for k in ("status", "selected_strategy_id", "candidate_count", "eligible_count")}
-    else:
-        parser.error("정식 데이터·현실 비용·기업행사 인수가 미완료여서 잠금/최종 선정을 활성화하지 않았습니다")
-    import json
+    elif args.command == "freeze":
+        result = runner.freeze(args.experiment, evidence_path=args.evidence, bindings_path=args.bindings,
+                               artifact_root=args.artifact_root, attempt_id=args.attempt_id)
+    elif args.command == "finalize":
+        result = runner.finalize(args.experiment, args.result, attempt_id=args.attempt_id)
     print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
 
 

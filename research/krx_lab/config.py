@@ -20,6 +20,8 @@ def default_config(snapshot):
         "base_cost_bps": 30, "delay_stress": 2, "worker_count": 1,
         "selection_policy": "selection_policy_v1", "research_mdd_limit": 0.2,
         "allow_unverified_proxy": False,
+        "resource_limits": {"max_rss_bytes": 2 * 1024**3, "min_free_disk_bytes": 512 * 1024**2,
+                            "poll_interval_seconds": 0.25},
     }
 
 
@@ -45,6 +47,10 @@ def load_config(path):
         raise ValueError("allow_unverified_proxy는 boolean이어야 합니다")
     if result["allow_unverified_proxy"]:
         raise ValueError("미검증 조정가격의 수익률 우회 실행은 v1에서 지원하지 않습니다")
+    from .resources import ResourceLimits
+    if not isinstance(result["resource_limits"], dict):
+        raise ValueError("resource_limits must be an object")
+    result["resource_limits"] = ResourceLimits(**result["resource_limits"]).asdict()
     result["snapshot"] = str(Path(result["snapshot"]).resolve())
     return result
 

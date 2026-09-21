@@ -1,0 +1,177 @@
+{
+  "schema_version": "krx-lab-contracts-v1",
+  "source_kind": "SYNTHETIC",
+  "run_id": "synthetic-hand-calculated",
+  "dataset_id": "synthetic-contract-fixture",
+  "revision": "1",
+  "currency": "SYNTHETIC_UNIT",
+  "initial_cash": 1000,
+  "orders": [
+    {
+      "order_id": "order-1",
+      "date": "2023-01-02",
+      "instrument_id": "SYN-ID-001",
+      "side": "buy",
+      "quantity": 10,
+      "status": "FILLED"
+    }
+  ],
+  "fills": [
+    {
+      "ledger_seq": 0,
+      "fill_id": "fill-1",
+      "order_id": "order-1",
+      "date": "2023-01-02",
+      "instrument_id": "SYN-ID-001",
+      "side": "buy",
+      "quantity": 10,
+      "price": 50,
+      "fee": 1,
+      "tax": 0
+    }
+  ],
+  "events": [
+    {
+      "ledger_seq": 1,
+      "event_id": "split-1",
+      "date": "2023-01-03",
+      "instrument_id": "SYN-ID-001",
+      "event_type": "SPLIT",
+      "quantity_delta": 10,
+      "cost_basis_delta": 0,
+      "cash_delta": 0,
+      "receivable_delta": 0,
+      "payable_delta": 0,
+      "fee": 0,
+      "tax": 0
+    },
+    {
+      "ledger_seq": 2,
+      "event_id": "dividend-1",
+      "date": "2023-01-04",
+      "instrument_id": "SYN-ID-001",
+      "event_type": "CASH_DIVIDEND",
+      "quantity_delta": 0,
+      "cost_basis_delta": 0,
+      "cash_delta": 0,
+      "receivable_delta": 18,
+      "payable_delta": 0,
+      "fee": 0,
+      "tax": 2
+    }
+  ],
+  "cashflows": [
+    {
+      "ledger_seq": 0,
+      "cashflow_id": "cash-0",
+      "date": "2023-01-02",
+      "instrument_id": "SYN-ID-001",
+      "event_id": null,
+      "fill_id": "fill-1",
+      "kind": "BUY",
+      "cash_delta": -501,
+      "receivable_delta": 0,
+      "payable_delta": 0,
+      "fee": 1,
+      "tax": 0
+    },
+    {
+      "ledger_seq": 2,
+      "cashflow_id": "cash-2",
+      "date": "2023-01-04",
+      "instrument_id": "SYN-ID-001",
+      "event_id": "dividend-1",
+      "fill_id": null,
+      "kind": "DIVIDEND_ENTITLEMENT",
+      "cash_delta": 0,
+      "receivable_delta": 18,
+      "payable_delta": 0,
+      "fee": 0,
+      "tax": 2
+    },
+    {
+      "ledger_seq": 3,
+      "cashflow_id": "cash-3",
+      "date": "2023-01-05",
+      "instrument_id": "SYN-ID-001",
+      "event_id": "dividend-1",
+      "fill_id": null,
+      "kind": "DIVIDEND_PAYMENT",
+      "cash_delta": 18,
+      "receivable_delta": -18,
+      "payable_delta": 0,
+      "fee": 0,
+      "tax": 0
+    }
+  ],
+  "positions": [
+    {
+      "date": "2023-01-02",
+      "instrument_id": "SYN-ID-001",
+      "quantity": 10,
+      "mark_price": 50,
+      "cost_basis": 501,
+      "stale": false
+    },
+    {
+      "date": "2023-01-03",
+      "instrument_id": "SYN-ID-001",
+      "quantity": 20,
+      "mark_price": 25,
+      "cost_basis": 501,
+      "stale": false
+    },
+    {
+      "date": "2023-01-04",
+      "instrument_id": "SYN-ID-001",
+      "quantity": 20,
+      "mark_price": 24,
+      "cost_basis": 501,
+      "stale": false
+    },
+    {
+      "date": "2023-01-05",
+      "instrument_id": "SYN-ID-001",
+      "quantity": 20,
+      "mark_price": 24,
+      "cost_basis": 501,
+      "stale": false
+    }
+  ],
+  "equity": [
+    {
+      "date": "2023-01-02",
+      "cash": 499,
+      "receivables": 0,
+      "payables": 0,
+      "exposure": 500,
+      "equity": 999
+    },
+    {
+      "date": "2023-01-03",
+      "cash": 499,
+      "receivables": 0,
+      "payables": 0,
+      "exposure": 500,
+      "equity": 999
+    },
+    {
+      "date": "2023-01-04",
+      "cash": 499,
+      "receivables": 18,
+      "payables": 0,
+      "exposure": 480,
+      "equity": 997
+    },
+    {
+      "date": "2023-01-05",
+      "cash": 517,
+      "receivables": 0,
+      "payables": 0,
+      "exposure": 480,
+      "equity": 997
+    }
+  ],
+  "issues": [],
+  "files": []
+}

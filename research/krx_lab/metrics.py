@@ -85,6 +85,54 @@ def monthly_stats(result: dict[str, Any], initial_cash: float = 100_000_000) -> 
     return monthly[columns]
 
 
+def ledger_summary(result: dict[str, Any]) -> dict[str, Any]:
+    """Summarize the latest C2 account state without changing its ledger.
+
+    Fees and taxes are deliberately read from cashflows when they are present.
+    A fill can also be represented by a cashflow, so adding both would report
+    the same charge twice.
+    """
+    ledger = result.get("contract_ledger") if isinstance(result.get("contract_ledger"), Mapping) else result
+    equity = _frame(ledger, "equity", ["date", "cash", "receivables", "payables", "exposure", "equity"])
+    positions = _frame(ledger, "positions", ["date", "instrument_id", "quantity", "mark_price", "stale", "overdue"])
+    cashflows = _frame(ledger, "cashflows", ["fee", "tax"])
+    fills = _frame(ledger, "fills", ["fee", "fees", "tax"])
+
+    latest: dict[str, Any] = {"date": None, "cash": None, "receivables": None, "payables": None,
+                              "exposure": None, "equity": None}
+    if not equity.empty:
+        equity["date"] = pd.to_datetime(equity["date"], errors="coerce")
+        equity = equity.sort_values("date", kind="stable")
+        row = equity.iloc[-1]
+        latest = {name: row.get(name) for name in latest}
+
+    if "size" in positions:
+        positions["quantity"] = positions["quantity"].fillna(positions["size"])
+    latest_positions = positions.iloc[0:0]
+    if not positions.empty and "date" in positions:
+        dates = pd.to_datetime(positions["date"], errors="coerce")
+        if latest["date"] is not None:
+            latest_positions = positions.loc[dates.eq(pd.Timestamp(latest["date"]))]
+    stale_values = latest_positions.get("stale", pd.Series(dtype=bool)).fillna(False)
+    overdue_values = latest_positions.get("overdue", pd.Series(dtype=bool)).fillna(False)
+    stale = int(stale_values.map(lambda value: value is True or value == 1).sum())
+    overdue = int(overdue_values.map(lambda value: value is True or value == 1).sum())
+    open_positions = int((pd.to_numeric(latest_positions.get("quantity", pd.Series(dtype=float)), errors="coerce").fillna(0) > 0).sum())
+
+    if not cashflows.empty:
+        fee = pd.to_numeric(cashflows["fee"], errors="coerce").fillna(0.0).sum()
+        tax = pd.to_numeric(cashflows["tax"], errors="coerce").fillna(0.0).sum()
+        cost_source = "cashflows"
+    else:
+        fee_column = "fee" if "fee" in fills and fills["fee"].notna().any() else "fees"
+        fee = pd.to_numeric(fills.get(fee_column, pd.Series(dtype=float)), errors="coerce").fillna(0.0).sum()
+        tax = pd.to_numeric(fills.get("tax", pd.Series(dtype=float)), errors="coerce").fillna(0.0).sum()
+        cost_source = "fills"
+    latest.update(open_positions=open_positions, stale_positions=stale, overdue_positions=overdue,
+                  total_fees=float(fee), total_taxes=float(tax), cost_source=cost_source)
+    return _finite(latest)
+
+
 def calculate_metrics(result: dict[str, Any], initial_cash: float = 100_000_000) -> dict[str, Any]:
     """Calculate comparable account metrics without emitting NaN or infinity."""
     equity = _equity_frame(result)
