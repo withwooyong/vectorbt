@@ -9,7 +9,7 @@
 - [구현·청산 규칙·재현 명령](docs/strategy-research/backtest-lab/implementation-start-2026-09-21.md), [완료 WBS](docs/strategy-research/backtest-lab/real-backtest-v3-execution-wbs-2026-09-21.md)를 참고한다. 사용자는 설명을 짧고 쉽게 하기를 원한다.
 - 차단 436개는 보유 종목 거래상태 미확정, 5개는 보유 중 시장 이전 처리 한계다. 추가 원천 확인·모델 보완은 후속 과제이며 임의로 가드를 완화하지 않는다. 전략 선정·실거래 승인 결과가 아니다.
 - 작업별 모델: 메인 Astra, 입력/보고 Terra medium, 시장 규칙/독립 검토 Sol high, 그림 Luna medium. 모든 팀원을 Astra로 고정하지 않는다.
-- 사용자가 핸드오프·커밋·푸시를 명시 요청했다. 이번 구현·테스트·보고서를 `origin/master`에 게시하며, 게시 확인은 [게시 WBS](docs/work-management/backtest-results-publish-2026-09-21.md)에 기록한다. 기존 임시 HTML 5개와 대량 원천 Parquet은 커밋에서 제외한다.
+- 사용자가 핸드오프·커밋·푸시를 명시 요청했다. 이번 구현·테스트·보고서를 `549bdd4`로 `origin/master`에 게시하고 원격 일치를 확인했다. 게시 기록은 [게시 WBS](docs/work-management/backtest-results-publish-2026-09-21.md)에 기록한다. 기존 임시 HTML 5개와 대량 원천 Parquet은 커밋에서 제외한다.
 
 ## 다음 세션 시작점
 
