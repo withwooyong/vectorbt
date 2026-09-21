@@ -9,8 +9,35 @@ from .io import read_json, write_json
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="국내 주식 48개 전략 공동계좌 연구 도구")
+    parser = argparse.ArgumentParser(description="국내 주식 전략 공동계좌 연구 도구")
     commands = parser.add_subparsers(dest="command", required=True)
+    for name in ("snapshot-v3", "verify-snapshot-v3"):
+        command = commands.add_parser(name, help="SEALED v3 불변 입력 추출·검증 (실행 인수 아님)")
+        command.add_argument("--out" if name == "snapshot-v3" else "--snapshot", required=True)
+    for name in ("materialize-v3", "verify-tables-v3"):
+        command = commands.add_parser(name, help="검증한 v3를 반복 계산용 Parquet로 변환·대조")
+        command.add_argument("--source", required=True)
+        command.add_argument("--out", required=True)
+    config56 = commands.add_parser("config56", help="56개 기본 또는 넓은 청산 별도 실험 설정")
+    config56.add_argument("--snapshot", required=True)
+    config56.add_argument("--out", required=True)
+    config56.add_argument("--wide-exits", action="store_true")
+    prepare = commands.add_parser("prepare56", help="실행 권한 없이 56개 비교 계획 고정")
+    prepare.add_argument("--config", required=True)
+    prepare.add_argument("--out", required=True)
+    prepare_real = commands.add_parser("prepare-v3", help="검증된 Parquet에서 공통 종목군·신호 준비")
+    for name in ("source", "tables", "out"):
+        prepare_real.add_argument("--" + name, required=True)
+    certify_real = commands.add_parser("certify-v3", help="현재 코드의 독립 계산 테스트 증거 기록")
+    certify_real.add_argument("--out", required=True)
+    run_real = commands.add_parser("run-v3", help="검증된 공통 종목군의 제한된 실자료 비교")
+    for name in ("prepared", "evidence", "out"):
+        run_real.add_argument("--" + name, required=True)
+    run_real.add_argument("--limit", type=int)
+    run_real.add_argument("--family", choices=("basic", "wide"), help="서로 독립인 실험 중 하나만 실행")
+    report_real = commands.add_parser("report-v3", help="실제 비교 결과의 한글 보고서 작성")
+    report_real.add_argument("--batch", required=True)
+    report_real.add_argument("--out", required=True)
     snapshot = commands.add_parser("snapshot", help="home PostgreSQL 읽기 전용 고정 추출")
     snapshot.add_argument("--out", required=True)
     snapshot.add_argument("--start", default="2015-01-02")
@@ -67,7 +94,44 @@ def main(argv=None):
     args = parser.parse_args(argv)
     from . import runner
     from .snapshot import extract, synthetic_snapshot
-    if args.command.startswith("conditional-"):
+    if args.command == "prepare-v3":
+        from .v3_run import prepare_run
+        value = prepare_run(args.source, args.tables, args.out)
+        result = {key: value[key] for key in ("status", "dataset_id", "revision")}
+    elif args.command == "certify-v3":
+        from .v3_run import certify_execution
+        result = certify_execution(args.out)
+    elif args.command == "run-v3":
+        from .v3_run import run_batch
+        if args.limit is not None and args.limit < 1:
+            parser.error("limit은 1 이상이어야 합니다")
+        value = run_batch(args.prepared, args.evidence, args.out, limit=args.limit, family=args.family)
+        result = {key: value.get(key) for key in ("status", "planned_runs", "attempted_runs", "succeeded_runs", "blocked_runs")}
+    elif args.command == "report-v3":
+        from .v3_report import generate_report
+        result = generate_report(args.batch, args.out)
+    elif args.command in ("materialize-v3", "verify-tables-v3"):
+        from .v3_tables import materialize_v3_tables, verify_v3_tables
+        manifest = (materialize_v3_tables if args.command == "materialize-v3" else verify_v3_tables)(args.source, args.out)
+        result = {key: manifest[key] for key in ("status", "revision_id", "real_execution_admitted")}
+    elif args.command in ("snapshot-v3", "verify-snapshot-v3"):
+        from .v3_snapshot import extract_v3, verify_v3_snapshot
+        manifest = extract_v3(args.out) if args.command == "snapshot-v3" else verify_v3_snapshot(args.snapshot)
+        result = {key: manifest[key] for key in ("status", "revision_label", "real_execution_admitted")}
+    elif args.command == "config56":
+        from .config_v2 import default_config as default56, default_wide_config
+        value = (default_wide_config if args.wide_exits else default56)(args.snapshot)
+        output = Path(args.out)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        with output.open("x", encoding="utf-8") as stream:
+            json.dump(value, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+        result = {"config": str(output.resolve()), "schema_version": value["schema_version"]}
+    elif args.command == "prepare56":
+        from .preparation import prepare_plan
+        plan = prepare_plan(args.config, args.out)
+        result = {key: plan[key] for key in ("experiment_id", "status", "candidate_count", "logical_slots")}
+    elif args.command.startswith("conditional-"):
         from .conditional_runner import plan_conditional, run_conditional, conditional_status
         if args.command == "conditional-plan":
             result = plan_conditional(args.delivery, args.signals, args.windows, args.lifecycle, args.out,

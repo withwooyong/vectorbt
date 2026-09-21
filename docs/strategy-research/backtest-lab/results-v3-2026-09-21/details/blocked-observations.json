@@ -1,0 +1,654 @@
+[
+  {
+    "date": "2015-06-25",
+    "instrument_id": "829",
+    "display_code": "101160",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 3210,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 4,
+    "issue_counts_by_family": {
+      "basic": 2,
+      "wide": 2
+    },
+    "issue_occurrences": 4
+  },
+  {
+    "date": "2015-07-10",
+    "instrument_id": "3148",
+    "display_code": "030720",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 11750,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "wide": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2015-07-14",
+    "instrument_id": "397",
+    "display_code": "045520",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 7000,
+    "volume": 0,
+    "status": "HALTED",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNTRADEABLE_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "basic": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2015-09-17",
+    "instrument_id": "351",
+    "display_code": "041460",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 9210,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 6,
+    "issue_counts_by_family": {
+      "wide": 6
+    },
+    "issue_occurrences": 6
+  },
+  {
+    "date": "2015-11-04",
+    "instrument_id": "583",
+    "display_code": "065770",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 4105,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 4,
+    "issue_counts_by_family": {
+      "wide": 4
+    },
+    "issue_occurrences": 4
+  },
+  {
+    "date": "2015-11-05",
+    "instrument_id": "2531",
+    "display_code": "002700",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 1435,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "basic": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2015-11-30",
+    "instrument_id": "661",
+    "display_code": "078150",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 1615,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 46,
+    "issue_counts_by_family": {
+      "basic": 16,
+      "wide": 30
+    },
+    "issue_occurrences": 46
+  },
+  {
+    "date": "2016-04-25",
+    "instrument_id": "1118",
+    "display_code": "205500",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 1980,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "basic": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2016-06-16",
+    "instrument_id": "382",
+    "display_code": "043710",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 9590,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "wide": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2016-10-20",
+    "instrument_id": "848",
+    "display_code": "104040",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 22800,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 24,
+    "issue_counts_by_family": {
+      "basic": 16,
+      "wide": 8
+    },
+    "issue_occurrences": 24
+  },
+  {
+    "date": "2017-03-27",
+    "instrument_id": "335",
+    "display_code": "039560",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 6800,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 10,
+    "issue_counts_by_family": {
+      "basic": 4,
+      "wide": 6
+    },
+    "issue_occurrences": 10
+  },
+  {
+    "date": "2017-05-02",
+    "instrument_id": "281",
+    "display_code": "036170",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 1470,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "wide": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2017-09-19",
+    "instrument_id": "349",
+    "display_code": "041190",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 1865,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "wide": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2017-12-14",
+    "instrument_id": "269",
+    "display_code": "035600",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 17900,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 4,
+    "issue_counts_by_family": {
+      "basic": 2,
+      "wide": 2
+    },
+    "issue_occurrences": 4
+  },
+  {
+    "date": "2018-06-01",
+    "instrument_id": "2911",
+    "display_code": "011390",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 236500,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 2,
+    "issue_counts_by_family": {
+      "basic": 2
+    },
+    "issue_occurrences": 2
+  },
+  {
+    "date": "2018-08-24",
+    "instrument_id": "1284",
+    "display_code": "261200",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 2070,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 10,
+    "issue_counts_by_family": {
+      "basic": 8,
+      "wide": 2
+    },
+    "issue_occurrences": 10
+  },
+  {
+    "date": "2019-03-22",
+    "instrument_id": "2550",
+    "display_code": "002990",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 12350,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 22,
+    "issue_counts_by_family": {
+      "basic": 12,
+      "wide": 10
+    },
+    "issue_occurrences": 22
+  },
+  {
+    "date": "2020-04-07",
+    "instrument_id": "3090",
+    "display_code": "019170",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 20000,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 16,
+    "issue_counts_by_family": {
+      "wide": 16
+    },
+    "issue_occurrences": 16
+  },
+  {
+    "date": "2021-03-08",
+    "instrument_id": "2926",
+    "display_code": "011790",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 114000,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 27,
+    "issue_counts_by_family": {
+      "basic": 7,
+      "wide": 20
+    },
+    "issue_occurrences": 27
+  },
+  {
+    "date": "2021-04-01",
+    "instrument_id": "2756",
+    "display_code": "006980",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 4085,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 31,
+    "issue_counts_by_family": {
+      "basic": 17,
+      "wide": 14
+    },
+    "issue_occurrences": 31
+  },
+  {
+    "date": "2021-04-06",
+    "instrument_id": "1072",
+    "display_code": "191410",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 3315,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 52,
+    "issue_counts_by_family": {
+      "basic": 18,
+      "wide": 34
+    },
+    "issue_occurrences": 52
+  },
+  {
+    "date": "2021-04-09",
+    "instrument_id": "476",
+    "display_code": "053290",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 23050,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 12,
+    "issue_counts_by_family": {
+      "basic": 12
+    },
+    "issue_occurrences": 12
+  },
+  {
+    "date": "2021-04-14",
+    "instrument_id": "1284",
+    "display_code": "261200",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 2175,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 30,
+    "issue_counts_by_family": {
+      "basic": 12,
+      "wide": 18
+    },
+    "issue_occurrences": 30
+  },
+  {
+    "date": "2021-08-09",
+    "instrument_id": "3467",
+    "display_code": "178920",
+    "market": "KOSPI",
+    "open": 53800,
+    "high": 57900,
+    "low": 53000,
+    "close": 57200,
+    "volume": 618785,
+    "status": "TRADING",
+    "eligible": true,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "HELD_MARKET_CHANGED"
+    ],
+    "distinct_blocked_runs": 4,
+    "issue_counts_by_family": {
+      "basic": 4
+    },
+    "issue_occurrences": 4
+  },
+  {
+    "date": "2022-03-22",
+    "instrument_id": "2774",
+    "display_code": "007610",
+    "market": "KOSPI",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 3000,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSPI",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 18,
+    "issue_counts_by_family": {
+      "basic": 14,
+      "wide": 4
+    },
+    "issue_occurrences": 18
+  },
+  {
+    "date": "2022-05-17",
+    "instrument_id": "268",
+    "display_code": "035460",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 6690,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 32,
+    "issue_counts_by_family": {
+      "basic": 16,
+      "wide": 16
+    },
+    "issue_occurrences": 32
+  },
+  {
+    "date": "2022-11-03",
+    "instrument_id": "3344",
+    "display_code": "108320",
+    "market": "KOSPI",
+    "open": 80700,
+    "high": 83700,
+    "low": 80600,
+    "close": 82700,
+    "volume": 120511,
+    "status": "TRADING",
+    "eligible": true,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "HELD_MARKET_CHANGED"
+    ],
+    "distinct_blocked_runs": 1,
+    "issue_counts_by_family": {
+      "basic": 1
+    },
+    "issue_occurrences": 1
+  },
+  {
+    "date": "2023-10-20",
+    "instrument_id": "694",
+    "display_code": "082800",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 678,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 58,
+    "issue_counts_by_family": {
+      "basic": 26,
+      "wide": 32
+    },
+    "issue_occurrences": 58
+  },
+  {
+    "date": "2023-12-07",
+    "instrument_id": "760",
+    "display_code": "091440",
+    "market": "KOSDAQ",
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 8690,
+    "volume": 0,
+    "status": "UNKNOWN",
+    "eligible": false,
+    "previous_market": "KOSDAQ",
+    "reasons": [
+      "UNKNOWN_HELD_MARK"
+    ],
+    "distinct_blocked_runs": 16,
+    "issue_counts_by_family": {
+      "wide": 16
+    },
+    "issue_occurrences": 16
+  }
+]

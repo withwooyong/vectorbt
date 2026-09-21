@@ -14,6 +14,10 @@ import pandas as pd
 
 _PRICE_COLUMNS = ("date", "code", "open", "high", "low", "close", "volume")
 _SIGNAL_COLUMNS = ("date", "code", "atr14", "avg_volume20")
+_PERCENT_EXITS = {"PCT_3_6": (0.03, 0.06), "PCT_5_10": (0.05, 0.10),
+                  "PCT_8_16": (0.08, 0.16), "PCT_10_20": (0.10, 0.20)}
+_ATR_EXITS = {"ATR_1_5_3": (1.5, 3.0), "ATR_2_4": (2.0, 4.0),
+              "ATR_3_6": (3.0, 6.0), "ATR_4_8": (4.0, 8.0)}
 
 
 def _empty(columns: list[str]) -> pd.DataFrame:
@@ -76,6 +80,7 @@ def simulate(
     policy: str = "fixed20",
     calendar: Sequence[str] | None = None,
     optimistic: bool = False,
+    sector_cap: float | None = 0.25,
     hooks=None,
     _account=None,
 ) -> dict:
@@ -88,13 +93,18 @@ def simulate(
 
     if policy not in {"fixed20", "staged10_15_20"}:
         raise ValueError("policy must be 'fixed20' or 'staged10_15_20'")
+    if sector_cap is not None and (
+        isinstance(sector_cap, bool) or not isinstance(sector_cap, numbers.Real)
+        or not np.isfinite(sector_cap) or not 0 < sector_cap <= 1
+    ):
+        raise ValueError("sector_cap must be None or a finite fraction in (0, 1]")
     if not isinstance(delay, numbers.Integral) or isinstance(delay, bool) or delay < 1:
         raise ValueError("delay must be at least 1 trading day")
     if not np.isfinite(cost_bps) or cost_bps < 0:
         raise ValueError("cost_bps must be finite and non-negative")
     if not np.isfinite(initial_cash) or initial_cash <= 0:
         raise ValueError("initial_cash must be positive")
-    if exit_id not in {"PCT_3_6", "PCT_5_10", "ATR_1_5_3", "ATR_2_4"}:
+    if exit_id not in _PERCENT_EXITS and exit_id not in _ATR_EXITS:
         raise ValueError(f"Unsupported exit_id: {exit_id}")
     missing_prices = set(_PRICE_COLUMNS).difference(prices.columns)
     missing_signals = set(_SIGNAL_COLUMNS).difference(signals.columns)
@@ -123,7 +133,8 @@ def simulate(
     optional_defaults = {"sector": "__UNKNOWN__", "tick_size": 1.0, "eligible": True}
     for name, default in optional_defaults.items():
         if name not in price_df.columns:
-            issues.append(f"MISSING_{name.upper()}")
+            if name != "sector" or sector_cap is not None:
+                issues.append(f"MISSING_{name.upper()}")
             price_df[name] = default
     price_df["sector"] = price_df["sector"].fillna("__UNKNOWN__").astype(str)
     price_df["tick_size"] = pd.to_numeric(price_df["tick_size"], errors="coerce").fillna(1.0)
@@ -189,14 +200,12 @@ def simulate(
         signal_row = same_day.loc[str(getattr(row, "code"))] if same_day is not None and str(getattr(row, "code")) in same_day.index else None
         tick = float(signal_row["tick_size"]) if signal_row is not None and np.isfinite(signal_row["tick_size"]) and signal_row["tick_size"] > 0 else 1.0
         cap = min(float(close) + 0.5 * float(atr), 1.01 * float(close))
-        if exit_id == "PCT_3_6":
-            stop, target = 0.97 * float(close), 1.06 * float(close)
-        elif exit_id == "PCT_5_10":
-            stop, target = 0.95 * float(close), 1.10 * float(close)
-        elif exit_id == "ATR_1_5_3":
-            stop, target = float(close) - 1.5 * float(atr), float(close) + 3.0 * float(atr)
-        elif exit_id == "ATR_2_4":
-            stop, target = float(close) - 2.0 * float(atr), float(close) + 4.0 * float(atr)
+        if exit_id in _PERCENT_EXITS:
+            stop_fraction, target_fraction = _PERCENT_EXITS[exit_id]
+            stop, target = (1.0 - stop_fraction) * float(close), (1.0 + target_fraction) * float(close)
+        elif exit_id in _ATR_EXITS:
+            stop_atr, target_atr = _ATR_EXITS[exit_id]
+            stop, target = float(close) - stop_atr * float(atr), float(close) + target_atr * float(atr)
         else:
             raise ValueError(f"Unsupported exit_id: {exit_id}")
         cap, stop, target = _tick_floor(cap, tick), _tick_floor(stop, tick), _tick_ceil(target, tick)
@@ -375,7 +384,8 @@ def simulate(
                 continue
             sector = str(row["sector"])
             target_cash = previous_equity * 0.80 / slot_limit
-            sector_remaining = max(previous_equity * 0.25 - sector_value.get(sector, 0.0), 0.0)
+            sector_remaining = (max(previous_equity * sector_cap - sector_value.get(sector, 0.0), 0.0)
+                                if sector_cap is not None else cash)
             risk_per_share = max(entry_price - float(plan["stop_price"]), 0.0) + entry_price * buy_rate + float(plan["stop_price"]) * sell_rate
             risk_cash = previous_equity * 0.005
             exposure_remaining = max(previous_equity * 0.80 - existing_exposure, 0.0)

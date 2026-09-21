@@ -1,6 +1,21 @@
 # 국내 주식 일괄 전략 연구 도구
 
-48개 기술전략의 TP/SL·최대 달력 1개월·공동 1억 원 계좌를 계산하고 실행·장부·선정 사유를 저장하는 **연구 핵심 구현**이다. 현재 REAL 수익률 실행은 입력 검증·실제 체결 계약이 미완료여서 차단된다. 합성 자료의 엔진 검증을 투자 성과로 해석하지 않는다.
+2026-09-21 현재 기본 56개와 넓은 청산 조건의 별도 56개 실험에 필요한 v3 입력·시장 규칙·원장·배치·보고 경로를 구현했고 **실제 2,464개 실행을 마쳤다(성공 2,023개·차단 441개).** 원본 스냅샷과 반복 계산용 표는 `COMPLETE`이고 전수 값 대조를 통과했다. 공통 1,076종목 입력을 사용했으며 저장 장부 재검증·보고서·그림·최종 독립 검토를 완료했다. `config56 → prepare56`은 목록만 고정하며, 실제 비교는 별도 `prepare-v3 → certify-v3 → run-v3 → report-v3` 경로를 사용한다. [결과 보고서](../../docs/strategy-research/backtest-lab/results-v3-2026-09-21/README.md), [구현·청산 기준](../../docs/strategy-research/backtest-lab/implementation-start-2026-09-21.md), [현재 WBS](../../docs/strategy-research/backtest-lab/real-backtest-v3-execution-wbs-2026-09-21.md)를 따른다.
+
+v3 명령은 저장소 루트에서 아래 순서로 실행한다. 이미 완료된 원본·표 스냅샷은 새로 추출하지 않고 검증된 경로를 사용한다. 모든 출력은 새 디렉터리다. `--limit`는 일부 슬롯 점검용이며 전체 실험 완료를 뜻하지 않는다. 기본 네 청산과 넓은 네 청산은 별도 실험이고, 날짜별 수수료·세금 대조군과 정액 bp 비용 스트레스도 별도 결과다.
+
+```powershell
+.venv/Scripts/python.exe -X utf8 -m research.krx_lab verify-snapshot-v3 --snapshot $source
+.venv/Scripts/python.exe -X utf8 -m research.krx_lab verify-tables-v3 --source $source --out $tables
+.venv/Scripts/python.exe -X utf8 -m research.krx_lab prepare-v3 --source $source --tables $tables --out $prepared
+.venv/Scripts/python.exe -X utf8 -m research.krx_lab certify-v3 --out $evidence
+.venv/Scripts/python.exe -X utf8 -m research.krx_lab run-v3 --prepared $prepared --evidence $evidence --out $batch
+.venv/Scripts/python.exe -X utf8 -m research.krx_lab report-v3 --batch $batch --out $report
+```
+
+`$source`, `$tables`, `$prepared`, `$evidence`, `$batch`, `$report`에는 각 검증 입력·새 출력 경로를 지정한다. v3 결과는 2014년 준비기간과 2015-06-15~2023-12-31 정규장 보통주의 제한된 가격 매매 연구다. 입력 불확실성·보유 중 미해결 사건은 `BLOCKED`로 기록하며, 실거래 승인이나 배당 포함 총수익률로 해석하지 않는다. 아래 48개 설명은 기존 v1 경로다.
+
+48개 기술전략의 TP/SL·최대 달력 1개월·공동 1억 원 계좌를 계산하고 실행·장부·선정 사유를 저장하는 **연구 핵심 구현**이다. 기존 v1 `run`의 REAL 입력 가드는 유지한다. 합성 자료의 엔진 검증을 투자 성과로 해석하지 않는다.
 
 [현재 결과·실행 안내](../../docs/strategy-research/backtest-lab/implementation-and-results-2026-09-13.md), [전체 명세](../../docs/strategy-research/backtest-lab/technical-spec.md), [남은 작업](../../docs/strategy-research/backtest-lab/wbs.md)을 따른다. 이 패키지는 저장소 루트에서 실행하며 vectorbt 공개 배포 API를 변경하지 않는다.
 

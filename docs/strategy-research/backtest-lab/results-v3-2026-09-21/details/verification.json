@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "batch_status": "COMPLETE",
+  "attempted_runs": 2464,
+  "succeeded_runs": 2023,
+  "blocked_runs": 441,
+  "source_code_hash": "10c2536c11b14e25d1115f32d832ff4af3ee4a19a86ad8b638f1a29c8e4fe5d1",
+  "prepared_manifest_hash": "62694d5e96c111618f93b23d6d6e05d3604e8e952ce8ba4ccd28c8fbdc3c9597",
+  "summary_sha256": "ccc5371eaa3aa9d884ee9cdbf1d4285141ef8def66db34bee814b0f24aa065b9",
+  "merge_code_hash": "72c075e75b1266031ca07b66e8cf201ad691b8a63871e57eb01efd4973f7996e",
+  "parent_manifest_hashes": {
+    "basic": "dbf3f307c5a7ac9af27994a02ffe33ebaac31e0f73147192c061b07b96e8a8c7",
+    "wide": "6de1f60493839ca6104c459dd02036fac9b6e2839308eb19dc88c367690eb7a9"
+  },
+  "checks": [
+    "parent admissions and input bindings",
+    "all 2464 run specifications and artifact hashes",
+    "all successful persisted ledgers and metrics independently replayed",
+    "blocked runs retain no performance metrics",
+    "Markdown links and chart PNG/SVG verified"
+  ],
+  "tests": {
+    "command": "pytest tests/research -q",
+    "passed": 530,
+    "seconds": 99.41
+  },
+  "batch_path": "C:\\Users\\aeby\\vscode\\stock\\vectorbt-data\\krx-v3-20260921-combined",
+  "independent_report_review": {
+    "status": "PASS",
+    "reviewer": "real_review_sol",
+    "scope": [
+      "summary counts and 21 matched pairs",
+      "all chart cell values",
+      "33 no-trade successes",
+      "29 blocked observations against prepared prices",
+      "holding duration from 56 trade Parquet files",
+      "links and limitations"
+    ]
+  }
+}
