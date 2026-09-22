@@ -1,0 +1,305 @@
+{
+  "schema": "ohlcv20-user-policy-v1",
+  "initial_cash_krw": 100000000,
+  "independent_slots": 20,
+  "evaluation_start": "2015-06-15",
+  "evaluation_end": "2023-12-31",
+  "cash_dividends": "EXCLUDED",
+  "price_basis": "VERIFIED_SIGNAL_ADJUSTMENT_AND_RAW_FILLS",
+  "ordinary_universe_exit": "NO_FORCED_LIQUIDATION",
+  "buy_capacity": "ORDER_NOTIONAL_LE_1PCT_PRIOR20_SESSION_MEAN_ACTUAL_TURNOVER",
+  "buy_capacity_overflow": "SKIP_WITHOUT_RESIZING_OR_SAME_DAY_REPLACEMENT",
+  "capacity_failed_candidate_assignment": "RETAIN_ORIGINAL_SLOT_NO_TRANSFER_TO_LATER_SLOT",
+  "universe": {
+    "markets": [
+      "KOSPI",
+      "KOSDAQ"
+    ],
+    "preferred_history": [
+      "KOSPI200",
+      "KOSDAQ150"
+    ],
+    "fallback_market_cap_rank_limits": {
+      "KOSPI": 200,
+      "KOSDAQ": 150
+    },
+    "minimum_market_cap_krw_inclusive": 100000000000,
+    "exclude_types": [
+      "ETF",
+      "ETN",
+      "PREFERRED",
+      "SPAC",
+      "KONEX",
+      "REIT"
+    ],
+    "include_ordinary_shares_with_letter_codes": true,
+    "management_stock_filter": false,
+    "fallback_rank_rebalance": "PRIOR_MONTH_LAST_SESSION_FOR_NEXT_MONTH",
+    "universe_exit": "NO_FORCED_LIQUIDATION_ON_CAP_OR_MEMBERSHIP_EXIT",
+    "missing_required_metadata": "BLOCK"
+  },
+  "signal": {
+    "basis": "POINT_IN_TIME_ADJUSTED_PRICES_AND_ADMITTED_VOLUME_FACTORS",
+    "kospi_close_gain_gte": "0.10",
+    "kosdaq_close_gain_gte": "0.15",
+    "volume_today_gte_prior_comparable_multiple": "2",
+    "prior_volume_must_be_positive": true,
+    "prior_close_lte_prior_60_session_low_multiple": "1.2",
+    "low_window": "T_MINUS_60_THROUGH_T_MINUS_1_INCLUSIVE",
+    "signal_day": "AFTER_CLOSE"
+  },
+  "entry": {
+    "order_day": "NEXT_MARKET_SESSION_ONLY",
+    "limit_price": "SIGNAL_DAY_RAW_REGULAR_CLOSE",
+    "open_lte_limit": "FILL_AT_OPEN",
+    "open_gt_limit_and_low_lt_limit": "FILL_AT_LIMIT",
+    "open_gt_limit_and_low_eq_limit": "NO_FILL",
+    "low_gt_limit": "NO_FILL",
+    "order_quantity": "MAX_INTEGER_SHARES_AFFORDABLE_AT_LIMIT_WITH_COST",
+    "unfilled_order": "CANCEL_AT_DAY_END_NO_SAME_DAY_REPLACEMENT",
+    "same_day_open_entry": "STOP_FIRST_IF_BOTH_LEVELS_TOUCHED",
+    "same_day_intraday_entry": "STOP_IF_LOW_REACHES_STOP_ELSE_TARGET_ONLY_IF_CLOSE_REACHES_TARGET"
+  },
+  "assignment": {
+    "candidate_order": "SIGNAL_DAY_ACTUAL_TURNOVER_DESC_THEN_CODE_ASC",
+    "candidate_count": "AVAILABLE_SLOTS_ONLY",
+    "slot_order": "IDLE_SINCE_ASC_THEN_SLOT_ID_ASC",
+    "mapping": "ONE_TO_ONE_IN_SORTED_ORDER_NO_REASSIGNMENT_AFTER_CAPACITY_FAILURE",
+    "held_or_duplicate_code": "EXCLUDE"
+  },
+  "exit": {
+    "levels_basis": "ACTUAL_BUY_FILL_PRICE",
+    "open_gap": "FILL_AT_OPEN_IF_SELLABLE",
+    "intraday_level": "FILL_AT_LEVEL_IF_SELLABLE",
+    "both_levels_touched": "STOP_FIRST_WITH_TARGET_FIRST_SENSITIVITY",
+    "holding_months": [
+      1,
+      3
+    ],
+    "calendar_month_end": "USE_LAST_DAY_IF_NO_SAME_DAY_NUMBER",
+    "expiry": "FIRST_SELLABLE_SESSION_OPEN_ON_OR_AFTER_CALENDAR_ANNIVERSARY",
+    "pending_exit": "CONTINUE_AT_NEXT_SELLABLE_OPEN_SUBJECT_TO_VOLUME_CAP"
+  },
+  "sellability": {
+    "source": "EXPLICIT_VERIFIED_STOCK_DATE_LISTING_AND_SELL_STATUS",
+    "lower_limit_reference": "OFFICIAL_DATE_SPECIFIC_LIMIT_WHEN_TRADABLE",
+    "lower_limit_locked": "NO_ASSUMED_SELL_FILL_EVEN_IF_DAILY_VOLUME_POSITIVE",
+    "unknown_or_conflicting_status": "BLOCK_PERFORMANCE"
+  },
+  "delisting_valuation": {
+    "documented_cash_or_security_rights": "BOOK_ONLY_WHEN_ADMITTED",
+    "unresolved_held_mark_or_rights": "BLOCK_PERFORMANCE_NO_INVENTED_ZERO_OR_LAST_CLOSE"
+  },
+  "sell_capacity": "FLOOR_1PCT_CURRENT_DAY_VOLUME_AGGREGATE_BY_INSTRUMENT",
+  "sell_capacity_timing": "DAILY_PROXY_NOT_OBSERVED_INTRADAY_LIQUIDITY",
+  "pending_exit": "REMAINDER_AT_NEXT_SELLABLE_SESSION_OPEN",
+  "slot_reuse": "SESSION_AFTER_ALL_HELD_SHARES_SOLD",
+  "spin_off": "ORIGINAL_SLOT_BOTH_LEGS_LIQUIDATE_WHEN_SELLABLE_SUBJECT_TO_CAPACITY",
+  "late_fractional_cash": "ORIGINAL_SLOT_NO_TOP_UP_BUYS",
+  "fixed_cost_year": 2026,
+  "commission_each_side": "0.00015",
+  "ordinary_domestic_sell_tax_total": "0.002",
+  "friction_scenarios_each_side": [
+    "0.001",
+    "0.002"
+  ],
+  "monetary_rounding": "EXACT_DECIMAL_MODEL_NOT_BROKER_STATEMENT_REPLICATION",
+  "experiments": [
+    {
+      "key": "SL10_TP20_M1",
+      "stop_pct": "0.1",
+      "target_pct": "0.2",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP20_M3",
+      "stop_pct": "0.1",
+      "target_pct": "0.2",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP30_M1",
+      "stop_pct": "0.1",
+      "target_pct": "0.3",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP30_M3",
+      "stop_pct": "0.1",
+      "target_pct": "0.3",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP40_M1",
+      "stop_pct": "0.1",
+      "target_pct": "0.4",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP40_M3",
+      "stop_pct": "0.1",
+      "target_pct": "0.4",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP50_M1",
+      "stop_pct": "0.1",
+      "target_pct": "0.5",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL10_TP50_M3",
+      "stop_pct": "0.1",
+      "target_pct": "0.5",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP20_M1",
+      "stop_pct": "0.15",
+      "target_pct": "0.2",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP20_M3",
+      "stop_pct": "0.15",
+      "target_pct": "0.2",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP30_M1",
+      "stop_pct": "0.15",
+      "target_pct": "0.3",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP30_M3",
+      "stop_pct": "0.15",
+      "target_pct": "0.3",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP40_M1",
+      "stop_pct": "0.15",
+      "target_pct": "0.4",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP40_M3",
+      "stop_pct": "0.15",
+      "target_pct": "0.4",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP50_M1",
+      "stop_pct": "0.15",
+      "target_pct": "0.5",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL15_TP50_M3",
+      "stop_pct": "0.15",
+      "target_pct": "0.5",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP20_M1",
+      "stop_pct": "0.2",
+      "target_pct": "0.2",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP20_M3",
+      "stop_pct": "0.2",
+      "target_pct": "0.2",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP30_M1",
+      "stop_pct": "0.2",
+      "target_pct": "0.3",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP30_M3",
+      "stop_pct": "0.2",
+      "target_pct": "0.3",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP40_M1",
+      "stop_pct": "0.2",
+      "target_pct": "0.4",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP40_M3",
+      "stop_pct": "0.2",
+      "target_pct": "0.4",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP50_M1",
+      "stop_pct": "0.2",
+      "target_pct": "0.5",
+      "holding_months": 1,
+      "baseline": false
+    },
+    {
+      "key": "SL20_TP50_M3",
+      "stop_pct": "0.2",
+      "target_pct": "0.5",
+      "holding_months": 3,
+      "baseline": false
+    },
+    {
+      "key": "BASE_SL5_TP15_M1",
+      "stop_pct": "0.05",
+      "target_pct": "0.15",
+      "holding_months": 1,
+      "baseline": true
+    },
+    {
+      "key": "BASE_SL5_TP15_M3",
+      "stop_pct": "0.05",
+      "target_pct": "0.15",
+      "holding_months": 3,
+      "baseline": true
+    }
+  ],
+  "experiment_count": 26,
+  "cost_scenario_runs": 52,
+  "selection_protocol": {
+    "development_end": "2020-12-31",
+    "internal_validation_start": "2021-01-01",
+    "internal_validation_end": "2023-12-31",
+    "primary_friction_each_side": "0.001",
+    "development_rank": "NET_END_EQUITY_DESC_THEN_ABSOLUTE_MAX_DRAWDOWN_ASC_THEN_EXPERIMENT_KEY_ASC",
+    "validation_visibility": "HIDE_2021_TO_2023_RESULTS_UNTIL_ONE_KEY_IS_LOCKED",
+    "validation": "SELECT_ONE_ON_DEVELOPMENT_ONLY_THEN_REPORT_WITHOUT_RETUNING",
+    "claim_limit": "INTERNAL_TEMPORAL_VALIDATION_NOT_EXTERNAL_OR_LIVE_APPROVAL",
+    "post_2023_locked_period": "NOT_USED"
+  },
+  "real_execution_admitted": false
+}
