@@ -32,10 +32,6 @@ _ADMISSION_FLAGS = (
     "market_rules_admitted",
     "real_execution_admitted",
 )
-# Explicit non-admitted exploration. It never sets performance_valid and needs
-# a caller-supplied rule that voids a held trade at the session it meets an
-# event the unadmitted ledgers cannot settle.
-EXPLORATORY_SOURCE_KIND = "EXPLORATORY_NOT_ADMITTED"
 
 
 def _verify_real_admission(admission: dict | None, rights_ledger: RightsLedger) -> None:
@@ -106,29 +102,17 @@ def run_ohlcv20_portfolio(
     source_kind: str = "REAL",
     initial_cash=100_000_000,
     optimistic: bool = False,
-    exploratory_void: Callable | None = None,
 ) -> dict:
     """Execute confirmed rules, including two-leg forced corporate exits.
 
     `event_schedule` requires event_code, capture_on and available_on. The
     external adapter must prove the capture session has qualifying settled
     ownership and that all replacement shares are available on available_on.
-
-    Only `source_kind=EXPLORATORY_SOURCE_KIND` accepts `exploratory_void`,
-    called as (day, code, bar_or_None) for every trade held into a session
-    before any order. A returned dict voids that trade: its fills leave the
-    ledger, the slot gets its pre-entry cash back, the equity curve carries
-    the slot at that cash from entry, and the slot is reusable from `day`.
     """
-    if source_kind not in {"REAL", "SYNTHETIC_FIXTURE", EXPLORATORY_SOURCE_KIND}:
+    if source_kind not in {"REAL", "SYNTHETIC_FIXTURE"}:
         raise ValueError("UNKNOWN_EXECUTION_SOURCE_KIND")
     if source_kind == "REAL":
         _verify_real_admission(admission, rights_ledger)
-    exploratory = source_kind == EXPLORATORY_SOURCE_KIND
-    if exploratory != (exploratory_void is not None):
-        raise ValueError("EXPLORATORY_VOID_RULE_ONLY_WITH_EXPLORATORY_SOURCE")
-    if exploratory and event_schedule is not None:
-        raise ValueError("EXPLORATORY_RUN_VOIDS_INSTEAD_OF_RIGHTS_SCHEDULE")
     if holding_months not in (1, 3) or type(holding_months) is not int:
         raise ValueError("HOLDING_MONTHS_MUST_BE_1_OR_3")
     stop, target, capital = _d(stop_pct), _d(target_pct), _d(initial_cash)
@@ -274,65 +258,6 @@ def run_ohlcv20_portfolio(
     sold_by_day_code: dict[tuple[pd.Timestamp, str], int] = {}
     attempted_exits: set[tuple[pd.Timestamp, int, str]] = set()
     converted_rights: set[tuple[str, int]] = set()
-    # Exploratory-only books: per-session exact totals and per-slot
-    # (cash, value) so a voided trade can be carried at pre-entry cash.
-    evaluation_index = {day: i for i, day in enumerate(evaluation)}
-    exact_equity: list[Fraction] = []
-    exact_cash: list[Fraction] = []
-    slot_history: list[list[tuple[Fraction, Fraction]]] = []
-    exclusions: list[dict] = []
-
-    def void_trade(sleeve: _Sleeve, pos: dict, day: pd.Timestamp, reason: dict) -> None:
-        code, entry_day, restored = pos["code"], pos["entry_day"], pos["pre_entry_cash"]
-        for i in range(evaluation_index[entry_day], len(equity)):
-            cash_i, value_i = slot_history[i][sleeve.slot_id]
-            exact_equity[i] += restored - value_i
-            exact_cash[i] += restored - cash_i
-            slot_history[i][sleeve.slot_id] = (restored, restored)
-            equity[i]["equity"] = _money(exact_equity[i])
-            equity[i]["cash"] = _money(exact_cash[i])
-            equity[i]["positions_count"] -= 1
-
-        def owned(item: dict) -> bool:
-            return (
-                item["slot_id"] == sleeve.slot_id
-                and item["code"] == code
-                and item["date"] >= entry_day
-            )
-
-        voided_fills = [item for item in fills if owned(item)]
-        fills[:] = [item for item in fills if not owned(item)]
-        positions[:] = [
-            dict(
-                item,
-                code=None,
-                size=0,
-                mark_price=None,
-                exposure=Decimal(0),
-                pending_exit=False,
-                forced_event=None,
-            )
-            if owned(item)
-            else item
-            for item in positions
-        ]
-        exclusions.append(
-            dict(
-                date=day,
-                slot_id=sleeve.slot_id,
-                code=code,
-                entry_date=entry_day,
-                entry_price=pos["entry_price"],
-                restored_cash=_money(restored),
-                voided_fills=len(voided_fills),
-                **reason,
-            )
-        )
-        del sleeve.positions[code]
-        sleeve.cash = restored
-        sleeve.captured_event = None
-        sleeve.idle_since = day
-        sleeve.reusable_from = day
 
     def fee(side, day, market, amount: Decimal) -> Fraction:
         charge = _d(costs(side, day, market, amount))
@@ -438,13 +363,6 @@ def run_ohlcv20_portfolio(
                     exact_denominator=receipt.amount.denominator,
                 )
             )
-
-        if exploratory:
-            for sleeve in sleeves:
-                for pos in list(sleeve.positions.values()):
-                    reason = exploratory_void(day, pos["code"], bars.get((day, pos["code"])))
-                    if reason is not None:
-                        void_trade(sleeve, pos, day, dict(reason))
 
         for code, event in schedule.items():
             if day != event["available"]:
@@ -720,7 +638,6 @@ def run_ohlcv20_portfolio(
             Fraction(),
         )
         total = receivables
-        slot_values: list[tuple[Fraction, Fraction]] = []
         for sleeve in sleeves:
             exposure = Fraction()
             for pos in sleeve.positions.values():
@@ -745,7 +662,6 @@ def run_ohlcv20_portfolio(
             if issues:
                 break
             total += sleeve.cash + exposure
-            slot_values.append((sleeve.cash, sleeve.cash + exposure))
             if not sleeve.positions:
                 positions.append(
                     dict(
@@ -761,10 +677,6 @@ def run_ohlcv20_portfolio(
                 )
         if issues:
             break
-        if exploratory:
-            slot_history.append(slot_values)
-            exact_equity.append(total)
-            exact_cash.append(sum((s.cash for s in sleeves), Fraction()))
         equity.append(
             dict(
                 date=day,
@@ -798,6 +710,4 @@ def run_ohlcv20_portfolio(
             "CORPORATE_SUSPENSION_MARKS_REQUIRE_EXTERNAL_VALIDATION",
         ],
     )
-    if exploratory:
-        result["exclusions"] = pd.DataFrame(exclusions)
     return result
