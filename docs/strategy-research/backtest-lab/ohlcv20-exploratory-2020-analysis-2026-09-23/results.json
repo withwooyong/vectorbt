@@ -1,0 +1,378 @@
+{
+  "admission_status": "NOT_ADMITTED_EXPLORATORY",
+  "note": "이 결과는 전략 선정이나 실거래 판단의 근거가 아니다. 원본 52개 탐색 결과와 동일한 미승인 딱지를 물려받는다.",
+  "generated_at": "2026-09-23T21:30:25.357138",
+  "runtime_seconds": 9.8,
+  "input_sha256": {
+    "exploratory-summary.json": "dd92428f4c98326b3543168d0edcdc2aa2edbf6dff9b042cd05e3cf611eac410",
+    "equity-curves.csv": "93ce0d720c69937be0d8393aaa127b09bc8453ef62e4153223d778b56ae22a0f",
+    "fills.csv": "5f30f4e487ee3a84bc888ab45655b1fc539d7340f618c1526af0ded6ed618849",
+    "signals.csv": "1fc08d84f71e3206e343814b57d89124f1d4f64fd03d7632fe87168999d9a9bb",
+    "exclusions.csv": "23b03de8a7c1fc8d1eaabdd575675e1a101892d7eaca645a7716e4d50e871873"
+  },
+  "signals": {
+    "note": "signal_input_codes(740)는 2015-06-15~2023-12-31 전체 기간의 고정 모집단이며 연도별 분모가 아니다. density_vs_total_universe 는 그 고정 모집단 대비 연도별 신호 종목 비율이다.",
+    "signals_by_year": {
+      "2015": 35,
+      "2016": 46,
+      "2017": 24,
+      "2018": 49,
+      "2019": 29,
+      "2020": 87,
+      "2021": 76,
+      "2022": 68,
+      "2023": 149
+    },
+    "signals_by_year_market": {
+      "2015": {
+        "KOSDAQ": 12,
+        "KOSPI": 23
+      },
+      "2016": {
+        "KOSDAQ": 10,
+        "KOSPI": 36
+      },
+      "2017": {
+        "KOSDAQ": 11,
+        "KOSPI": 13
+      },
+      "2018": {
+        "KOSDAQ": 15,
+        "KOSPI": 34
+      },
+      "2019": {
+        "KOSDAQ": 10,
+        "KOSPI": 19
+      },
+      "2020": {
+        "KOSDAQ": 27,
+        "KOSPI": 60
+      },
+      "2021": {
+        "KOSDAQ": 26,
+        "KOSPI": 50
+      },
+      "2022": {
+        "KOSDAQ": 23,
+        "KOSPI": 45
+      },
+      "2023": {
+        "KOSDAQ": 59,
+        "KOSPI": 90
+      }
+    },
+    "signal_codes_by_year": {
+      "2015": 32,
+      "2016": 38,
+      "2017": 21,
+      "2018": 43,
+      "2019": 29,
+      "2020": 69,
+      "2021": 65,
+      "2022": 59,
+      "2023": 114
+    },
+    "signal_input_codes_total_universe": 740,
+    "density_vs_total_universe_by_year": {
+      "2015": 0.043243,
+      "2016": 0.051351,
+      "2017": 0.028378,
+      "2018": 0.058108,
+      "2019": 0.039189,
+      "2020": 0.093243,
+      "2021": 0.087838,
+      "2022": 0.07973,
+      "2023": 0.154054
+    }
+  },
+  "trades": {
+    "by_year": {
+      "2020": {
+        "completed_trades": 3055,
+        "win_rate": 0.491653,
+        "mean_return": 0.052043,
+        "median_return": -0.007883,
+        "mean_holding_days": 27.85,
+        "exit_reason_composition": {
+          "STOP": 1105,
+          "TIME_OR_EVENT": 1036,
+          "TARGET": 914
+        }
+      },
+      "2021": {
+        "completed_trades": 3357,
+        "win_rate": 0.397081,
+        "mean_return": 0.008709,
+        "median_return": -0.055972,
+        "mean_holding_days": 33.97,
+        "exit_reason_composition": {
+          "STOP": 1364,
+          "TIME_OR_EVENT": 1354,
+          "TARGET": 639
+        }
+      },
+      "2022": {
+        "completed_trades": 3026,
+        "win_rate": 0.289161,
+        "mean_return": -0.036074,
+        "median_return": -0.103866,
+        "mean_holding_days": 29.79,
+        "exit_reason_composition": {
+          "STOP": 1561,
+          "TIME_OR_EVENT": 1078,
+          "TARGET": 387
+        }
+      },
+      "2023": {
+        "completed_trades": 5149,
+        "win_rate": 0.343756,
+        "mean_return": -0.011063,
+        "median_return": -0.069969,
+        "mean_holding_days": 29.65,
+        "exit_reason_composition": {
+          "STOP": 2356,
+          "TIME_OR_EVENT": 1874,
+          "TARGET": 919
+        }
+      }
+    },
+    "by_sl_axis_2020_vs_rest": {
+      "10.0": {
+        "n_2020": 935,
+        "mean_return_2020": 0.053484,
+        "n_rest": 3667,
+        "mean_return_rest": -0.009642
+      },
+      "15.0": {
+        "n_2020": 949,
+        "mean_return_2020": 0.058474,
+        "n_rest": 3557,
+        "mean_return_rest": -0.013712
+      },
+      "20.0": {
+        "n_2020": 931,
+        "mean_return_2020": 0.055142,
+        "n_rest": 3440,
+        "mean_return_rest": -0.014574
+      }
+    },
+    "by_tp_axis_2020_vs_rest": {
+      "20.0": {
+        "n_2020": 725,
+        "mean_return_2020": 0.042007,
+        "n_rest": 2713,
+        "mean_return_rest": -0.009511
+      },
+      "30.0": {
+        "n_2020": 703,
+        "mean_return_2020": 0.056076,
+        "n_rest": 2694,
+        "mean_return_rest": -0.010258
+      },
+      "40.0": {
+        "n_2020": 696,
+        "mean_return_2020": 0.061999,
+        "n_rest": 2645,
+        "mean_return_rest": -0.013325
+      },
+      "50.0": {
+        "n_2020": 691,
+        "mean_return_2020": 0.063401,
+        "n_rest": 2612,
+        "mean_return_rest": -0.017452
+      }
+    },
+    "by_m_axis_2020_vs_rest": {
+      "1.0": {
+        "n_2020": 1486,
+        "mean_return_2020": 0.049087,
+        "n_rest": 5515,
+        "mean_return_rest": -0.009499
+      },
+      "3.0": {
+        "n_2020": 1329,
+        "mean_return_2020": 0.063126,
+        "n_rest": 5149,
+        "mean_return_rest": -0.015902
+      }
+    }
+  },
+  "exposure": {
+    "2020": {
+      "mean_invested_fraction": 0.241149,
+      "mean_positions_count": 4.927
+    },
+    "2021": {
+      "mean_invested_fraction": 0.277681,
+      "mean_positions_count": 5.651
+    },
+    "2022": {
+      "mean_invested_fraction": 0.248677,
+      "mean_positions_count": 4.949
+    },
+    "2023": {
+      "mean_invested_fraction": 0.414071,
+      "mean_positions_count": 8.432
+    }
+  },
+  "market": {
+    "full_universe": {
+      "definition": "원시 가격 Parquet(raw bars, corrected-input-v4/prices, 총 1,829,295행)의 조정주가 행을 신호 발생 여부와 무관하게 전부 써서 만든 동일가중 벤치마크. signal_inputs() 를 호출하지 않으므로 신호 사후 선택에 따른 look-ahead 편향이 없다. 회귀·베타*노출 예측치는 이 벤치마크를 쓴다.",
+      "annual_return": {
+        "2020": 0.501645,
+        "2021": 0.214549,
+        "2022": -0.220175,
+        "2023": 0.205709
+      }
+    },
+    "signal_universe_biased_reference": {
+      "definition": "signals.csv 에 나타난 신호 발생 종목 코드 집합(283개)의 동일가중 수정주가 수익률. 거래대금 급증으로 사후에 걸러진 하위집합이라 선택 편향(look-ahead)이 있다 — 참고용일 뿐 회귀·베타*노출 계산에는 쓰지 않는다.",
+      "n_codes": 283,
+      "annual_return": {
+        "2020": 0.901764,
+        "2021": 0.452187,
+        "2022": -0.360403,
+        "2023": 0.247429
+      }
+    },
+    "kospi_index_annual_return_reference": {
+      "2020": 0.307507,
+      "2021": 0.036256,
+      "2022": -0.248938,
+      "2023": 0.187301
+    },
+    "kosdaq_index_annual_return_reference": {
+      "2020": 0.44577,
+      "2021": 0.067698,
+      "2022": -0.343034,
+      "2023": 0.2757
+    },
+    "index_source_note": "로컬 raw JSON(KRX 공개 API 원본: data/sources/krx_open_api/{warmup-2014,source-complement-2015-2023}/raw/idx_{kospi,kosdaq}_dd_trd)에서 직접 계산. 외부 공개값을 그대로 옮긴 것이 아니다.",
+    "mean_strategy_annual_return": {
+      "2020": 0.182494,
+      "2021": -0.005487,
+      "2022": -0.09476,
+      "2023": -0.010985
+    },
+    "regression_strategy_on_full_universe": {
+      "2020": {
+        "beta": 0.1327,
+        "beta_se": 0.0139,
+        "beta_t": 9.516,
+        "alpha_daily": 0.00044246,
+        "alpha_annualized": 0.117926,
+        "alpha_se_daily": 0.00029265,
+        "alpha_t": 1.512,
+        "r_squared": 0.2691,
+        "n_days": 248
+      },
+      "2021": {
+        "beta": 0.2637,
+        "beta_se": 0.0244,
+        "beta_t": 10.788,
+        "alpha_daily": -0.00023197,
+        "alpha_annualized": -0.056786,
+        "alpha_se_daily": 0.00025578,
+        "alpha_t": -0.907,
+        "r_squared": 0.3211,
+        "n_days": 248
+      },
+      "2022": {
+        "beta": 0.1975,
+        "beta_se": 0.0175,
+        "beta_t": 11.291,
+        "alpha_daily": -0.00022337,
+        "alpha_annualized": -0.054741,
+        "alpha_se_daily": 0.00026263,
+        "alpha_t": -0.851,
+        "r_squared": 0.3432,
+        "n_days": 246
+      },
+      "2023": {
+        "beta": 0.3874,
+        "beta_se": 0.035,
+        "beta_t": 11.071,
+        "alpha_daily": -0.00033352,
+        "alpha_annualized": -0.080625,
+        "alpha_se_daily": 0.00037832,
+        "alpha_t": -0.882,
+        "r_squared": 0.3353,
+        "n_days": 245
+      }
+    },
+    "predicted_market_x_exposure_vs_actual": {
+      "2020": {
+        "market_return": 0.501645,
+        "mean_invested_fraction": 0.241149,
+        "predicted_return_market_x_exposure": 0.120971,
+        "actual_mean_strategy_return": 0.182494,
+        "actual_minus_predicted": 0.061523
+      },
+      "2021": {
+        "market_return": 0.214549,
+        "mean_invested_fraction": 0.277681,
+        "predicted_return_market_x_exposure": 0.059576,
+        "actual_mean_strategy_return": -0.005487,
+        "actual_minus_predicted": -0.065063
+      },
+      "2022": {
+        "market_return": -0.220175,
+        "mean_invested_fraction": 0.248677,
+        "predicted_return_market_x_exposure": -0.054752,
+        "actual_mean_strategy_return": -0.09476,
+        "actual_minus_predicted": -0.040008
+      },
+      "2023": {
+        "market_return": 0.205709,
+        "mean_invested_fraction": 0.414071,
+        "predicted_return_market_x_exposure": 0.085178,
+        "actual_mean_strategy_return": -0.010985,
+        "actual_minus_predicted": -0.096163
+      }
+    }
+  },
+  "concentration_2020": {
+    "total_pnl_2020_krw": 700877873.97,
+    "top10_trades_pnl_krw": 46074631.64,
+    "top10_trades_share_of_total": 0.065738,
+    "pnl_2020_excluding_top10_krw": 654803242.33,
+    "top5_codes_pnl_krw": 399908478.61,
+    "top5_codes_share_of_total": 0.570582,
+    "top5_codes": {
+      "5250": 95490225.93,
+      "196170": 85784433.07,
+      "6280": 81607702.84,
+      "182400": 69634497.68,
+      "237690": 67391619.09
+    },
+    "monthly_pnl_2020_krw": {
+      "1": -48655708.71,
+      "2": -51623448.65,
+      "3": -134969255.43,
+      "4": 243887505.0,
+      "5": 69895537.13,
+      "6": 49209391.01,
+      "7": -12893745.01,
+      "8": 37583456.05,
+      "9": 85246419.74,
+      "10": -8065585.86,
+      "11": 348395063.87,
+      "12": 122868244.84
+    },
+    "monthly_pnl_2020_share": {
+      "1": -0.069421,
+      "2": -0.073655,
+      "3": -0.192572,
+      "4": 0.347974,
+      "5": 0.099726,
+      "6": 0.070211,
+      "7": -0.018397,
+      "8": 0.053623,
+      "9": 0.121628,
+      "10": -0.011508,
+      "11": 0.497084,
+      "12": 0.175306
+    }
+  },
+  "exclusions_count": 220
+}
