@@ -15,6 +15,8 @@
 
 원문·receipt·manifest·검증기는 공급자 저장소 `data/sources/006740-capital-evidence-2023/`에 보존했다. 원래 로컬 위치는 `C:/Users/aeby/vscode/ted-startup/data/sources/006740-capital-evidence-2023/`이다. 공개 브랜치는 `withwooyong/evidence-006740-handoff-20260923`이며 [공급자 증거 README](https://github.com/withwooyong/ted-startup/blob/withwooyong/evidence-006740-handoff-20260923/data/sources/006740-capital-evidence-2023/README.md)를 참조한다.
 
+공개 복사본은 수신 receipt의 추적 쿠키 헤더 1건을 제거하고 manifest를 재해시했다. 공시 본문은 그대로이며 원래 로컬 묶음도 유지한다. 공개 manifest의 `publication`에 원래 해시를 기록했다.
+
 검증기 `python -B verify_bundle.py`는 내부 28파일·기존 외부 참조 6개와 다섯 수량 등식을 검사한다. 외부 참조는 원래 로컬 절대 경로를 사용하므로 새 clone만으로 전체 검증이 완결되지 않는다. 7/12 보고서는 사후 완료 근거이며 4월 known-at으로 소급할 수 없다.
 
 ## 입력에는 여전히 원공시가 연결되어 있다
