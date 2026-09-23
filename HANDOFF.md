@@ -4,6 +4,10 @@
 
 [분석 보고서](docs/strategy-research/backtest-lab/ohlcv20-exploratory-2020-analysis-2026-09-23/README.md): 원시 가격 전체 종목 동일가중(2020 +50.2%)에 투자 비중 24.1% 를 곱한 예측치 +12.1% 를 실제 +18.2% 가 웃돈다. 2021~2023 은 예측치를 4.0~9.6%p 밑돈다. 회귀 alpha 는 2020 만 양수(+11.8%, t=1.51)이고 네 해 모두 5% 유의수준에 미달한다. 2020 수익의 57% 는 상위 5개 종목, 82% 는 4월·11월에서 나왔다. 지속되는 신호 효과는 확인되지 않았다.
 
+- 처음 쓴 벤치마크(신호가 난 283개 종목)는 사후 선택 편향이 있어 폐기했고, 보고서에는 참고값으로만 남겼다.
+- 176건 복원 재실행과 정식 승인 경로는 결론을 바꿀 가능성이 낮아 보류했다. 다음 작업은 아래 「다음 세션 시작점」 의 전략 가설 브레인스토밍이다.
+- `research/ohlcv20-handoff-20260922` 는 `master` 에 fast-forward 로 병합했다. 다음 세션은 `master` 에서 시작한다.
+
 ## OHLCV20 탐색 실행 52개 — 2026-09-23 (NOT_ADMITTED_EXPLORATORY)
 
 정식 승인 전에 `python -m research.krx_lab.ohlcv20_exploratory --exploratory` 로 52개를 모두 실행했다(성공 52 · 실패 0). REAL 가드는 그대로 두었다. 출력은 `../vectorbt-data/krx-ohlcv20-exploratory-20260923/exploratory-summary.json` 에 있다.
