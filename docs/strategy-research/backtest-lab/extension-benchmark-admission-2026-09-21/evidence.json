@@ -1,0 +1,141 @@
+{
+  "status": "PASS_RETROSPECTIVE",
+  "scope": "KOSPI_KOSDAQ_OFFICIAL_INDEX_2014_2023",
+  "revision_id": "0eeed564-0b89-587c-b8f9-d8eea981bb9e",
+  "revision_content_sha256": "e95066aa516971ff63e4d6da19a7639b0eab18783eca159a428dc268a2bd13c2",
+  "source_manifest_hash": "de56a330f0dbd29868a3b23720f08fcdaf5df4f7b13f0b71ac349ba7ae770092",
+  "typed_manifest_hash": "ab366b22bf7e010ac5e29fdc7d17fae375afcfc5f44fbcae1ce47b049c8d5cde",
+  "sql_sha256": "dc31d7fecc82771138a51e54a774ad5c8ae8780163fdc122e06d4d459610d119",
+  "source_benchmark_part": {
+    "file": "benchmark-00109.parquet",
+    "sha256": "968524526a0c7087a61fd5c2a5a2a3d3fd8085ce962da09c578506adc7a626e2"
+  },
+  "typed_benchmark_part": {
+    "file": "benchmark-00109.parquet",
+    "sha256": "22e1e072769e304f936c22f2c5f46b0b5626ce59d69485488108dc3384d82e5e"
+  },
+  "benchmark_member_content_sha256": "138e3bcc2f790e0e4dbfe0055f3662395182f9e63c8bce981bcfb5c32547e96b",
+  "content_checks": {
+    "rows": 4918,
+    "codes": [
+      "KOSDAQ",
+      "KOSPI"
+    ],
+    "open_sessions_per_code": 2459,
+    "raw_typed_value_mismatches": 0,
+    "local_remote_compared_rows": 4918,
+    "local_core_sha256": "0dfc4cb9ce6e1bbc075544458d46a7c60e39b1ae4ad1bcb382195803a04cc460",
+    "remote_core_sha256": "0dfc4cb9ce6e1bbc075544458d46a7c60e39b1ae4ad1bcb382195803a04cc460",
+    "remote_lineage_sha256": "b49c0cec17a105ac15b9446881ac68281b0d89aedf76081000ded80f8b47fa48",
+    "remote_payload_hashes_in_local_member": 4918,
+    "local_calendar_missing_pairs": 0,
+    "local_calendar_extra_pairs": 0,
+    "operational_calendar_missing_pairs": 0,
+    "operational_calendar_extra_pairs": 0
+  },
+  "lineage_summary": [
+    {
+      "rows": 2459,
+      "base_url": "https://openapi.krx.co.kr",
+      "endpoint": "idx/kosdaq_dd_trd",
+      "last_date": "2023-12-28",
+      "max_close": "1060.00000000",
+      "min_close": "428.35000000",
+      "first_date": "2014-01-02",
+      "entity_kind": "BENCHMARK_DAILY",
+      "source_code": "KRX_OPEN_API",
+      "source_name": "한국거래소 무료 Open API",
+      "capture_kind": "new_observation",
+      "invalid_ohlc": 0,
+      "authority_kind": "PRIMARY",
+      "benchmark_code": "KOSDAQ",
+      "distinct_dates": 2459,
+      "invalid_prices": 0,
+      "missing_lineage": 0,
+      "response_status": 200,
+      "last_captured_at": "2026-09-21T05:57:03.336506+09:00",
+      "first_captured_at": "2026-09-21T00:50:28.510715+09:00",
+      "last_available_at": "2026-09-21T05:57:03.336506+09:00",
+      "first_available_at": "2026-09-21T00:50:28.510715+09:00",
+      "historical_capture": false,
+      "available_precision": "DATE",
+      "missing_available_at": 0,
+      "missing_published_at": 2459,
+      "source_ohlc_mismatches": 0,
+      "distinct_source_records": 2459,
+      "source_identity_mismatches": 0
+    },
+    {
+      "rows": 2459,
+      "base_url": "https://openapi.krx.co.kr",
+      "endpoint": "idx/kospi_dd_trd",
+      "last_date": "2023-12-28",
+      "max_close": "3305.21000000",
+      "min_close": "1457.64000000",
+      "first_date": "2014-01-02",
+      "entity_kind": "BENCHMARK_DAILY",
+      "source_code": "KRX_OPEN_API",
+      "source_name": "한국거래소 무료 Open API",
+      "capture_kind": "new_observation",
+      "invalid_ohlc": 0,
+      "authority_kind": "PRIMARY",
+      "benchmark_code": "KOSPI",
+      "distinct_dates": 2459,
+      "invalid_prices": 0,
+      "missing_lineage": 0,
+      "response_status": 200,
+      "last_captured_at": "2026-09-21T05:57:01.221446+09:00",
+      "first_captured_at": "2026-09-21T00:50:26.422634+09:00",
+      "last_available_at": "2026-09-21T05:57:01.221446+09:00",
+      "first_available_at": "2026-09-21T00:50:26.422634+09:00",
+      "historical_capture": false,
+      "available_precision": "DATE",
+      "missing_available_at": 0,
+      "missing_published_at": 2459,
+      "source_ohlc_mismatches": 0,
+      "distinct_source_records": 2459,
+      "source_identity_mismatches": 0
+    }
+  ],
+  "lineage_samples": [
+    {
+      "endpoint": "idx/kosdaq_dd_trd",
+      "close_value": "496.28000000",
+      "source_code": "KRX_OPEN_API",
+      "trading_date": "2014-01-02",
+      "benchmark_code": "KOSDAQ",
+      "payload_sha256": "1202c69753c9e32ab68d9393ef63380a5defc8b7d9d2dbb33d341c7008738628",
+      "source_record_id": 37578867
+    },
+    {
+      "endpoint": "idx/kosdaq_dd_trd",
+      "close_value": "866.57000000",
+      "source_code": "KRX_OPEN_API",
+      "trading_date": "2023-12-28",
+      "benchmark_code": "KOSDAQ",
+      "payload_sha256": "09ab89e7feecbacc5a04bb84e141cc45e40b7b7cd7bfef93ad7fdd75b1529e13",
+      "source_record_id": 43771925
+    },
+    {
+      "endpoint": "idx/kospi_dd_trd",
+      "close_value": "1967.19000000",
+      "source_code": "KRX_OPEN_API",
+      "trading_date": "2014-01-02",
+      "benchmark_code": "KOSPI",
+      "payload_sha256": "91fcf255d93086d6c591ad186b6fe2429f1b9b48993deb6a48d90a084a9801c8",
+      "source_record_id": 37578904
+    },
+    {
+      "endpoint": "idx/kospi_dd_trd",
+      "close_value": "2655.28000000",
+      "source_code": "KRX_OPEN_API",
+      "trading_date": "2023-12-28",
+      "benchmark_code": "KOSPI",
+      "payload_sha256": "754320a3199f803741fa41af1efe6dfb6162ae754563d615e9cc09c9d1b9c63f",
+      "source_record_id": 43771963
+    }
+  ],
+  "limitation": "Official KRX historical index observations were downloaded in 2026 as new_observation; historical_capture=false and published_at is absent. This validates a bounded retrospective experiment, not archived point-in-time vintage.",
+  "execution_note": "Use the signal day's index close only for the next session's entry decision.",
+  "query_mode": "REPEATABLE_READ_READ_ONLY_ROLLBACK"
+}

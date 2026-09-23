@@ -1,0 +1,62 @@
+[
+  {
+    "family": "basic",
+    "months": 1,
+    "matched_strategies": 28,
+    "mean_annual_return": -0.11123236081591965,
+    "mean_worst_annual_mdd": 0.2128099726243065,
+    "buy_count": 78874,
+    "sell_count": 77590,
+    "mean_holding_days": 4.6966361644541825
+  },
+  {
+    "family": "basic",
+    "months": 3,
+    "matched_strategies": 28,
+    "mean_annual_return": -0.10745688970264286,
+    "mean_worst_annual_mdd": 0.20982331903496418,
+    "buy_count": 74490,
+    "sell_count": 73167,
+    "mean_holding_days": 5.141129197589077
+  },
+  {
+    "family": "basic",
+    "months": 6,
+    "matched_strategies": 28,
+    "mean_annual_return": -0.10742311277250893,
+    "mean_worst_annual_mdd": 0.20921319553332668,
+    "buy_count": 74009,
+    "sell_count": 72674,
+    "mean_holding_days": 5.124418636651347
+  },
+  {
+    "family": "wide",
+    "months": 1,
+    "matched_strategies": 20,
+    "mean_annual_return": -0.036648760752200006,
+    "mean_worst_annual_mdd": 0.18098575130956535,
+    "buy_count": 21110,
+    "sell_count": 20056,
+    "mean_holding_days": 15.435480654168328
+  },
+  {
+    "family": "wide",
+    "months": 3,
+    "matched_strategies": 20,
+    "mean_annual_return": -0.024578970160887507,
+    "mean_worst_annual_mdd": 0.17514407982213434,
+    "buy_count": 15679,
+    "sell_count": 14535,
+    "mean_holding_days": 23.11138630890953
+  },
+  {
+    "family": "wide",
+    "months": 6,
+    "matched_strategies": 20,
+    "mean_annual_return": -0.021051463276500003,
+    "mean_worst_annual_mdd": 0.1695469107396697,
+    "buy_count": 14632,
+    "sell_count": 13465,
+    "mean_holding_days": 24.144894170070554
+  }
+]

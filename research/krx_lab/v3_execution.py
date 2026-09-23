@@ -13,6 +13,7 @@ from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 import hashlib
 from types import MappingProxyType
 
+import numpy as np
 import pandas as pd
 
 from .execution import _ATR_EXITS, _PERCENT_EXITS
@@ -71,9 +72,10 @@ def _on_tick(rules, day, market, price: Decimal) -> bool:
     return price % tick == 0
 
 
-def _month_after(day: pd.Timestamp) -> pd.Timestamp:
-    year = day.year + (day.month == 12)
-    month = 1 if day.month == 12 else day.month + 1
+def _month_after(day: pd.Timestamp, months: int = 1) -> pd.Timestamp:
+    month_index = day.year * 12 + day.month - 1 + months
+    year, month_zero = divmod(month_index, 12)
+    month = month_zero + 1
     return pd.Timestamp(year, month, min(day.day, month_calendar.monthrange(year, month)[1]))
 
 
@@ -176,6 +178,7 @@ class PreparedExecution:
         self._price_arrays = OrderedDict()
         self.signals = signal
         self.signals_by_entry = {}
+        self._signal_validity = {}
         self.events_by_day = {}
         if events is not None:
             event_frame = pd.DataFrame(events).copy()
@@ -198,6 +201,21 @@ class PreparedExecution:
             self.signals_by_entry[entry_id] = self.signals.loc[self.signals[entry_id].map(_true)].sort_values(
                 ["date", "code"], kind="stable")
         return self.signals_by_entry[entry_id]
+
+    def signal_validity(self, name: str):
+        """Return a compact day-by-code validity grid; absent rows are false."""
+        if name not in self.signals:
+            raise ValueError(f"Unknown exit_signal_valid_id: {name}")
+        if name not in self._signal_validity:
+            codes = pd.Index(self.signals["code"].unique())
+            day_index = pd.Index(self.calendar).get_indexer(self.signals["date"])
+            code_index = codes.get_indexer(self.signals["code"])
+            values = self.signals[name].map(_true).to_numpy(dtype=bool)
+            grid = np.zeros((len(self.calendar), len(codes)), dtype=bool)
+            in_calendar = day_index >= 0
+            grid[day_index[in_calendar], code_index[in_calendar]] = values[in_calendar]
+            self._signal_validity[name] = (grid, {code: index for index, code in enumerate(codes)})
+        return self._signal_validity[name]
 
     def price(self, day, code):
         key = (day, code)
@@ -292,12 +310,34 @@ def _price_limit_state(prepared, rules, day, code, row, references):
 
 
 def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id, start, end,
-                       cost_bps=None, delay=1, initial_cash=100_000_000, hooks=None):
-    """Run one price-return slot, failing closed on unresolved held exposures."""
+                       cost_bps=None, delay=1, initial_cash=100_000_000, hooks=None,
+                       max_holding_months=1, exit_signal_id=None, suppress_target=False,
+                       suppress_stop=False, position_sizing="risk", entry_order="capped_open",
+                       exit_signal_valid_id=None):
+    """Run one price-return slot, failing closed on unresolved held exposures.
+
+    An optional close-based exit signal sells an existing holding at its next
+    tradeable open. Equal-weight sizing budgets 4% of prior equity per new
+    position, subject to the usual 80% account and volume limits; retained
+    positions are not rebalanced.
+    """
     if exit_id not in _PERCENT_EXITS and exit_id not in _ATR_EXITS:
         raise ValueError(f"Unknown exit_id: {exit_id}")
     if not isinstance(delay, int) or isinstance(delay, bool) or delay < 1:
         raise ValueError("delay must be a positive session count")
+    if max_holding_months is not None and (not isinstance(max_holding_months, int)
+                                           or isinstance(max_holding_months, bool)
+                                           or max_holding_months not in (1, 3, 6)):
+        raise ValueError("max_holding_months must be 1, 3, 6, or None")
+    if position_sizing not in ("risk", "equal_weight"):
+        raise ValueError("position_sizing must be risk or equal_weight")
+    if entry_order not in ("capped_open", "market_open"):
+        raise ValueError("entry_order must be capped_open or market_open")
+    if exit_signal_id is not None and exit_signal_id not in prepared.signals:
+        raise ValueError(f"Unknown exit_signal_id: {exit_signal_id}")
+    if exit_signal_valid_id is not None and exit_signal_id is None:
+        raise ValueError("exit_signal_valid_id requires exit_signal_id")
+    validity = prepared.signal_validity(exit_signal_valid_id) if exit_signal_valid_id is not None else None
     start, end = pd.Timestamp(start).normalize(), pd.Timestamp(end).normalize()
     if start > end or start < pd.Timestamp("2014-01-01") or end >= pd.Timestamp("2024-01-01"):
         raise ValueError("Slot outside sealed 2014-2023 dates")
@@ -312,6 +352,7 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
     output = {name: [] for name in _TABLES}
     issues = []
     positions = {}
+    pending_signal_exits = set()
     pending = []
     settled_cash = cash
     receivables = Decimal(0)
@@ -360,6 +401,16 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
         output["trades"].append(dict(code=pos.code, pnl=pnl, entry_date=pos.entry_date, exit_date=day))
         del positions[pos.code]
 
+    # A signal is only usable after its closing observation. Exits always
+    # execute at the following session's open, regardless of entry delay.
+    exits_by_day = {}
+    if exit_signal_id is not None:
+        exit_rows = prepared.entry_signals(exit_signal_id)[["date", "code"]]
+        for signal_day, code in exit_rows.itertuples(index=False, name=None):
+            index = prepared.date_index.get(signal_day)
+            if index is not None and index + 1 < len(prepared.calendar):
+                exits_by_day.setdefault(prepared.calendar[index + 1], set()).add(str(code))
+
     signal_rows = prepared.entry_signals(entry_id)
     plans_by_day = {}
     plans_by_code = {}
@@ -404,9 +455,12 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
         cap = _level(rules, signal_day, market, raw_cap)
         stop = _level(rules, signal_day, market, stop)
         target = _level(rules, signal_day, market, target, upward=True)
-        anchor = _month_after(entry_day)
-        expiry_index = bisect_right(prepared.calendar, anchor) - 1
-        expiry = prepared.calendar[expiry_index] if prepared.calendar[-1] >= anchor else anchor
+        if max_holding_months is None:
+            expiry = None
+        else:
+            anchor = _month_after(entry_day, max_holding_months)
+            expiry_index = bisect_right(prepared.calendar, anchor) - 1
+            expiry = prepared.calendar[expiry_index] if prepared.calendar[-1] >= anchor else anchor
         plan.update(entry_cap=cap, stop_price=stop, target_price=target, expiry_date=expiry,
                     avg_volume20=avg_volume, market=market, status="planned")
         plans_by_day.setdefault(entry_day, []).append(plan)
@@ -543,6 +597,20 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
             break
 
         exited = set()
+        if validity is not None:
+            grid, code_columns = validity
+            previous = prepared.date_index[day] - 1
+            for code in positions:
+                column = code_columns.get(code)
+                if previous < 0 or column is None or not grid[previous, column]:
+                    issues.append(f"INVALID_EXIT_SIGNAL_INPUT:{day.date()}:{code}")
+                    blocked = True
+                    break
+        if blocked:
+            break
+        # A one-day close signal remains actionable after a halt. Attach it
+        # only to positions already held before today's entry orders.
+        pending_signal_exits.update(code for code in exits_by_day.get(day, ()) if code in positions)
         for code, pos in list(positions.items()):
             row = prepared.price(day, code)
             mark = _mark(row)
@@ -568,15 +636,22 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
                 pos.mark = mark
                 issues.append(f"OFF_TICK_HELD_OPEN:{day.date()}:{code}")
                 continue
-            if day >= pos.expiry:
+            if pos.expiry is not None and day >= pos.expiry:
                 close_position(day, pos, opened, "time_open")
                 exited.add(code)
-            elif opened <= pos.stop:
+                pending_signal_exits.discard(code)
+            elif code in pending_signal_exits:
+                close_position(day, pos, opened, "signal_open")
+                exited.add(code)
+                pending_signal_exits.discard(code)
+            elif not suppress_stop and opened <= pos.stop:
                 close_position(day, pos, opened, "stop_gap_open")
                 exited.add(code)
-            elif opened >= pos.target:
+                pending_signal_exits.discard(code)
+            elif not suppress_target and opened >= pos.target:
                 close_position(day, pos, pos.target, "target_gap_open")
                 exited.add(code)
+                pending_signal_exits.discard(code)
         if blocked:
             break
 
@@ -610,7 +685,11 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
             cap = _level(rules, day, market, plan["entry_cap"])
             stop = _level(rules, day, market, plan["stop_price"])
             target = _level(rules, day, market, plan["target_price"], upward=True)
-            if opened > cap or not (0 < stop < opened <= cap < target):
+            valid_levels = (opened > 0 and (suppress_stop or 0 < stop < opened)
+                            and (suppress_target or opened < target))
+            if entry_order == "capped_open":
+                valid_levels = valid_levels and opened <= cap and cap < target
+            if not valid_levels:
                 plan.update(status="rejected", reason="ENTRY_RANGE_OR_PRICE_RELATION")
                 continue
             economic_cash = settled_cash + receivables - payables
@@ -624,13 +703,17 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
                 continue
             # Exact binary search accounts for piecewise commission truncation.
             def fits(size):
-                buy_value, stop_value = size * opened, size * stop
+                buy_value = size * opened
                 buy = costs(day, market, "BUY", buy_value)["total"]
+                fits_caps = (buy_value + buy <= economic_cash
+                             and buy_value + buy <= caps[0] and buy_value <= caps[1]
+                             and buy_value <= caps[2])
+                if position_sizing == "equal_weight":
+                    return fits_caps
+                stop_value = size * stop
                 sell = costs(day, market, "SELL", stop_value)["total"]
-                return (buy_value + buy <= economic_cash
-                        and buy_value + buy <= caps[0] and buy_value <= caps[1]
-                        and buy_value <= caps[2]
-                        and size * (opened - stop) + buy + sell <= prior_equity * Decimal("0.005"))
+                return (fits_caps and size * (opened - stop) + buy + sell
+                        <= prior_equity * Decimal("0.005"))
             low, high = 0, upper
             while low < high:
                 mid = (low + high + 1) // 2
@@ -659,10 +742,14 @@ def simulate_real_slot(prepared: PreparedExecution, rules, *, entry_id, exit_id,
                 pos.mark = _mark(row)
                 continue
             low, high, close = _dec(row["low"]), _dec(row["high"]), _dec(row["close"])
-            if low <= pos.stop:
-                close_position(day, pos, pos.stop, "stop_intraday_ambiguous" if high >= pos.target else "stop_intraday")
-            elif high >= pos.target:
+            if not suppress_stop and low <= pos.stop:
+                close_position(day, pos, pos.stop,
+                               "stop_intraday_ambiguous" if not suppress_target and high >= pos.target
+                               else "stop_intraday")
+                pending_signal_exits.discard(code)
+            elif not suppress_target and high >= pos.target:
                 close_position(day, pos, pos.target, "target_intraday")
+                pending_signal_exits.discard(code)
             else:
                 pos.mark = close
         if blocked:

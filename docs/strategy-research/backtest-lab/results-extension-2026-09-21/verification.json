@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "runs": 2598,
+  "legacy_parity": {
+    "status": "PASS",
+    "matched": 560,
+    "legacy_summary_hash": "ccc5371eaa3aa9d884ee9cdbf1d4285141ef8def66db34bee814b0f24aa065b9"
+  },
+  "summaries": {
+    "../vectorbt-data/krx-extension-20260921-basic-r2": "a821f04b4db4837d8985ece6af0cee8b4304dcfdc35da53b0bcf402d53fd34f6",
+    "../vectorbt-data/krx-extension-20260921-wide-r2": "cf2bfded0f69c577e9dc710634a4f9fb45db3fd4f4d0f04384030dad65c3ac54",
+    "../vectorbt-data/krx-extension-20260921-new-r2": "e1593493afb6b810c3ac2144e1fb16073717c10a2f344043a00f4a97cc62b0b0"
+  }
+}

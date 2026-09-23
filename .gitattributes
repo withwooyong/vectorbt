@@ -12,3 +12,6 @@ docs/strategy-research/backtest-lab/postgresql-readiness-2026-09-21/data/** -tex
 docs/strategy-research/backtest-lab/postgresql-readiness-2026-09-21/metadata/** -text -whitespace
 # Preserve unedited Matplotlib SVG output; source documents still use normal checks.
 docs/strategy-research/backtest-lab/assets/strategy-samples/*.svg -whitespace
+
+# Preserve generated extension chart output without whitespace rewriting.
+docs/strategy-research/backtest-lab/results-extension-2026-09-21/charts/*.svg -whitespace
