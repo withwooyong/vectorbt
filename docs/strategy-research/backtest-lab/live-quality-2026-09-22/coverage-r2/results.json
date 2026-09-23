@@ -1,0 +1,160 @@
+[
+  {
+    "check": "context",
+    "data": {
+      "observed_at": "2026-09-22T13:58:10.822248+09:00",
+      "read_only": "on",
+      "isolation": "repeatable read",
+      "scope": "2014-01-01..2023-12-31 historical common-stock calendar coverage"
+    }
+  },
+  {
+    "check": "coverage_by_year",
+    "data": [
+      {
+        "calendar_year": 2014,
+        "adjusted": false,
+        "expected_keys": 423135,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2014,
+        "adjusted": true,
+        "expected_keys": 423135,
+        "missing_keys": 60121,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2015,
+        "adjusted": false,
+        "expected_keys": 447585,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2015,
+        "adjusted": true,
+        "expected_keys": 447585,
+        "missing_keys": 59099,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2016,
+        "adjusted": false,
+        "expected_keys": 466915,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2016,
+        "adjusted": true,
+        "expected_keys": 466915,
+        "missing_keys": 60476,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2017,
+        "adjusted": false,
+        "expected_keys": 476914,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2017,
+        "adjusted": true,
+        "expected_keys": 476914,
+        "missing_keys": 57155,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2018,
+        "adjusted": false,
+        "expected_keys": 493125,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2018,
+        "adjusted": true,
+        "expected_keys": 493125,
+        "missing_keys": 53272,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2019,
+        "adjusted": false,
+        "expected_keys": 517114,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2019,
+        "adjusted": true,
+        "expected_keys": 517114,
+        "missing_keys": 51286,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2020,
+        "adjusted": false,
+        "expected_keys": 540463,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2020,
+        "adjusted": true,
+        "expected_keys": 540463,
+        "missing_keys": 49338,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2021,
+        "adjusted": false,
+        "expected_keys": 562456,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2021,
+        "adjusted": true,
+        "expected_keys": 562456,
+        "missing_keys": 46588,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2022,
+        "adjusted": false,
+        "expected_keys": 575807,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2022,
+        "adjusted": true,
+        "expected_keys": 575807,
+        "missing_keys": 43337,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2023,
+        "adjusted": false,
+        "expected_keys": 596180,
+        "missing_keys": 0,
+        "duplicate_keys": 0
+      },
+      {
+        "calendar_year": 2023,
+        "adjusted": true,
+        "expected_keys": 596180,
+        "missing_keys": 44263,
+        "duplicate_keys": 0
+      }
+    ]
+  },
+  {
+    "check": "audit_complete",
+    "data": true
+  }
+]

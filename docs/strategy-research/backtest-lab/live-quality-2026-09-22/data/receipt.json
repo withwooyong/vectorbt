@@ -1,0 +1,18 @@
+{
+  "target": "core",
+  "database": "kiwoom_db",
+  "started_at": "2026-09-22T04:55:18.040770+00:00",
+  "sql_sha256": "2de24920255acdbecd39d8a7a01f4152725579d58e1d6f74307892519b5d1299",
+  "status": "COMPLETE",
+  "holdout_prices_queried": false,
+  "scope": "2015-01-02 through 2023-12-31 prices; current reference metadata separately labelled",
+  "returncode": 0,
+  "checks": 9,
+  "elapsed_seconds": 47.835,
+  "finished_at": "2026-09-22T04:56:05.876027+00:00",
+  "evidence_sha256": {
+    "stdout.txt": "1e31a536e97573727142d8b77c481663225dbcd5e632f5ea7c0c7a513f9684d1",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results.json": "91a2610e01af781ed256780f1aca8f730794a6304d493c0164d42f27cec2776c"
+  }
+}

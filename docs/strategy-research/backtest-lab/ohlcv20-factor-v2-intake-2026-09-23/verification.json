@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "intake_input_hashes_rechecked": 125,
+  "intake_output_hashes_rechecked": 3,
+  "allotment104_reproduced": true,
+  "allotment_review_reproduced": true,
+  "allotment_key_set_matches_intake": true,
+  "automatic_promotions": 0,
+  "existing_output_guard_pass": true,
+  "markdown_local_links_checked": 39,
+  "independent_reviews": "impact/allotment/integration PASS; findings corrected",
+  "unit_tests": "9 passed",
+  "backtest_executed": false,
+  "db_accessed": false,
+  "files": {
+    "scripts\\research\\audit_ohlcv20_allotment104.py": "61ff30fa1e98ca8537c50a22f2ca99923068880490aff8f0862a48d7449a4ac2",
+    "scripts\\research\\audit_ohlcv20_factor_intake.py": "c1c10506302d84b3de944d8c26b8f9a05e851f8b5662e3838fb9b33393912d27",
+    "tests\\research\\test_ohlcv20_factor_intake_audit.py": "9026db95d09a95e212b54345917e1175d9ea279376328ec0183d80f87860120a",
+    "docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\README.md": "97ad1be74f2cbeb7a25b8918f1a4bb689f03ca5475e9d080e7db5376a2c4eabc",
+    "docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\consumer-contract.md": "0d9b921c48112683fb83858eec2d94c5f1fe43b4565567ce52f86cace843a28c",
+    "docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\allotment-104-audit.json": "7cbeed88402174ddfd0f31e6284449fe030854ec97303e21cd7feea04d3f696a",
+    "docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\allotment-104-review.md": "e9ae195302a322e2efb342e5e6185a93f37a7a7fe545b579b59dc4c415a3a275",
+    "docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\impact-v2\\summary.json": "634c96a5f97fcb58c08f60e08866a1b3f1b43181b0e289e0e191531b851b42ac"
+  }
+}

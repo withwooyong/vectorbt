@@ -1,0 +1,473 @@
+[
+  {
+    "check": "context",
+    "data": {
+      "observed_at": "2026-09-22T13:55:18.921066+09:00",
+      "read_only": "on",
+      "isolation": "repeatable read",
+      "scope": "2014-01-01..2023-12-31"
+    }
+  },
+  {
+    "check": "price_profile",
+    "data": [
+      {
+        "adjusted": false,
+        "source_code": "KRX_OPEN_API",
+        "rows": 5099694,
+        "instruments": 2787,
+        "first_date": "2014-01-02",
+        "last_date": "2023-12-28",
+        "max_source_record_id": 43758039,
+        "null_ohlc": 0,
+        "nonpositive_ohlc": 135717,
+        "traded_nonpositive_ohlc": 18,
+        "invalid_ohlc_order": 135717,
+        "zero_volume": 135699,
+        "missing_lineage": 0,
+        "historical_capture_rows": 0
+      },
+      {
+        "adjusted": true,
+        "source_code": "KIWOOM_REST",
+        "rows": 4574759,
+        "instruments": 2312,
+        "first_date": "2014-01-02",
+        "last_date": "2023-12-28",
+        "max_source_record_id": 15496683,
+        "null_ohlc": 0,
+        "nonpositive_ohlc": 0,
+        "traded_nonpositive_ohlc": 0,
+        "invalid_ohlc_order": 0,
+        "zero_volume": 71109,
+        "missing_lineage": 0,
+        "historical_capture_rows": 0
+      }
+    ]
+  },
+  {
+    "check": "calendar",
+    "data": [
+      {
+        "market": "KRX",
+        "rows": 3652,
+        "open_days": 2459,
+        "first_date": "2014-01-01",
+        "last_date": "2023-12-31"
+      }
+    ]
+  },
+  {
+    "check": "universe",
+    "data": [
+      {
+        "market": "KOSDAQ",
+        "security_type": "COMMON_STOCK",
+        "intervals": 24614,
+        "instruments": 1924
+      },
+      {
+        "market": "KOSPI",
+        "security_type": "COMMON_STOCK",
+        "intervals": 6861,
+        "instruments": 876
+      }
+    ]
+  },
+  {
+    "check": "actions",
+    "data": [
+      {
+        "event_type": "CAPITAL_REDUCTION",
+        "resolution_status": "PARTIAL",
+        "rows": 125
+      },
+      {
+        "event_type": "CAPITAL_REDUCTION",
+        "resolution_status": "RESOLVED",
+        "rows": 141
+      },
+      {
+        "event_type": "CAPITAL_REDUCTION",
+        "resolution_status": "SUPERSEDED",
+        "rows": 1
+      },
+      {
+        "event_type": "DIVIDEND_OFF",
+        "resolution_status": "REFERENCE_FACT",
+        "rows": 1021
+      },
+      {
+        "event_type": "LISTED_SHARE_CHANGE",
+        "resolution_status": "REFERENCE_FACT",
+        "rows": 23834
+      },
+      {
+        "event_type": "PAID_CAPITAL_INCREASE",
+        "resolution_status": "PARTIAL",
+        "rows": 12
+      },
+      {
+        "event_type": "PAID_CAPITAL_INCREASE",
+        "resolution_status": "RESOLVED",
+        "rows": 12
+      },
+      {
+        "event_type": "REVERSE_SPLIT",
+        "resolution_status": "PARTIAL",
+        "rows": 1
+      },
+      {
+        "event_type": "RIGHTS_OFF",
+        "resolution_status": "REFERENCE_FACT",
+        "rows": 1225
+      },
+      {
+        "event_type": "SPLIT",
+        "resolution_status": "PARTIAL",
+        "rows": 16
+      },
+      {
+        "event_type": "SPLIT",
+        "resolution_status": "RESOLVED",
+        "rows": 183
+      },
+      {
+        "event_type": "SPLIT",
+        "resolution_status": "SUPERSEDED",
+        "rows": 7
+      },
+      {
+        "event_type": "UNKNOWN_QUANTITY_TRANSFORM",
+        "resolution_status": "PARTIAL",
+        "rows": 6
+      }
+    ]
+  },
+  {
+    "check": "adjustments",
+    "data": [
+      {
+        "explanation_status": "EXPLAINED_KIND",
+        "rows": 1746
+      },
+      {
+        "explanation_status": "EXPLAINED_RATIO_MATCH",
+        "rows": 140
+      },
+      {
+        "explanation_status": "OBSERVED_VENDOR_FACTOR",
+        "rows": 1061
+      }
+    ]
+  },
+  {
+    "check": "status",
+    "data": [
+      {
+        "daily_state": "HALTED",
+        "rows": 279
+      },
+      {
+        "daily_state": "NO_BAR_HALTED",
+        "rows": 1
+      },
+      {
+        "daily_state": "PARTIAL_TRADING",
+        "rows": 12
+      }
+    ]
+  },
+  {
+    "check": "rules",
+    "data": [
+      {
+        "rule_kind": "COMMISSION",
+        "market": "ALL",
+        "effective_from": "2014-01-01",
+        "effective_to": "2023-12-31",
+        "rule_value": {
+          "buy_fee_rate": 0.00015,
+          "rounding_rule": "TRUNCATE_BELOW_10_KRW",
+          "sell_fee_rate": 0.00015,
+          "account_preference": false
+        },
+        "source_url": "https://download.kiwoom.com/hero4_help_new/0328.htm",
+        "evidence_status": "USER_ASSUMPTION"
+      },
+      {
+        "rule_kind": "PRICE_LIMIT",
+        "market": "ALL",
+        "effective_from": "2014-01-01",
+        "effective_to": "2015-06-14",
+        "rule_value": {
+          "percent": 15
+        },
+        "source_url": "https://global.krx.co.kr/contents/GLB/06/0602/0602010202/GLB0602010202T4.jsp",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "PRICE_LIMIT",
+        "market": "ALL",
+        "effective_from": "2015-06-15",
+        "effective_to": "2023-12-31",
+        "rule_value": {
+          "percent": 30
+        },
+        "source_url": "https://global.krx.co.kr/contents/GLB/06/0602/0602010202/GLB0602010202T4.jsp",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSDAQ",
+        "effective_from": "2015-01-01",
+        "effective_to": "2019-06-02",
+        "rule_value": {
+          "total_sell_tax_rate": 0.003,
+          "rural_special_tax_rate": 0.0,
+          "securities_transaction_rate": 0.003
+        },
+        "source_url": "https://www.law.go.kr/LSW/lsRvsDocListP.do?chrClsCd=010102&lsId=005028",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSDAQ",
+        "effective_from": "2019-06-03",
+        "effective_to": "2020-12-31",
+        "rule_value": {
+          "total_sell_tax_rate": 0.0025,
+          "rural_special_tax_rate": 0.0,
+          "securities_transaction_rate": 0.0025
+        },
+        "source_url": "https://www.law.go.kr/LSW/nwRvsLsInfoR.do?lsiSeq=208731",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSDAQ",
+        "effective_from": "2021-01-01",
+        "effective_to": "2022-12-31",
+        "rule_value": {
+          "total_sell_tax_rate": 0.0023,
+          "rural_special_tax_rate": 0.0,
+          "securities_transaction_rate": 0.0023
+        },
+        "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167&viewCls=lsRvsDocInfoR",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSDAQ",
+        "effective_from": "2023-01-01",
+        "effective_to": "2023-12-31",
+        "rule_value": {
+          "total_sell_tax_rate": 0.002,
+          "rural_special_tax_rate": 0.0,
+          "securities_transaction_rate": 0.002
+        },
+        "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSPI",
+        "effective_from": "2015-01-01",
+        "effective_to": "2019-06-02",
+        "rule_value": {
+          "total_sell_tax_rate": 0.003,
+          "rural_special_tax_rate": 0.0015,
+          "securities_transaction_rate": 0.0015
+        },
+        "source_url": "https://www.law.go.kr/LSW/lsRvsDocListP.do?chrClsCd=010102&lsId=005028",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSPI",
+        "effective_from": "2019-06-03",
+        "effective_to": "2020-12-31",
+        "rule_value": {
+          "total_sell_tax_rate": 0.0025,
+          "rural_special_tax_rate": 0.0015,
+          "securities_transaction_rate": 0.001
+        },
+        "source_url": "https://www.law.go.kr/LSW/nwRvsLsInfoR.do?lsiSeq=208731",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSPI",
+        "effective_from": "2021-01-01",
+        "effective_to": "2022-12-31",
+        "rule_value": {
+          "total_sell_tax_rate": 0.0023,
+          "rural_special_tax_rate": 0.0015,
+          "securities_transaction_rate": 0.0008
+        },
+        "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167&viewCls=lsRvsDocInfoR",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SELL_TAX",
+        "market": "KOSPI",
+        "effective_from": "2023-01-01",
+        "effective_to": "2023-12-31",
+        "rule_value": {
+          "total_sell_tax_rate": 0.002,
+          "rural_special_tax_rate": 0.0015,
+          "securities_transaction_rate": 0.0005
+        },
+        "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "SETTLEMENT",
+        "market": "ALL",
+        "effective_from": "2014-01-01",
+        "effective_to": "2023-12-31",
+        "rule_value": {
+          "cycle": "T+2",
+          "calendar": "exchange_business_day"
+        },
+        "source_url": "https://global.krx.co.kr/contents/GLB/02/0202/0202020104/GLB0202020104.jsp",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "TICK_SIZE",
+        "market": "ALL",
+        "effective_from": "2023-01-25",
+        "effective_to": "2023-12-31",
+        "rule_value": {
+          "bands": [
+            [
+              0,
+              2000,
+              1
+            ],
+            [
+              2000,
+              5000,
+              5
+            ],
+            [
+              5000,
+              20000,
+              10
+            ],
+            [
+              20000,
+              50000,
+              50
+            ],
+            [
+              50000,
+              200000,
+              100
+            ],
+            [
+              200000,
+              500000,
+              500
+            ],
+            [
+              500000,
+              null,
+              1000
+            ]
+          ]
+        },
+        "source_url": "https://global.krx.co.kr/contents/GLB/06/0602/0602010202/GLB0602010202T5.jsp",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "TICK_SIZE",
+        "market": "KOSDAQ",
+        "effective_from": "2014-01-01",
+        "effective_to": "2023-01-24",
+        "rule_value": {
+          "bands": [
+            [
+              0,
+              1000,
+              1
+            ],
+            [
+              1000,
+              5000,
+              5
+            ],
+            [
+              5000,
+              10000,
+              10
+            ],
+            [
+              10000,
+              50000,
+              50
+            ],
+            [
+              50000,
+              null,
+              100
+            ]
+          ]
+        },
+        "source_url": "https://global.krx.co.kr/contents/GLB/06/0602/0602010202/GLB0602010202T5.jsp",
+        "evidence_status": "OFFICIAL"
+      },
+      {
+        "rule_kind": "TICK_SIZE",
+        "market": "KOSPI",
+        "effective_from": "2014-01-01",
+        "effective_to": "2023-01-24",
+        "rule_value": {
+          "bands": [
+            [
+              0,
+              1000,
+              1
+            ],
+            [
+              1000,
+              5000,
+              5
+            ],
+            [
+              5000,
+              10000,
+              10
+            ],
+            [
+              10000,
+              50000,
+              50
+            ],
+            [
+              50000,
+              100000,
+              100
+            ],
+            [
+              100000,
+              500000,
+              500
+            ],
+            [
+              500000,
+              null,
+              1000
+            ]
+          ]
+        },
+        "source_url": "https://global.krx.co.kr/contents/GLB/06/0602/0602010202/GLB0602010202T5.jsp",
+        "evidence_status": "OFFICIAL"
+      }
+    ]
+  },
+  {
+    "check": "audit_complete",
+    "data": true
+  }
+]

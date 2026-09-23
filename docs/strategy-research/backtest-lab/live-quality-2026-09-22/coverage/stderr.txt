@@ -1,0 +1,3 @@
+ERROR:  syntax error at or near "year"
+LINE 11:  SELECT extract(year FROM e.trading_date) year,e.adjusted,co...
+                                                   ^

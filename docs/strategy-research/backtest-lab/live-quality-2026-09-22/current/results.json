@@ -1,0 +1,485 @@
+[
+  {
+    "check": "context",
+    "data": {
+      "observed_at": "2026-09-22T13:57:00.717246+09:00",
+      "database": "kiwoom_db",
+      "read_only": "on",
+      "isolation": "repeatable read",
+      "scope": "Current collection dates/counts/timestamps and revision metadata only; no 2024+ price values"
+    }
+  },
+  {
+    "check": "revisions",
+    "data": [
+      {
+        "revision_id": "b3e8a250-0380-5f9d-ad6c-e8f047649e73",
+        "dataset_name": "krx-backtest-source",
+        "revision_label": "2014-2023-v1",
+        "period_start": "2014-01-01",
+        "period_end": "2023-12-31",
+        "universe_scope": "KOSPI_KOSDAQ_COMMON_STOCK",
+        "contract_version": 2,
+        "content_sha256": "aedc4e9ada7275216a36ebb763cc5c246b6d79519821339c3b13da267f44f040",
+        "status": "SEALED",
+        "sealed_at": "2026-09-21T10:58:09.995886+09:00",
+        "created_at": "2026-09-21T10:58:09.995886+09:00"
+      },
+      {
+        "revision_id": "55d0345c-6884-52f8-aa0d-6ccd79344bf5",
+        "dataset_name": "krx-backtest-source",
+        "revision_label": "2014-2023-v2",
+        "period_start": "2014-01-01",
+        "period_end": "2023-12-31",
+        "universe_scope": "KOSPI_KOSDAQ_COMMON_STOCK",
+        "contract_version": 2,
+        "content_sha256": "9ac5ead339b312c05ef58028d061bbc41ddfb7eaeb6cb31af6a048025dff8675",
+        "status": "SEALED",
+        "sealed_at": "2026-09-21T11:08:42.03866+09:00",
+        "created_at": "2026-09-21T11:08:42.03866+09:00"
+      },
+      {
+        "revision_id": "0eeed564-0b89-587c-b8f9-d8eea981bb9e",
+        "dataset_name": "krx-backtest-source",
+        "revision_label": "2014-2023-v3",
+        "period_start": "2014-01-01",
+        "period_end": "2023-12-31",
+        "universe_scope": "KOSPI_KOSDAQ_COMMON_STOCK",
+        "contract_version": 2,
+        "content_sha256": "e95066aa516971ff63e4d6da19a7639b0eab18783eca159a428dc268a2bd13c2",
+        "status": "SEALED",
+        "sealed_at": "2026-09-21T11:31:04.256542+09:00",
+        "created_at": "2026-09-21T11:31:04.256542+09:00"
+      }
+    ]
+  },
+  {
+    "check": "daily_collection",
+    "data": [
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-14",
+        "adjusted": false,
+        "rows": 4402,
+        "instruments": 4402,
+        "first_fetch": "2026-09-16T16:59:15.891412+09:00",
+        "last_fetch": "2026-09-22T09:01:32.949427+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-14",
+        "adjusted": true,
+        "rows": 4405,
+        "instruments": 4405,
+        "first_fetch": "2026-09-15T06:14:27.714868+09:00",
+        "last_fetch": "2026-09-22T06:20:55.256252+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-15",
+        "adjusted": false,
+        "rows": 4406,
+        "instruments": 4406,
+        "first_fetch": "2026-09-16T16:59:15.891412+09:00",
+        "last_fetch": "2026-09-22T09:01:32.949427+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-15",
+        "adjusted": true,
+        "rows": 4408,
+        "instruments": 4408,
+        "first_fetch": "2026-09-16T06:09:15.468217+09:00",
+        "last_fetch": "2026-09-22T06:20:55.256252+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-16",
+        "adjusted": false,
+        "rows": 4406,
+        "instruments": 4406,
+        "first_fetch": "2026-09-17T09:08:12.648397+09:00",
+        "last_fetch": "2026-09-22T09:01:32.949427+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-16",
+        "adjusted": true,
+        "rows": 4406,
+        "instruments": 4406,
+        "first_fetch": "2026-09-18T06:01:57.884872+09:00",
+        "last_fetch": "2026-09-22T06:20:55.256252+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-17",
+        "adjusted": false,
+        "rows": 4410,
+        "instruments": 4410,
+        "first_fetch": "2026-09-21T09:11:14.77289+09:00",
+        "last_fetch": "2026-09-22T09:01:32.949427+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-17",
+        "adjusted": true,
+        "rows": 4411,
+        "instruments": 4411,
+        "first_fetch": "2026-09-18T06:01:57.884872+09:00",
+        "last_fetch": "2026-09-22T06:20:55.256252+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-18",
+        "adjusted": false,
+        "rows": 4410,
+        "instruments": 4410,
+        "first_fetch": "2026-09-21T09:11:14.77289+09:00",
+        "last_fetch": "2026-09-22T09:01:32.949427+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-18",
+        "adjusted": true,
+        "rows": 4410,
+        "instruments": 4410,
+        "first_fetch": "2026-09-21T06:19:10.550171+09:00",
+        "last_fetch": "2026-09-22T06:20:55.256252+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-21",
+        "adjusted": false,
+        "rows": 4406,
+        "instruments": 4406,
+        "first_fetch": "2026-09-22T08:40:00.136038+09:00",
+        "last_fetch": "2026-09-22T09:01:32.949427+09:00"
+      },
+      {
+        "venue": "KRX",
+        "trading_date": "2026-09-21",
+        "adjusted": true,
+        "rows": 4406,
+        "instruments": 4406,
+        "first_fetch": "2026-09-22T06:00:00.12408+09:00",
+        "last_fetch": "2026-09-22T06:20:55.256252+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-14",
+        "adjusted": false,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T08:40:01.157408+09:00",
+        "last_fetch": "2026-09-22T08:58:49.945145+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-14",
+        "adjusted": true,
+        "rows": 604,
+        "instruments": 604,
+        "first_fetch": "2026-09-15T06:11:09.874044+09:00",
+        "last_fetch": "2026-09-22T06:18:47.025948+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-15",
+        "adjusted": false,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T08:40:01.157408+09:00",
+        "last_fetch": "2026-09-22T08:58:49.945145+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-15",
+        "adjusted": true,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T06:00:01.86193+09:00",
+        "last_fetch": "2026-09-22T06:18:47.025948+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-16",
+        "adjusted": false,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T08:40:01.157408+09:00",
+        "last_fetch": "2026-09-22T08:58:49.945145+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-16",
+        "adjusted": true,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T06:00:01.86193+09:00",
+        "last_fetch": "2026-09-22T06:18:47.025948+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-17",
+        "adjusted": false,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T08:40:01.157408+09:00",
+        "last_fetch": "2026-09-22T08:58:49.945145+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-17",
+        "adjusted": true,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T06:00:01.86193+09:00",
+        "last_fetch": "2026-09-22T06:18:47.025948+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-18",
+        "adjusted": false,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T08:40:01.157408+09:00",
+        "last_fetch": "2026-09-22T08:58:49.945145+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-18",
+        "adjusted": true,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T06:00:01.86193+09:00",
+        "last_fetch": "2026-09-22T06:18:47.025948+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-21",
+        "adjusted": false,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T08:40:01.157408+09:00",
+        "last_fetch": "2026-09-22T08:58:49.945145+09:00"
+      },
+      {
+        "venue": "NXT",
+        "trading_date": "2026-09-21",
+        "adjusted": true,
+        "rows": 603,
+        "instruments": 603,
+        "first_fetch": "2026-09-22T06:00:01.86193+09:00",
+        "last_fetch": "2026-09-22T06:18:47.025948+09:00"
+      }
+    ]
+  },
+  {
+    "check": "source_columns",
+    "data": [
+      {
+        "table_name": "raw_response",
+        "column_name": "id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "api_id",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "request_hash",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "request_payload",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "response_payload",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "http_status",
+        "data_type": "integer"
+      },
+      {
+        "table_name": "raw_response",
+        "column_name": "fetched_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "payload_id",
+        "data_type": "uuid"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "payload_sha256",
+        "data_type": "character"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "request_id",
+        "data_type": "uuid"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "captured_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "content_type",
+        "data_type": "text"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "payload_bytes",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "payload_raw",
+        "data_type": "bytea"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "payload_json",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "source_payload",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "source_record_id",
+        "data_type": "bigint"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "payload_id",
+        "data_type": "uuid"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "record_ordinal",
+        "data_type": "integer"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "entity_kind",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "natural_key",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "published_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "available_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "available_precision",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "valid_from",
+        "data_type": "date"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "valid_to",
+        "data_type": "date"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "record_data",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "source_record",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "request_id",
+        "data_type": "uuid"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "source_code",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "endpoint",
+        "data_type": "text"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "request_parameters",
+        "data_type": "jsonb"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "requested_at",
+        "data_type": "timestamp with time zone"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "response_status",
+        "data_type": "integer"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "capture_kind",
+        "data_type": "character varying"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "historical_capture",
+        "data_type": "boolean"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "ingestion_attempt_id",
+        "data_type": "uuid"
+      },
+      {
+        "table_name": "source_request",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone"
+      }
+    ]
+  },
+  {
+    "check": "raw_response_recency",
+    "data": null
+  },
+  {
+    "check": "audit_complete",
+    "data": true
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "review_complete": true,
+  "all_denominators_confirmed": false,
+  "reviewed_keys": 18,
+  "denominators_confirmed": 17,
+  "denominators_unresolved": 1,
+  "immutable_input_hashes_rechecked": 63,
+  "selection_matches_existing_wbs_target": true,
+  "decimal_formulas_and_admission_flags_rechecked": 18,
+  "report_numeric_rows_checked": 36,
+  "local_links_checked": 11,
+  "independent_review": "Astra high PASS; WBS context hash split incorporated; supplemental correction-list entry independently inspected by main",
+  "tests_run": false,
+  "test_reason": "Analysis/documentation only; direct arithmetic and hash verification performed",
+  "backtest_executed": false,
+  "signal_function_executed": false,
+  "db_accessed": false,
+  "policy_changed": false,
+  "automatic_promotions": 0,
+  "commit_or_push_performed": false,
+  "heads": {
+    "C:/Users/aeby/vscode/stock/vectorbt": "ceae86d46265095d898aaf9709087e41a2d4dc85",
+    "C:/Users/aeby/vscode/ted-startup": "c30e371eaed4fc10f8a30175581e8c1b181438c7"
+  },
+  "output_sha256": {
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\wbs.md": "31a84571c2e8f758382c56f512fdfe64267b4435bd334f953364da3a9184c585",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\denominator-volume-18-review.md": "66b3ea3b64ba246811e5f64877a934967691eefb03b5531e7fec11bd70e64826",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\denominator-volume-18-evidence.json": "58c2241508a7123215d051c41e4579c958064c83c1c10e3f8edc98efdc493f3a"
+  }
+}

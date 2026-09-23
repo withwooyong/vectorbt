@@ -1,0 +1,768 @@
+{
+  "schema": "ohlcv20-denominator-volume-18-review-v1",
+  "review_date": "2026-09-23",
+  "status": "REVIEW_COMPLETE_17_DENOMINATORS_CONFIRMED_1_UNRESOLVED",
+  "selection": "104-audit cause ELIGIBLE_SHARE_RATIO_DIFFERS_FROM_TOTAL_ISSUED_EFFECTIVE_RATIO AND impact-v2 signal_eligible_dependency_days > 0",
+  "scope": {
+    "backtest_executed": false,
+    "db_accessed": false,
+    "policy_changed": false,
+    "source_changed": false,
+    "admission_changed": false,
+    "signal_function_executed": false
+  },
+  "summary": {
+    "target_keys": 18,
+    "treasury_exclusion_confirmed": 16,
+    "voting_share_denominator_confirmed": 1,
+    "unresolved": 1,
+    "all_volume_blocked": true
+  },
+  "input_sha256": {
+    "C:\\Users\\aeby\\vscode\\ted-startup\\docs\\research\\evidence\\ohlcv-admission-2026-09-22\\factor-admission-policy-v1.json": "a053efd641e61db7f959b4ff1c014b8d9354efcfd25c1b09578c66dba657e231",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\docs\\research\\evidence\\ohlcv-admission-2026-09-22\\reference-factor-candidates-v2.json": "273c82f47fea01f444bae07ba2db298af9f69c7a7bc24468f8df2ef44f4257a2",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\ohlcv-admission-20260922\\reference-factor-candidates-v2\\candidates.parquet": "732bfde34a995136ce0751092451e208530149d593475754a0b6cdeef517643f",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\ohlcv-admission-20260922\\factor-admission-v2\\factor-admission-audit.parquet": "927fe6d9b4e197112c27a64ad330902a0b285c68d1dc3c07f6bdc2944b5eecc8",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\scripts\\data_delivery\\build_ohlcv_admitted_factors.py": "c45a19ff38d54fd0cf954f4f1be24823b87b3e5bfe096413e6fefd3073991216",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\manifest.json": "0897a933a01bcbc7b1043cf3ab691c4341623c87b6ce2b18deae7e7fa728aa4d",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\scripts\\data_delivery\\parse_ohlcv_allotment_ratios.py": "b6c8604eac3126ec4b962bb70d48c985b25b7b0f30c81e867ee44fbb7c9b34c3",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\ohlcv-admission-20260922\\allotment-ratios-v1\\allotment-ratios.parquet": "52c1e0cf178aec436e9981a1f0335d84cd4607b7a6b1f8143504737779fa3fd0",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\docs\\research\\evidence\\ohlcv-admission-2026-09-22\\allotment-ratio-parse-v1.json": "6dea09a0ce9055a1891c28f34bd7cf4c617d297e12c762ec9b553c3b6559b04d",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\scripts\\data_delivery\\build_ohlcv_reference_factor_candidates.py": "5bf8970e503a3603b9e77a54e0a8533837803b6bd842bc58c2a715d7d50e3242",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\ohlcv-admission-20260922\\allotment-ratios-v1\\allotment-ratios.csv": "70567b182d3f0d12bac6b3549c14c9e1fde84d2f8c3d01c24b5421e793c46871",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\ohlcv-admission-20260922\\reference-factor-candidates-v2\\candidates.csv": "b0e6963e9f58e43c5f1d468ee44d6340b1eac3b78ff3a1887aa18215c5cd4dfa",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\ohlcv-admission-20260922\\reference-factor-candidates-v2\\official-reference-facts.json": "6c33f0ab70649cad7ac6523ba54c3b7ccf17620b758a9b780761cc44ceb3baf8",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\scripts\\research\\audit_ohlcv20_allotment104.py": "61ff30fa1e98ca8537c50a22f2ca99923068880490aff8f0862a48d7449a4ac2",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\scripts\\research\\audit_ohlcv20_factor_intake.py": "c1c10506302d84b3de944d8c26b8f9a05e851f8b5662e3838fb9b33393912d27",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\tests\\research\\test_ohlcv20_factor_intake_audit.py": "9026db95d09a95e212b54345917e1175d9ea279376328ec0183d80f87860120a",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\README.md": "97ad1be74f2cbeb7a25b8918f1a4bb689f03ca5475e9d080e7db5376a2c4eabc",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\consumer-contract.md": "0d9b921c48112683fb83858eec2d94c5f1fe43b4565567ce52f86cace843a28c",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\allotment-104-audit.json": "7cbeed88402174ddfd0f31e6284449fe030854ec97303e21cd7feea04d3f696a",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\allotment-104-review.md": "e9ae195302a322e2efb342e5e6185a93f37a7a7fe545b579b59dc4c415a3a275",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\impact-v2\\summary.json": "634c96a5f97fcb58c08f60e08866a1b3f1b43181b0e289e0e191531b851b42ac",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\impact-v2\\intake-733.parquet": "35e180a5f9de51349678065d65fee3a9d749e54eaac28df71acf20cdf5629705",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\impact-v2\\intake-733.json": "f7686073ffe3bf701ca24415e165b44ed834c1a1f2d9d122a32014c6c5f59484",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\ohlcv20-factor-v2-intake-2026-09-23\\impact-v2\\dependency-edges.parquet": "68668c716a79cb23bd00600d5afc9277708ab8f0a0339e50fc5ae8bb9eb1f030",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\research\\krx_lab\\ohlcv20_signal.py": "a3e17e8023b7f470cd2a14f8dc6eac907e4c41c4641c194f980739920a6f3d6f",
+    "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\research\\krx_lab\\ohlcv20_input.py": "aa2231c35b220adcbb29f93c4778d4468b600c488e7d4a743a7ff9fcc74cb424",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20161212800116.zip": "c241c85ee571e08767f270937f444d46a7504c2592b2968cfff073c566a82515",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2016\\dividend_off\\20161227000636\\body.html": "77fdd72123e0832eb48029b53747ab7f77441afb71828a897b869b34142d95d0",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20201207800176.zip": "0f94e68885b9ca9a22cb3c8d35d4ed45b0213505aef539063505d9b67a38dbf9",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2020\\dividend_off\\20201228000549\\body.html": "710857610aae53f67540f6fac04aad982580b2023e87157d8975cf944dc79d22",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20221128000539.zip": "bf5cac89d75ee869970877b265126f4133120399aa4fdfb5f717e88255ee55e3",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2022\\rights_off\\20221209000368\\body.html": "df5d1d2d6d614894c775ba3e3e247eb2f11568b82943e7952d9d3bcd3d7833f1",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20231106000177.zip": "fa08931826d08cb7ea0d26148c55ee57c7bbb94ece171ba50e92d2c24ccef4c3",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2023\\rights_off\\20231117000275\\body.html": "24faafb704277594c02ccbbaf80f979c2cdf9c0eb389960c7c4c41177f338de7",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20230404003162.zip": "f6becd5a863e0159cde59d736861aa1f0b568d939d059706f3eb7000d829de20",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2023\\rights_off\\20230418000319\\body.html": "e2cdbb4f6a3bd3af809beb752c99d10986816374fdb7e036000ddd020362e095",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20181206900411.zip": "99f1d3067f8b380c31db40daa0b2b1c761bca721c30f16698e33ad36e2c989b0",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2018\\dividend_off\\20181226000678\\body.html": "68f1b807ab83ceb5527693d656e6d4d6f912927b9919bccc6cdbbf6216bc849c",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20181219900068.zip": "2c25bf40a594dd8f88387973eccadcaa39a88da7435e8d89f0e31cdd43d6df57",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2018\\dividend_off\\20181226000687\\body.html": "a38466df9cef1fcb2db30c642a84e52f35f4017d49094a1438e186ed875b26a9",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20211111000283.zip": "1a2ea420aa8e33c6ae8bf993846f881594701b1d378c08cb128322adbec496a5",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2021\\rights_off\\20211124000336\\body.html": "c3412d0a2fb8ece54991cab956c0a6cdee72eb8ae0caa53d46f4ff9cfdb4c7f6",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20211220900417.zip": "c2f66c6bd741f1fb87ca9b442a256818cb8523acc0d9b933424f0ec60ec252cb",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2021\\dividend_off\\20211228000733\\body.html": "c0d974d9fd223ce22fde1ac13e9e6cadd42280f3b0a361b30b7dd57a313d0a71",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20190315000139.zip": "04c11527a4f0c76ba5060c56e8b90aa4771ada5b5f7916468ee7042e8f979ae2",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2019\\rights_off\\20190328000997\\body.html": "efd07ea3ff0d9224ad66eaedccfdf375b9859bcddb8ee0f3ed703fb7c2c67f05",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20170602000059.zip": "8563376951d87ddeba2614d5925433bb2fb8bb571916c25c4f17463cbcfb500b",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2017\\rights_off\\20170620000304\\body.html": "a002662d375e6501439f99fd0703e43060e35b08ce00d75ee9115f9676719488",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20170216000129.zip": "377c7f155e55dd70166cfd1cee627a60d805b1e577fcfe710fadb5850b02a7c6",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2017\\rights_off\\20170228000795\\body.html": "b5257888b7fff80a30155951b22a0c681273d55d94a89409ff7b7d570e58fe6e",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20210408000197.zip": "38c459f3bc042febc775919f011510791fa8abf70e077c857436c11fcaf4d8aa",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2021\\rights_off\\20210422000411\\body.html": "fd279ddea200f18c74e2c6c4f87fed085e6b588f0d2c559333db524ab97f974d",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20160712000025.zip": "06b6e289714a7a701810b1a805f8463947be67576eb52216a3e4ade1225831a0",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2016\\rights_off\\20160726000319\\body.html": "c15aa15fb277987111c297e83f13c830b0907e0b732160af6efcf23b5ccb9771",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20210830001214.zip": "2b64d4232a5292399d2ca3a45b3eb0c8f8caff6bfefefb7b0c007d129a729562",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2021\\rights_off\\20210910000439\\body.html": "e45cd56f299561249766c8d0609eb5433c9de7b8c26ff9e3b7ed6472049b873a",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20200623000198.zip": "f72fad987991a845a50a28dc1e9fe9c2a550d510c98a7d64b2895bacba71cf28",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2020\\rights_off\\20200707000457\\body.html": "a01ed03c2a09929363d7844bbbbd1b4c776ffa41e7a7939cfa400f4c1d12f5f5",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20230310000538.zip": "ea62ba3e35e16ae2cd675887a5eb4693f7247bfc352178521d608bfd56dc6ffe",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2023\\rights_off\\20230323001829\\body.html": "fa44323986d0a52fab77d9eef2c09708b5f5c54d291df1f2ca601d7fa24b8db5",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20201015000100.zip": "a555f76ecbcbc77af377983571857345efaef5dd0e8b98c75f9853d8f6f18479",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\kind\\market-actions-price-position-2015-2023\\2020\\rights_off\\20201028000452\\body.html": "cd7cb056e156eb74f6fea95bfc4fa2723836aa02814f7ceb7bc0bb44cc0f0304",
+    "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\full-plan-major-2015-2023\\raw\\list_responses\\006740_page1.json": "52727502fb5fe82c6dff5c3e701a9ac26436a118bbdd2c0ab4efaf3bf10f71cc"
+  },
+  "rows": [
+    {
+      "key": "003000:2016-12-28",
+      "kind": "STOCK_DIVIDEND",
+      "total_common_shares": "37387521",
+      "new_common_shares": "7176963",
+      "allotment_ratio": "0.20",
+      "treasury_excluded": "1502704",
+      "eligible_common_shares": "35884817",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.40",
+      "holder_factor": "1.20",
+      "total_share_factor": "1.191961456872200753829065051",
+      "price_back_factor": "1.190019193857965451055662188",
+      "direct_relative_gap": "0.008387096774193548387096774278",
+      "total_relative_gap": "0.001632127468413859266036921973",
+      "rcept_no": "20161212800116",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20161212800116.zip",
+      "raw_sha256": "c241c85ee571e08767f270937f444d46a7504c2592b2968cfff073c566a82515",
+      "denominator_excerpts": [
+        "으로 환산하여 현금지급할 예정입니다. 2. 상기의 배당주식 총수는 발행주식 총수 37,387,521주에서 이사회 결의일 현재 자기주식 1,502,704주를 차감한 35,884,817주를 대상으로 산정된 주식수입니다. 3. 상기 주식배당 결정의 건은 2016년 12월 12일 결의한 현금배당(안)을 포함하여 제57기(2016.01.01~2016.12.31) 정기주주총회의 부의안건으로 상정할 예정이며, 결의과정에서 변경 될 수 있습니다. "
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2016/dividend_off/20161227000636/body.html",
+          "sha256": "77fdd72123e0832eb48029b53747ab7f77441afb71828a897b869b34142d95d0",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "주식배당",
+          "event_kind": "STOCK_DIVIDEND"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "003000:2020-12-29",
+      "kind": "STOCK_DIVIDEND",
+      "total_common_shares": "64837978",
+      "new_common_shares": "6225071",
+      "allotment_ratio": "0.10",
+      "treasury_excluded": "2587266",
+      "eligible_common_shares": "62250712",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.20",
+      "holder_factor": "1.10",
+      "total_share_factor": "1.096009641139641954904886146",
+      "price_back_factor": "1.094339622641509433962264151",
+      "direct_relative_gap": "0.005172413793103448275862068914",
+      "total_relative_gap": "0.001526051386224544999292512672",
+      "rcept_no": "20201207800176",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20201207800176.zip",
+      "raw_sha256": "0f94e68885b9ca9a22cb3c8d35d4ed45b0213505aef539063505d9b67a38dbf9",
+      "denominator_excerpts": [
+        "준으로 환산하여 현금지급할 예정입니다. 2. 상기의 배당주식 총수는 이사회결의일 현재 발행주식 총수 64,837,978주에서 자기주식2,587,266주를 차감한 62,250,712주를 대상으로 산정된 주식수 입니다. 3. 상기 주식배당 결정의 건은 2020년 12월 07일 결의한 현금배당(안)을 포함하여 제61기(2020.01.01~2020.12.31) 정기주주총회의 부의안건으로 상정할 예정이며, 결의과정에서 변경될 수 있습니다. ※"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2020/dividend_off/20201228000549/body.html",
+          "sha256": "710857610aae53f67540f6fac04aad982580b2023e87157d8975cf944dc79d22",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "주식배당",
+          "event_kind": "STOCK_DIVIDEND"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "003690:2022-12-12",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "120369116",
+      "new_common_shares": "20453823",
+      "allotment_ratio": "0.2",
+      "treasury_excluded": "18100000",
+      "eligible_common_shares": "102269116",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.2",
+      "holder_factor": "1.2",
+      "total_share_factor": "1.169925838784094750683389583",
+      "price_back_factor": "1.169786096256684491978609626",
+      "direct_relative_gap": "0.02582857142857142857142857114",
+      "total_relative_gap": "0.0001194598977175697270576089554",
+      "rcept_no": "20221128000539",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20221128000539.zip",
+      "raw_sha256": "bf5cac89d75ee869970877b265126f4133120399aa4fdfb5f717e88255ee55e3",
+      "denominator_excerpts": [
+        ")참석 여부 참석 10. 기타 투자판단에 참고할 사항 1) 신주배정 : 2022년 12월 13일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 0.2주의 비율로 신주를 배정합니다.2) 무상증자 배정내역 (단위: 주) 구분 무상증자 전 무상증자 배정내역 무상증자 후 보통주 120,369,116 20,453,823 140,822,939 합계 120,369,116 20,453,823 140,822,939 3) 신주배",
+        "53,823 140,822,939 합계 120,369,116 20,453,823 140,822,939 3) 신주배정권이 없는 자기주식의 총수: 18,100,000 주4) 신주의 재원 : 주식발행초과금(자본잉여금)5) 단수주처리 : 1주 미만의 단수주는 신주의 상장 초일 종가를 기준으로 하여 현금으로 지급합니다.6) 신주권 교부 예정일은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였습니다.7) 상기 일정은 관계 기관과의 협의"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2022/rights_off/20221209000368/body.html",
+          "sha256": "df5d1d2d6d614894c775ba3e3e247eb2f11568b82943e7952d9d3bcd3d7833f1",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "권리락(무상증자)",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "003690:2023-11-20",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "140822939",
+      "new_common_shares": "24544587",
+      "allotment_ratio": "0.2",
+      "treasury_excluded": "18100000",
+      "eligible_common_shares": "122722939",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.8",
+      "holder_factor": "1.2",
+      "total_share_factor": "1.174293955049468183589038715",
+      "price_back_factor": "1.173126614987080103359173127",
+      "direct_relative_gap": "0.02290748898678414096916299526",
+      "total_relative_gap": "0.0009950674100092225747973184050",
+      "rcept_no": "20231106000177",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20231106000177.zip",
+      "raw_sha256": "fa08931826d08cb7ea0d26148c55ee57c7bbb94ece171ba50e92d2c24ccef4c3",
+      "denominator_excerpts": [
+        ")참석 여부 참석 10. 기타 투자판단에 참고할 사항 1) 신주배정 : 2023년 11월 21일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 0.2주의 비율로 신주를 배정합니다.2) 무상증자 배정내역 (단위: 주) 구분 무상증자 전 무상증자 배정내역 무상증자 후 보통주 140,822,939 24,544,587 165,367,526 합계 140,822,939 24,544,587 165,367,526 3) 신주배",
+        "44,587 165,367,526 합계 140,822,939 24,544,587 165,367,526 3) 신주배정권이 없는 자기주식의 총수: 18,100,000 주4) 신주의 재원 : 주식발행초과금(자본잉여금)5) 단수주처리 : 1주 미만의 단수주는 신주의 상장 초일 종가를 기준으로 하여 현금으로 지급합니다.6) 신주권 교부 예정일은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였습니다.7) 상기 일정은 관계 기관과의 협의"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2023/rights_off/20231117000275/body.html",
+          "sha256": "24faafb704277594c02ccbbaf80f979c2cdf9c0eb389960c7c4c41177f338de7",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "권리락(무상증자)",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 28,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "006740:2023-04-19",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "19981162",
+      "new_common_shares": "26500986",
+      "allotment_ratio": "1.5",
+      "treasury_excluded": null,
+      "eligible_common_shares": null,
+      "denominator_status": "UNRESOLVED_ALREADY_CANCELLED_TREASURY",
+      "new_minus_ratio_times_eligible": null,
+      "holder_factor": "2.5",
+      "total_share_factor": "2.326298540595386794822042882",
+      "price_back_factor": "2.324665090622537431048069346",
+      "direct_relative_gap": "0.07542372881355932203389830506",
+      "total_relative_gap": "0.0007026603442528280098889549776",
+      "rcept_no": "20230404003162",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20230404003162.zip",
+      "raw_sha256": "f6becd5a863e0159cde59d736861aa1f0b568d939d059706f3eb7000d829de20",
+      "denominator_excerpts": [
+        "년 12월 31일 기준 발행주식총수 22,295,000주에서 2023년 4월 3일 소각(결정일 : 2023년 3월 30일)한 자기주식 2,313,838주를 차감한 주식수입니다.4) 단수주 처리방법 : 신주의 상장 초일 종가를 기준으로 매각하여 현금 지급5) 상기 7. 신주권교부예정일은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략 하였습니다.6) 상기 8. 신주의 상장 예정일은 관계 기관과의 협의에 따라 일부 변동될 수 있습니"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2023/rights_off/20230418000319/body.html",
+          "sha256": "e2cdbb4f6a3bd3af809beb752c99d10986816374fdb7e036000ddd020362e095",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "권리락(무상증자)",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 32,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "025900:2018-12-27",
+      "kind": "STOCK_DIVIDEND",
+      "total_common_shares": "14356756",
+      "new_common_shares": "5841626",
+      "allotment_ratio": "0.5",
+      "treasury_excluded": "2673503",
+      "eligible_common_shares": "11683253",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.5",
+      "holder_factor": "1.5",
+      "total_share_factor": "1.406890386658378814824184516",
+      "price_back_factor": "1.406047516198704103671706263",
+      "direct_relative_gap": "0.06682027649769585253456221236",
+      "total_relative_gap": "0.0005994608645612769026074211047",
+      "rcept_no": "20181206900411",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20181206900411.zip",
+      "raw_sha256": "99f1d3067f8b380c31db40daa0b2b1c761bca721c30f16698e33ad36e2c989b0",
+      "denominator_excerpts": [
+        "안건으로 상정될 예정이며, 주주총회의 결과에 따라 변경될 수 있음 - 배당주식의 총수는 발행주식총수 14,356,756주에서 자기주식 2,673,503주를 제외한 11,683,253주를 대상으로 산정한 주식수임 - 1주 미만의 단수주는 제71기 정기주주총회 전일 종가를 기준으로 환산하여 현금 지급할 예정임 ※ 관련공시 -"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2018/dividend_off/20181226000678/body.html",
+          "sha256": "68f1b807ab83ceb5527693d656e6d4d6f912927b9919bccc6cdbbf6216bc849c",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "주식배당",
+          "event_kind": "STOCK_DIVIDEND"
+        }
+      ],
+      "signal_eligible_dependency_days": 24,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "049950:2018-12-27",
+      "kind": "STOCK_DIVIDEND",
+      "total_common_shares": "7864540",
+      "new_common_shares": "279692",
+      "allotment_ratio": "0.04",
+      "treasury_excluded": "872239",
+      "eligible_common_shares": "6992301",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.04",
+      "holder_factor": "1.04",
+      "total_share_factor": "1.035563682046248095883548180",
+      "price_back_factor": "1.034700315457413249211356467",
+      "direct_relative_gap": "0.005121951219512195121951219393",
+      "total_relative_gap": "0.0008344122215263609606243079908",
+      "rcept_no": "20181219900068",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20181219900068.zip",
+      "raw_sha256": "2c25bf40a594dd8f88387973eccadcaa39a88da7435e8d89f0e31cdd43d6df57",
+      "denominator_excerpts": [
+        "로 상정될 예정이며, 주주총회의 결과에 따라 변경될 수 있습니다. 2. 배당주식의 총수는 발행주식총수 7,864,540주에서 자기주식 872,239주를 제외한 6,992,301주를 대상으로 산정한 주식수입니다. 3. 1주 미만의 단수주는 제26기 정기주주총회 전일 종가를 기준으로 환산하여 현금 지급할 예정입니다. ※ 관련공시 -"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2018/dividend_off/20181226000687/body.html",
+          "sha256": "a38466df9cef1fcb2db30c642a84e52f35f4017d49094a1438e186ed875b26a9",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "주식배당",
+          "event_kind": "STOCK_DIVIDEND"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "060250:2021-11-25",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "24502769",
+      "new_common_shares": "11513646",
+      "allotment_ratio": "0.5",
+      "treasury_excluded": "1475477",
+      "eligible_common_shares": "23027292",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0.0",
+      "holder_factor": "1.5",
+      "total_share_factor": "1.469891627350361912157764700",
+      "price_back_factor": "1.468710089399744572158365262",
+      "direct_relative_gap": "0.02130434782608695652173913031",
+      "total_relative_gap": "0.0008044732307246758430693564816",
+      "rcept_no": "20211111000283",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20211111000283.zip",
+      "raw_sha256": "1a2ea420aa8e33c6ae8bf993846f881594701b1d378c08cb128322adbec496a5",
+      "denominator_excerpts": [
+        "0. 기타 투자판단에 참고할 사항&cr;&cr;1) 무상증자 배정내역 (단위 : 주) 구분 증자 전 배정내역 증자 후 보통주(자기주식 제외) 23,027,292 11,513,646 34,540,938 자기주식 1,475,477 - 1,475,477 계 24,502,769 11,513,646 36,016,415 &cr;2) 신주의 배정방법 및 단주처리: 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 ",
+        " : 주) 구분 증자 전 배정내역 증자 후 보통주(자기주식 제외) 23,027,292 11,513,646 34,540,938 자기주식 1,475,477 - 1,475,477 계 24,502,769 11,513,646 36,016,415 &cr;2) 신주의 배정방법 및 단주처리: 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 0.5주의 비율로 신주를 배정하며, 1주 미만의 단주인 경우에는 신주",
+        "513,646 36,016,415 &cr;2) 신주의 배정방법 및 단주처리: 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 0.5주의 비율로 신주를 배정하며, 1주 미만의 단주인 경우에는 신주의 상장 초일 종가를 기준으로 현금 지급할 예정입니다.&cr;&cr;3) 신주의 재원: 주식발행초과금&cr;&cr;4) 신주의 배정권이 없는 주식의 총수: 자기주식 1,475,477주&cr;&cr;5) ",
+        "현금 지급할 예정입니다.&cr;&cr;3) 신주의 재원: 주식발행초과금&cr;&cr;4) 신주의 배정권이 없는 주식의 총수: 자기주식 1,475,477주&cr;&cr;5) 상기 '6.신주의 배당기산일'은 당사 정관 제13조에 따라 해당 신주를 발행한 때가 속하는 사업년도의 직전사업년도말 기준으로 작성되었습니다.&cr;&cr;6) 상기 '7. 신주권 교부예정일'은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였습니다.&cr;&"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2021/rights_off/20211124000336/body.html",
+          "sha256": "c3412d0a2fb8ece54991cab956c0a6cdee72eb8ae0caa53d46f4ff9cfdb4c7f6",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "060250:2021-12-29",
+      "kind": "STOCK_DIVIDEND",
+      "total_common_shares": "36016415",
+      "new_common_shares": "4144196",
+      "allotment_ratio": "0.12",
+      "treasury_excluded": "1481448",
+      "eligible_common_shares": "34534967",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "-0.04",
+      "holder_factor": "1.12",
+      "total_share_factor": "1.115064089526955972714108275",
+      "price_back_factor": "1.113636363636363636363636364",
+      "direct_relative_gap": "0.005714285714285714285714285386",
+      "total_relative_gap": "0.001282039575225771416750287428",
+      "rcept_no": "20211220900417",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20211220900417.zip",
+      "raw_sha256": "c2f66c6bd741f1fb87ca9b442a256818cb8523acc0d9b933424f0ec60ec252cb",
+      "denominator_excerpts": [
+        "으로 상정할 예정이며 주주총회 승인결과에 따라 변경될 수 있습니다. 2) 배당주식총수는 총 발행주식 36,016,415주 중 자기주식 1,481,448주를 제외한 34,534,967주 대상으로 12% 적용한 수량입니다. 3) 1주 미만의 단주는 제27기 정기주주총회인의 전일 종가를 기준으로 환산하여 현금 지급할 예정입니다. ※ 관련공시 -"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2021/dividend_off/20211228000733/body.html",
+          "sha256": "c0d974d9fd223ce22fde1ac13e9e6cadd42280f3b0a361b30b7dd57a313d0a71",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "주식배당",
+          "event_kind": "STOCK_DIVIDEND"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "078160:2019-03-29",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "7868421",
+      "new_common_shares": "7749421",
+      "allotment_ratio": "1.0",
+      "treasury_excluded": "119000",
+      "eligible_common_shares": "7749421",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0.0",
+      "holder_factor": "2.0",
+      "total_share_factor": "1.984876254079439826618326600",
+      "price_back_factor": "1.983914209115281501340482574",
+      "direct_relative_gap": "0.008108108108108108108108107969",
+      "total_relative_gap": "0.0004849226643662909846430022945",
+      "rcept_no": "20190315000139",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20190315000139.zip",
+      "raw_sha256": "04c11527a4f0c76ba5060c56e8b90aa4771ada5b5f7916468ee7042e8f979ae2",
+      "denominator_excerpts": [
+        "49,421 15,617,842 합 계 7,868,421 7,749,421 15,617,842 &cr;2) 신주배정권이 없는 자기주식의 총수 : 119,000주&cr;&cr;3) 신주의 재원 : 주식발행초과금&cr;&cr;4) 신주의 배정 및 단수주처리 : 2019년 4월 1일 0시 현재 주주명부에 등재된 주주 (자기주식제외)에 대하여 신주를 배정하며 신주 배정비율이 1:1이므로 단수주는 발생하지 않습니다.&cr;&cr;5) 신주 배",
+        " : 주식발행초과금&cr;&cr;4) 신주의 배정 및 단수주처리 : 2019년 4월 1일 0시 현재 주주명부에 등재된 주주 (자기주식제외)에 대하여 신주를 배정하며 신주 배정비율이 1:1이므로 단수주는 발생하지 않습니다.&cr;&cr;5) 신주 배정분 중 회사가 보유한 자기주식 무배정에 따른 일반주주들의 지분 증가분은 의제배당에 해당되어 배당소득에 대한 과세가 될 수 있습니다. &cr;&cr;6) 기타 신주 발행에 대한 부수적인 사항",
+        "여 신주를 배정하며 신주 배정비율이 1:1이므로 단수주는 발생하지 않습니다.&cr;&cr;5) 신주 배정분 중 회사가 보유한 자기주식 무배정에 따른 일반주주들의 지분 증가분은 의제배당에 해당되어 배당소득에 대한 과세가 될 수 있습니다. &cr;&cr;6) 기타 신주 발행에 대한 부수적인 사항은 대표이사에게 위임하며, 상기일정은 관계기관과의 협의 과정에서 변경될 수 있습니다. &cr;※ 기타주식에 관한 사항 정관의 근거 - 주식의 내용"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2019/rights_off/20190328000997/body.html",
+          "sha256": "efd07ea3ff0d9224ad66eaedccfdf375b9859bcddb8ee0f3ed703fb7c2c67f05",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 38,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "080160:2017-06-21",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "12600000",
+      "new_common_shares": "6300000",
+      "allotment_ratio": "0.5294815",
+      "treasury_excluded": null,
+      "eligible_common_shares": "11898431",
+      "denominator_status": "VOTING_SHARES_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0.9064735",
+      "holder_factor": "1.5294815",
+      "total_share_factor": "1.5",
+      "price_back_factor": "1.499222395023328149300155521",
+      "direct_relative_gap": "0.02018319968879668049792531120",
+      "total_relative_gap": "0.0005186721991701244813278008268",
+      "rcept_no": "20170602000059",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20170602000059.zip",
+      "raw_sha256": "8563376951d87ddeba2614d5925433bb2fb8bb571916c25c4f17463cbcfb500b",
+      "denominator_excerpts": [
+        " &cr; 신주상장 초일 종가를 기준으로 매각하여 현금으로 지급합니다. &cr;2) 1주당 신주배정주식수는 무상증자 결정일의 의결권있는 주식수(11,898,431주)&cr; 대비 배정주식수입니다.&cr;3) 신주의 재원은 자본잉여금 중의 주식발행초과금 3,150,000,000원입니다.&cr;4) 상기 일정은 관계기관과의 협의과정에서 변경될 수 있으며, 단수주 처리 등&cr; 신주발행과 관련한 기타 세부결정사항은 대표이사에게 위임합니다."
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2017/rights_off/20170620000304/body.html",
+          "sha256": "a002662d375e6501439f99fd0703e43060e35b08ce00d75ee9115f9676719488",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "085370:2017-03-02",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "10903041",
+      "new_common_shares": "10547602",
+      "allotment_ratio": "1",
+      "treasury_excluded": "355439",
+      "eligible_common_shares": "10547602",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "2",
+      "total_share_factor": "1.967400012528614723176772425",
+      "price_back_factor": "1.966666666666666666666666667",
+      "direct_relative_gap": "0.01694915254237288135593220322",
+      "total_relative_gap": "0.0003728877264142660220876735593",
+      "rcept_no": "20170216000129",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20170216000129.zip",
+      "raw_sha256": "377c7f155e55dd70166cfd1cee627a60d805b1e577fcfe710fadb5850b02a7c6",
+      "denominator_excerpts": [
+        ": 2017년 3월 3일 현재 주주명부에 등재된 주주에 대하여 소유주식 1주당 그와 같은 종류의 주식 1주 를 배정함. 단, 자기주식(355,439주)에는 배정하지 아니함 &cr;* 2우선주(298,933주, 비상장우선주)에 배정하는 신주 : 비상장. 발행일을 제외하고 2우선주와 동일&cr;* 3우선주(1,701,067주,상장우선주)에 배정하는 신주 : 상장. 우선배당률 및 발행일을 제외하고 3우선주와 동일 - 우선배당률 2017년 "
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2017/rights_off/20170228000795/body.html",
+          "sha256": "b5257888b7fff80a30155951b22a0c681273d55d94a89409ff7b7d570e58fe6e",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "096530:2021-04-23",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "26234020",
+      "new_common_shares": "25991974",
+      "allotment_ratio": "1",
+      "treasury_excluded": "242046",
+      "eligible_common_shares": "25991974",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "2",
+      "total_share_factor": "1.990773583309001060455088469",
+      "price_back_factor": "1.989795918367346938775510204",
+      "direct_relative_gap": "0.005128205128205128205128205169",
+      "total_relative_gap": "0.0004913393040107893569162562564",
+      "rcept_no": "20210408000197",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20210408000197.zip",
+      "raw_sha256": "38c459f3bc042febc775919f011510791fa8abf70e077c857436c11fcaf4d8aa",
+      "denominator_excerpts": [
+        "투자판단에 참고할 사항 1) 무상증자 배정내역 (단위 : 주) 구 분 무상증자 전 무상증자&cr;배정내역 무상증자 후 보통주(자기주식 제외) 25,991,974 25,991,974 51,983,948 보통주(자기주식) 242,046 - 242,046 합 계 26,234,020 25,991,974 52,225,994 &cr;2) 신주의 배정방법 및 단주 처리 : 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 ",
+        "무상증자&cr;배정내역 무상증자 후 보통주(자기주식 제외) 25,991,974 25,991,974 51,983,948 보통주(자기주식) 242,046 - 242,046 합 계 26,234,020 25,991,974 52,225,994 &cr;2) 신주의 배정방법 및 단주 처리 : 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 1주의 비율로 신주를 배정함. 단, 1주 미만의 단주인 경우에는 신",
+        "1,974 52,225,994 &cr;2) 신주의 배정방법 및 단주 처리 : 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 1주의 비율로 신주를 배정함. 단, 1주 미만의 단주인 경우에는 신주의 상장 초일 종가를 기준으로 현금으로 지급합니다.&cr;&cr;3) 신주의 재원 및 전입금액 : 주식발행초과금 12,995,987,000원&cr;&cr;4) 신주의 배정권이 없는 주식의 총수 : 자기주",
+        "주의 재원 및 전입금액 : 주식발행초과금 12,995,987,000원&cr;&cr;4) 신주의 배정권이 없는 주식의 총수 : 자기주식 242,046주&cr;&cr;5) 신주권교부예정일은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였습니다.&cr;&cr;6) 기타 신주발행에 관한 세부 사항에 대해서는 대표이사에게 일임하며, 상기 일정은 관계기관과의 협의과정에서 변동될 수 있습니다. ※ 기타주식에 관한 사항 정관의 근거 - 주"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2021/rights_off/20210422000411/body.html",
+          "sha256": "fd279ddea200f18c74e2c6c4f87fed085e6b588f0d2c559333db524ab97f974d",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "109610:2016-07-27",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "6200000",
+      "new_common_shares": "5950000",
+      "allotment_ratio": "1",
+      "treasury_excluded": "250000",
+      "eligible_common_shares": "5950000",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "2",
+      "total_share_factor": "1.959677419354838709677419355",
+      "price_back_factor": "1.956772334293948126801152738",
+      "direct_relative_gap": "0.02209131075110456553755522815",
+      "total_relative_gap": "0.001484631098864554135588388953",
+      "rcept_no": "20160712000025",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20160712000025.zip",
+      "raw_sha256": "06b6e289714a7a701810b1a805f8463947be67576eb52216a3e4ade1225831a0",
+      "denominator_excerpts": [
+        "원)참석 여부 참석 10. 기타 투자판단에 참고할 사항 1) 신주배정 : 2016년 7월 28일 현재 주주명부에 등재된 주주(자기주식 제외) 에 대하여 1주당 1주 비율로 신주를 배정합니다.&cr;2) 신주의 재원 : 주식발행초과금&cr;3) 신주배정권이 없는 자기주식의 총수 : 250,000주&cr;4) 무상증자 대상 주식수는 총 발행주식수 6,200,000주에서 자기주식 250,000주를 차감한 5,950,000주 입니다.&cr;",
+        "외) 에 대하여 1주당 1주 비율로 신주를 배정합니다.&cr;2) 신주의 재원 : 주식발행초과금&cr;3) 신주배정권이 없는 자기주식의 총수 : 250,000주&cr;4) 무상증자 대상 주식수는 총 발행주식수 6,200,000주에서 자기주식 250,000주를 차감한 5,950,000주 입니다.&cr;5) 상기 \"7. 신주권교부예정일\" 및 \"8. 신주의 상장 예정일\"은 관계기관과의 협의에 따라 일부 변동될 수 있습니다.&cr; ※ 기타",
+        "신주배정권이 없는 자기주식의 총수 : 250,000주&cr;4) 무상증자 대상 주식수는 총 발행주식수 6,200,000주에서 자기주식 250,000주를 차감한 5,950,000주 입니다.&cr;5) 상기 \"7. 신주권교부예정일\" 및 \"8. 신주의 상장 예정일\"은 관계기관과의 협의에 따라 일부 변동될 수 있습니다.&cr; ※ 기타주식에 관한 사항 정관의 근거 - 주식의 내용 - 기타 -"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2016/rights_off/20160726000319/body.html",
+          "sha256": "c15aa15fb277987111c297e83f13c830b0907e0b732160af6efcf23b5ccb9771",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 16,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "112040:2021-09-13",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "16800000",
+      "new_common_shares": "16452252",
+      "allotment_ratio": "1",
+      "treasury_excluded": "347748",
+      "eligible_common_shares": "16452252",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "2",
+      "total_share_factor": "1.979300714285714285714285714",
+      "price_back_factor": "1.979557069846678023850085179",
+      "direct_relative_gap": "0.01032702237521514629948364882",
+      "total_relative_gap": "0.0001295014752889107450209001334",
+      "rcept_no": "20210830001214",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20210830001214.zip",
+      "raw_sha256": "2b64d4232a5292399d2ca3a45b3eb0c8f8caff6bfefefb7b0c007d129a729562",
+      "denominator_excerpts": [
+        "판단에 참고할 사항 1) 무상증자 배정 내역&cr; (단위 : 주) 구 분 무상증자 전 무상증자 배정내역 무상증자 후 보통주(자기주식 제외) 16,452,252 16,452,252 32,904,504 보통주(자기주식) 347,748 - 347,748 합 계 16,800,000 16,452,252 33,252,252 &cr; 2) 신주배정방법 : 2021년 9월 14일 현 재 주주명부에 등재된 주주에 대하여 소유주식 1주 당 1주의 비",
+        " 전 무상증자 배정내역 무상증자 후 보통주(자기주식 제외) 16,452,252 16,452,252 32,904,504 보통주(자기주식) 347,748 - 347,748 합 계 16,800,000 16,452,252 33,252,252 &cr; 2) 신주배정방법 : 2021년 9월 14일 현 재 주주명부에 등재된 주주에 대하여 소유주식 1주 당 1주의 비율로 신주를 배정함 &cr;3) 단주처리방법 : 1주당 1주의 비율로 배정함에 따라",
+        "율로 신주를 배정함 &cr;3) 단주처리방법 : 1주당 1주의 비율로 배정함에 따라 단수주가 발생하지 않음&cr;&cr;4) 자기주식 등 신주의 배정권이 없는 주식의 총수 : 347,748주&cr;&cr;5) 신주의 재원 : 주식발행초과금&cr;&cr;6) 신주권교부예정일은 전자증권제도 시행에 따라 해당사항 없음&cr;&cr;7) 기타 신주 발행에 대한 부수적인 사항은 대표이사에게 위임하며, 상기일정은 관계기간과의 협의 과정에서 변경"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2021/rights_off/20210910000439/body.html",
+          "sha256": "e45cd56f299561249766c8d0609eb5433c9de7b8c26ff9e3b7ed6472049b873a",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "145020:2020-07-08",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "4319765",
+      "new_common_shares": "8350370",
+      "allotment_ratio": "2",
+      "treasury_excluded": "144580",
+      "eligible_common_shares": "4175185",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "3",
+      "total_share_factor": "2.933061173466612188394507572",
+      "price_back_factor": "2.932432432432432432432432432",
+      "direct_relative_gap": "0.02304147465437788018433179739",
+      "total_relative_gap": "0.0002144093849276587151776975116",
+      "rcept_no": "20200623000198",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20200623000198.zip",
+      "raw_sha256": "f72fad987991a845a50a28dc1e9fe9c2a550d510c98a7d64b2895bacba71cf28",
+      "denominator_excerpts": [
+        ")참석 여부 참석 10. 기타 투자판단에 참고할 사항 1) 신주배정방법 : 2020년 7월 9일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 신주 2주의 비율로 배정할 예정입니다.&cr;2) 주주확정을 위한 주주명부 폐쇄기간 : 2020년 7월 10일 ~ 2020년 7월 16일&cr;3) 신주의 재원 : 주식발행초과금&cr;4) 신주배정권이 없는 자기주식의 총수 : 144,580주&cr;5) 무상증자 대상 주",
+        " : 2020년 7월 10일 ~ 2020년 7월 16일&cr;3) 신주의 재원 : 주식발행초과금&cr;4) 신주배정권이 없는 자기주식의 총수 : 144,580주&cr;5) 무상증자 대상 주식수 : 발행주식총수 4,319,765주에서 자기주식 144,580주를 제외한 4,175,185주입니다.&cr;6) 단수주 처리방법 : 1주당 신주배정 주식수가 2주이므로, 단수주가 발생하지 않습니다. &cr;7) 상기 '7. 신주권교부예정일'은 전",
+        "신주배정권이 없는 자기주식의 총수 : 144,580주&cr;5) 무상증자 대상 주식수 : 발행주식총수 4,319,765주에서 자기주식 144,580주를 제외한 4,175,185주입니다.&cr;6) 단수주 처리방법 : 1주당 신주배정 주식수가 2주이므로, 단수주가 발생하지 않습니다. &cr;7) 상기 '7. 신주권교부예정일'은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였습니다.&cr;8) 상기 '8. 신주의 상장 예정일'은"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2020/rights_off/20200707000457/body.html",
+          "sha256": "a01ed03c2a09929363d7844bbbbd1b4c776ffa41e7a7939cfa400f4c1d12f5f5",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 60,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "205470:2023-03-24",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "33910335",
+      "new_common_shares": "95464674",
+      "allotment_ratio": "3",
+      "treasury_excluded": "2088777",
+      "eligible_common_shares": "31821558",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "4",
+      "total_share_factor": "3.815208814657832191867169699",
+      "price_back_factor": "3.813895781637717121588089330",
+      "direct_relative_gap": "0.04879635653871177618737800912",
+      "total_relative_gap": "0.0003442760618779266899605651965",
+      "rcept_no": "20230310000538",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20230310000538.zip",
+      "raw_sha256": "ea62ba3e35e16ae2cd675887a5eb4693f7247bfc352178521d608bfd56dc6ffe",
+      "denominator_excerpts": [
+        "원)참석 여부 불참 10. 기타 투자판단에 참고할 사항 1) 신주배정방법 : 상기 신주배정기준일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 3주의 비율로 신주를 배정할 예정입니다.2) 신주의 재원 : 주식발행초과금 9,546,467,400원3) 상기 7. 신주권교부예정일은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였습니다.4) 무상증자 배정내역 구분 무상증자 전 무상증자 배정 무상증자 후 보통주",
+        "시행에 따라 해당사항이 없어 기재를 생략하였습니다.4) 무상증자 배정내역 구분 무상증자 전 무상증자 배정 무상증자 후 보통주(자기주식제외) 31,821,558 95,464,674 127,286,232 보통주(자기주식) 2,088,777 - 2,088,777 합 계 33,910,335 95,464,674 129,375,009 5) 상기 8. 신주의 상장 예정일은 관계기관과 협의에 따라 일부 변동될 수 있습니다. ※ 기타주식에 관한 사항",
+        "증자 전 무상증자 배정 무상증자 후 보통주(자기주식제외) 31,821,558 95,464,674 127,286,232 보통주(자기주식) 2,088,777 - 2,088,777 합 계 33,910,335 95,464,674 129,375,009 5) 상기 8. 신주의 상장 예정일은 관계기관과 협의에 따라 일부 변동될 수 있습니다. ※ 기타주식에 관한 사항 정관의 근거 - 주식의 내용 - 기타 -"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2023/rights_off/20230323001829/body.html",
+          "sha256": "fa44323986d0a52fab77d9eef2c09708b5f5c54d291df1f2ca601d7fa24b8db5",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 6,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    },
+    {
+      "key": "290510:2020-10-29",
+      "kind": "BONUS_ISSUE",
+      "total_common_shares": "24460010",
+      "new_common_shares": "48539802",
+      "allotment_ratio": "2",
+      "treasury_excluded": "190109",
+      "eligible_common_shares": "24269901",
+      "denominator_status": "TREASURY_EXCLUDED_SOURCE_CONFIRMED",
+      "new_minus_ratio_times_eligible": "0",
+      "holder_factor": "3",
+      "total_share_factor": "2.984455525570104018763688159",
+      "price_back_factor": "2.983870967741935483870967742",
+      "direct_relative_gap": "0.005405405405405405405405405384",
+      "total_relative_gap": "0.0001959058667375630451279235351",
+      "rcept_no": "20201015000100",
+      "raw_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\allotment-ratio-2015-2023\\raw\\documents\\20201015000100.zip",
+      "raw_sha256": "a555f76ecbcbc77af377983571857345efaef5dd0e8b98c75f9853d8f6f18479",
+      "denominator_excerpts": [
+        "1,096 3,046,644 합 계 25,475,558 50,570,898 76,046,456 &cr;2) 신주배정권이 없는 자기주식의 총수 : 보통주식 190,109주&cr;&cr;3) 신주의 재원 : 주식발행초과금&cr;&cr;4) 신주의 배정 및 단수주처리 : 2020년 10월 30일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 2주의 비율로 신주를 배정함. 1주당 2주의 비율로 배정함으로 단수주는 발생",
+        "재원 : 주식발행초과금&cr;&cr;4) 신주의 배정 및 단수주처리 : 2020년 10월 30일 현재 주주명부에 등재된 주주(자기주식 제외)에 대하여 소유주식 1주당 2주의 비율로 신주를 배정함. 1주당 2주의 비율로 배정함으로 단수주는 발생하지 않음.&cr;&cr;5) 신주권교부예정일은 전자증권제도 시행에 따라 해당사항이 없어 기재를 생략하였음.&cr;&cr;6) 기타 신주 발행에 대한 부수적인 사항은 대표이사에게 위임하며, 상기일"
+      ],
+      "reference_sources": [
+        {
+          "path": "data/sources/kind/market-actions-price-position-2015-2023/2020/rights_off/20201028000452/body.html",
+          "sha256": "cd7cb056e156eb74f6fea95bfc4fa2723836aa02814f7ceb7bc0bb44cc0f0304",
+          "hash_verified": true,
+          "origin": "BASE_REVIEWED_REFERENCE",
+          "official_reason": "무상증자",
+          "event_kind": "BONUS_ISSUE"
+        }
+      ],
+      "signal_eligible_dependency_days": 39,
+      "price_admitted": true,
+      "volume_admitted": false,
+      "signal_admitted": false
+    }
+  ],
+  "context_initial_wbs_sha256": "a941d6102344f0dbcbee8c31953779bbdd4ae1fba751c9269a94ff3221d10167",
+  "correction_followup": {
+    "stock_code": "006740",
+    "effective_date": "2023-04-19",
+    "list_path": "C:\\Users\\aeby\\vscode\\ted-startup\\data\\sources\\dart\\full-plan-major-2015-2023\\raw\\list_responses\\006740_page1.json",
+    "list_sha256": "52727502fb5fe82c6dff5c3e701a9ac26436a118bbdd2c0ab4efaf3bf10f71cc",
+    "rcept_no": "20230406002900",
+    "rcept_dt": "20230406",
+    "report_nm": "[기재정정]주요사항보고서(무상증자결정)",
+    "correction_content_verified": false,
+    "denominator_still_unresolved": true,
+    "note": "Stored listing existence only; no replacement of original notice or policy admission. A narrow filename search did not locate this correction document."
+  }
+}
