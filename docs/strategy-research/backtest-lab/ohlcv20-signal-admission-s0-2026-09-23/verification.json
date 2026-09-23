@@ -1,0 +1,65 @@
+{
+  "schema": "ohlcv20-signal-admission-consumer-check-v1",
+  "verdict": "MATCH",
+  "fields": {
+    "raw_bars_total": {
+      "consumer": 1829295,
+      "provider": 1829295,
+      "diff": 0,
+      "match": true
+    },
+    "r1_pass_price": {
+      "consumer": 1785985,
+      "provider": 1785985,
+      "diff": 0,
+      "match": true
+    },
+    "r1_pass_volume": {
+      "consumer": 1692725,
+      "provider": 1692725,
+      "diff": 0,
+      "match": true
+    },
+    "r2_additional_excluded_price": {
+      "consumer": 127057,
+      "provider": 127057,
+      "diff": 0,
+      "match": true
+    },
+    "r1_r2_pass_price": {
+      "consumer": 1658928,
+      "provider": 1658928,
+      "diff": 0,
+      "match": true
+    },
+    "r3_no_match_price": {
+      "consumer": 131409,
+      "provider": 131409,
+      "diff": 0,
+      "match": true
+    },
+    "r3_mismatch_price": {
+      "consumer": 103933,
+      "provider": 103933,
+      "diff": 0,
+      "match": true
+    },
+    "final_valid_bars_price": {
+      "consumer": 1423586,
+      "provider": 1423586,
+      "diff": 0,
+      "match": true
+    }
+  },
+  "input_sha256": {
+    "provider_evidence": "caffb00545a8c91ceec3b1cb7cfde1958f0fee74fd99d859cec71cc26def5042",
+    "candidate_audit_used": "927fe6d9b4e197112c27a64ad330902a0b285c68d1dc3c07f6bdc2944b5eecc8",
+    "candidate_audit_declared_in_provider": "927fe6d9b4e197112c27a64ad330902a0b285c68d1dc3c07f6bdc2944b5eecc8",
+    "corporate_actions": "4500c55a19dfead237b53d12e6d85c684b047a2ffd7317b5181a683ec99565ad"
+  },
+  "notes": [
+    "R1/R3 재구현은 ohlcv20_input._admit_adjusted 의 suffix 스캔 알고리즘을 참고했다(코드 복사 없이 이 모듈에서 새로 작성).",
+    "R2 는 이 저장소에 기존 구현이 없어 규칙 문장만으로 새로 작성했다.",
+    "provider_evidence 의 factor_admission_audit_sha256 값은 factor-admission-v2 감사 parquet 의 해시와 일치한다. 팀장 확인 결과 공급자가 실제로 결합한 audit 은 v2 이며, factor-admission-v3.json(과 v3 audit)은 폐기 예정이라 커밋되지 않은 구판이므로 결합 대상이 아니다. 이 스크립트는 candidate_audit_path 를 열기 전에 provider 가 선언한 해시와 실제 파일의 sha256 을 대조해 다르면 대조를 시작하지 않고 실패한다(fail closed) — v3 파일을 지정하면 거부된다."
+  ]
+}
