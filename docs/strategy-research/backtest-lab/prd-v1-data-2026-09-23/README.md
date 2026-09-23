@@ -1,4 +1,4 @@
-# B1·B2 데이터 정리 결과
+# B1·B2·B3 데이터 정리 결과
 
 기준 문서: [PRD v1 실행 계획](../prd-v1-plan-2026-09-23.md)
 작성일: 2026-09-23
@@ -67,3 +67,22 @@
 교차 확인 요점: KOSPI(거래세+농특세) 합계와 KOSDAQ 세율이 2014~2023 모든 구간에서 같다(0.30% → 0.25% → 0.23% → 0.20%). 이것이 KOSDAQ 추정값 두 개(2019-06-03, 2021-01-01)를 뒷받침한다.
 
 한계: 법령 조문 원문은 열람에 실패했고, 세율은 개정이력 목록과 언론 교차 확인에 의존한다.
+
+## B3 무상증자·주식배당 수량 정산
+
+`CorporateActionBook`(`research/krx_lab/corporate_actions.py`)이 `BONUS_ISSUE`·`STOCK_DIVIDEND` 사건에서 신주를 정산한다. 합성 fixture 로만 검증했고 실제 자료로는 실행하지 않았다.
+
+| 항목 | 규칙 |
+| --- | --- |
+| 입력 필드 | `allotment_ratio`(보유 1주당 신주 수 r), `allotment_ratio_admitted`, `fractional_policy` |
+| 승인 게이트 | `allotment_ratio_admitted` 가 `True` 가 아니면 `UNADMITTED_ALLOTMENT_RATIO` 로 실패한다(계약 검증과 Book 생성 양쪽). |
+| 수량 | 신주 = 보유 수량 × r. 단주는 `REJECT` 면 실패, `CASH_IN_LIEU` 면 버림 후 대금을 `pay_date` 에 지급한다. |
+| 가격 | 보유·대기 계획의 가격 수준을 1 + r 로 나누고 `avg_volume20` 은 곱한다. |
+| 원가 | 신주 원가는 0 이므로 총 원가는 그대로다. 단주를 현금으로 받으면 그 비율만큼 원가를 줄인다. |
+| 세금 | 의제배당 과세는 모델링하지 않고 `DEEMED_DIVIDEND_TAX_ON_STOCK_ISSUES_NOT_MODELLED` 제한으로 남긴다. |
+
+표가 말하는 것: 배정비율과 총주식 배수를 필드 이름으로 분리했고, 미승인 계수는 허용오차 없이 실패로 막는다.
+
+- 배정비율을 SPLIT 의 `quantity_ratio`(총주식 배수)로 받지 않는 이유는 미승인 104키가 바로 이 두 개념의 혼동에서 나왔기 때문이다.
+- 검증: `tests/research/test_corporate_actions.py` 41 passed, `tests/research` 전체 714 passed(2026-09-23).
+- 한계: OHLCV20 탐색의 176건 제외는 `ohlcv20_exploratory.py` 의 무효화 규칙(`_AUDIT_CATEGORY`)에서 나온다. 이 경로는 `CorporateActionBook` 을 쓰지 않으므로, 연결 작업(B3b) 전에는 176건이 그대로 제외된다.
