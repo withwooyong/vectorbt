@@ -5,8 +5,8 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from research.krx_lab.contracts import validate_ledger
-from research.krx_lab.corporate_actions import split_quantities
+from research.krx_lab.contracts import validate_delivery, validate_ledger
+from research.krx_lab.corporate_actions import CorporateActionBook, split_quantities
 from research.krx_lab.execution import simulate_delivery
 
 
@@ -43,6 +43,8 @@ def action(kind, date="2023-01-04", **kwargs):
                  pay_date="2023-01-05", correction_of=None, cancelled=False)
     if kind in {"SPLIT", "REVERSE_SPLIT"}:
         event.update(quantity_ratio=2, fractional_policy="REJECT")
+    elif kind in {"BONUS_ISSUE", "STOCK_DIVIDEND"}:
+        event.update(allotment_ratio=0.5, allotment_ratio_admitted=True, fractional_policy="REJECT")
     else:
         event.update(cash_per_share=2, withholding_rate=0, entitlement_policy="PRE_EVENT_HOLDINGS")
     return dict(event, **kwargs)
@@ -218,3 +220,152 @@ def test_unresolved_or_future_event_input_fails_closed(change, match):
     delivery["events"] = [action("CASH_DIVIDEND", **change)]
     with pytest.raises(ValueError, match=match):
         run_case(delivery)
+
+
+class _DirectMarket:
+    """Minimal duck-typed market so CorporateActionBook's own gate can be probed
+    independently of contracts.validate_delivery (which normally runs first via
+    MarketModel in the simulate_delivery pipeline)."""
+
+    def __init__(self, events):
+        self.delivery = {"events": events}
+        self.sessions = {event["effective_date"]: dict(is_open=True,
+                         opens_at=f"{event['effective_date']}T09:00:00+09:00") for event in events}
+
+
+def test_bonus_issue_conserves_basis_and_scales_price():
+    # Entry sizing under this fixture buys 6 shares at 150; allotment_ratio=0.5 gives a
+    # 1.5x total-quantity multiplier (150 tick-compatible with a 100 post-event close),
+    # mirroring the 100->150 share example in whole-number terms (6 -> 9).
+    delivery = delivery_case((150, 150, 100, 100))
+    delivery["events"] = [action("BONUS_ISSUE", allotment_ratio=0.5)]
+    result = run_case(delivery)
+    position = result["positions"].iloc[-1]
+    assert position["quantity"] == 9
+    assert position["entry_price"] == pytest.approx(100)
+    assert position["cost_basis"] == pytest.approx(900)
+    assert result["equity"].iloc[-1]["equity"] == pytest.approx(25_000)
+    assert result["events"].iloc[0]["quantity_delta"] == 3
+    assert result["limitations"] == ["SYNTHETIC_EXECUTION_ONLY", "SINGLE_MARKET_ZERO_SLIPPAGE_IMMEDIATE_TRADE_SETTLEMENT",
+                                     "PAYMENT_ON_EXPLICIT_CALENDAR_DATE", "DEEMED_DIVIDEND_TAX_ON_STOCK_ISSUES_NOT_MODELLED"]
+    validate_ledger(result["contract_ledger"])
+
+
+def test_stock_dividend_cash_in_lieu_pays_fractional_shares_once():
+    # allotment_ratio=0.25 -> 1.25x multiplier; 10 shares * 1.25 = 12.5 -> 12 whole +
+    # 0.5 fractional share, same rounding/accrual rule as split_quantities used for SPLIT.
+    delivery = delivery_case((100, 100, 80, 80))
+    delivery["events"] = [action("STOCK_DIVIDEND", allotment_ratio=0.25,
+                                  fractional_policy="CASH_IN_LIEU", fractional_cash_price=80)]
+    result = run_case(delivery)
+    ex, paid = result["equity"].iloc[-2:].to_dict("records")
+    assert ex["cash"] == pytest.approx(24_000)
+    assert ex["receivables"] == pytest.approx(40)
+    assert paid["cash"] == pytest.approx(24_040)
+    assert paid["receivables"] == pytest.approx(0)
+    assert paid["equity"] == pytest.approx(25_000)
+    position = result["positions"].iloc[-1]
+    assert position["quantity"] == 12
+    assert position["cost_basis"] == pytest.approx(960)
+    assert result["events"].iloc[0]["quantity_delta"] == 2
+    assert result["cashflows"]["kind"].tolist() == ["BUY", "STOCK_DIVIDEND", "PAYMENT"]
+    assert "DEEMED_DIVIDEND_TAX_ON_STOCK_ISSUES_NOT_MODELLED" in result["limitations"]
+    assert result["events"].iloc[0]["tax"] == 0
+    pre_event = result["positions"].iloc[0]
+    assert pre_event["date"] < pd.Timestamp("2023-01-04")
+    assert position["stop_price"] == pytest.approx(pre_event["stop_price"] / 1.25)
+    assert position["target_price"] == pytest.approx(pre_event["target_price"] / 1.25)
+
+
+def test_stock_dividend_cash_in_lieu_windfall_carries_into_delisting_trade_pnl():
+    """A fractional_cash_price above fair value creates a real, non-zero action_pnl that
+    is not exposed as its own column, so it is observed via the eventual realized trade
+    pnl once the position closes (here through a later delisting settlement)."""
+    delivery = delivery_case((100, 100, 80, None))
+    delivery["events"] = [
+        action("STOCK_DIVIDEND", date="2023-01-04", allotment_ratio=0.25,
+               fractional_policy="CASH_IN_LIEU", fractional_cash_price=100, pay_date="2023-01-04"),
+        action("DELIST_CASH", event_id="event-2", date="2023-01-05", cash_per_share=80, pay_date="2023-01-05"),
+    ]
+    first = delivery["statuses"][0]
+    first["effective_to"] = "2023-01-04"
+    delivery["statuses"].append(dict(first, status_id="delisted", effective_from="2023-01-05",
+                                     effective_to=None, status="DELISTED", official_delist_date="2023-01-05"))
+    result = run_case(delivery)
+    # Fair value at the record date is 80; the 0.5-share fraction paid at 100 nets a
+    # 20/share premium x 0.5 = 10 action_pnl, which the delisting (settled at fair value
+    # 80, no further gain) must carry through into the realized trade pnl unchanged.
+    assert result["events"].iloc[0]["cost_basis_delta"] == pytest.approx(-40)
+    assert result["events"].iloc[0]["receivable_delta"] == pytest.approx(50)
+    assert result["trades"].iloc[0]["pnl"] == pytest.approx(10)
+
+
+def test_stock_dividend_fractional_reject_policy_fails_closed():
+    delivery = delivery_case((100, 100, 80, 80))
+    delivery["events"] = [action("STOCK_DIVIDEND", allotment_ratio=0.25)]  # default fractional_policy=REJECT
+    with pytest.raises(ValueError, match="FRACTIONAL_SHARES_UNSUPPORTED"):
+        run_case(delivery)
+    # Literal 33-share / 10% example from the design brief, as a pure arithmetic check.
+    assert split_quantities(33, 1.1, "CASH_IN_LIEU") == (36, pytest.approx(0.3))
+    with pytest.raises(ValueError, match="FRACTIONAL_SHARES_UNSUPPORTED"):
+        split_quantities(33, 1.1, "REJECT")
+
+
+# False and "missing field" are the documented reject cases; 1 / "true" / 1.0 are
+# truthy-but-not-True values that a lax `if value:` check would wrongly admit — the
+# gate must use `is not True` and reject them too.
+NON_TRUE_ADMITTED_VALUES = [False, 1, "true", 1.0]
+
+
+@pytest.mark.parametrize("kind", ["BONUS_ISSUE", "STOCK_DIVIDEND"])
+@pytest.mark.parametrize("value", NON_TRUE_ADMITTED_VALUES + [None])
+def test_unadmitted_allotment_ratio_fails_closed_at_contract_validation(kind, value):
+    """Calls contracts.validate_delivery directly so the gate under test cannot be
+    bypassed by removing it elsewhere in the run_case pipeline."""
+    delivery = delivery_case()
+    event = action(kind, allotment_ratio=0.5, allotment_ratio_admitted=True, fractional_policy="REJECT")
+    if value is None:
+        del event["allotment_ratio_admitted"]  # field missing entirely
+    else:
+        event["allotment_ratio_admitted"] = value
+    delivery["events"] = [event]
+    with pytest.raises(ValueError, match="UNADMITTED_ALLOTMENT_RATIO"):
+        validate_delivery(delivery)
+
+
+@pytest.mark.parametrize("kind", ["BONUS_ISSUE", "STOCK_DIVIDEND"])
+@pytest.mark.parametrize("value", NON_TRUE_ADMITTED_VALUES)
+def test_book_constructor_rejects_unadmitted_allotment_ratio_independent_of_contract_validation(kind, value):
+    event = action(kind, allotment_ratio_admitted=value)
+    with pytest.raises(ValueError, match="UNADMITTED_ALLOTMENT_RATIO"):
+        CorporateActionBook(_DirectMarket([event]))
+
+
+def test_pending_pre_bonus_issue_entry_plan_is_converted_at_effective_date():
+    delivery = delivery_case((100, 100, 80, 80))
+    delivery["events"] = [action("BONUS_ISSUE", allotment_ratio=0.25)]
+    result = run_case(delivery, delay=2)
+    assert result["fills"].iloc[0]["price"] == 80
+    assert result["plans"].iloc[0]["entry_cap"] == 80
+    assert result["equity"].iloc[-1]["equity"] == pytest.approx(25_000)
+
+
+def test_stock_issue_ledger_replay_matches_final_position_and_cash():
+    delivery = delivery_case((150, 150, 100, 100))
+    delivery["events"] = [action("BONUS_ISSUE", allotment_ratio=0.5)]
+    result = run_case(delivery)
+    fills = result["fills"]
+    signed = fills["quantity"].where(fills["side"] == "buy", -fills["quantity"])
+    replayed_quantity = signed.sum() + result["events"]["quantity_delta"].sum()
+    assert replayed_quantity == result["positions"].iloc[-1]["quantity"]
+    cash_change = result["cashflows"]["cash_delta"].sum()
+    assert cash_change == pytest.approx(result["equity"].iloc[-1]["cash"] - result["initial_cash"])
+
+
+def test_stock_dividend_without_holding_records_zero_quantity_ledger_row():
+    delivery = delivery_case()
+    delivery["events"] = [action("STOCK_DIVIDEND", date="2023-01-03")]
+    result = run_case(delivery)
+    assert result["events"].iloc[0]["quantity_delta"] == 0
+    assert result["events"].iloc[0]["receivable_delta"] == 0
+    assert result["equity"].iloc[-1]["equity"] == pytest.approx(25_000)

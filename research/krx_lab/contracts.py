@@ -17,7 +17,8 @@ from typing import Any
 
 
 CONTRACT_VERSION = "krx-lab-contracts-v1"
-SUPPORTED_EVENT_TYPES = frozenset({"SPLIT", "REVERSE_SPLIT", "CASH_DIVIDEND", "DELIST_CASH"})
+SUPPORTED_EVENT_TYPES = frozenset({"SPLIT", "REVERSE_SPLIT", "CASH_DIVIDEND", "DELIST_CASH",
+                                    "BONUS_ISSUE", "STOCK_DIVIDEND"})
 HOOK_STAGES = frozenset({
     "run_start", "simulation_day", "resource_exceeded", "stop_requested", "before_artifacts",
     "after_artifacts", "before_rename", "after_rename", "before_registry_commit",
@@ -227,6 +228,19 @@ def validate_delivery(delivery: Mapping) -> dict:
             _require(row, ("quantity_ratio", "fractional_policy"), "events")
             if _number(row["quantity_ratio"], "quantity_ratio", minimum=0) == 0:
                 raise ContractError("INVALID_FACTOR", "quantity_ratio")
+            if row["fractional_policy"] not in {"REJECT", "CASH_IN_LIEU"}:
+                raise ContractError("UNSUPPORTED_FRACTIONAL_POLICY")
+            if row["fractional_policy"] == "CASH_IN_LIEU":
+                _require(row, ("fractional_cash_price", "pay_date"), "events")
+                _number(row["fractional_cash_price"], "fractional_cash_price", minimum=0)
+                if _day(row["pay_date"], "pay_date") < _day(row["effective_date"], "effective_date"):
+                    raise ContractError("PAYMENT_BEFORE_ENTITLEMENT")
+        elif row["event_type"] in {"BONUS_ISSUE", "STOCK_DIVIDEND"}:
+            if row.get("allotment_ratio_admitted") is not True:
+                raise ContractError("UNADMITTED_ALLOTMENT_RATIO", row["event_id"])
+            _require(row, ("allotment_ratio", "fractional_policy"), "events")
+            if _number(row["allotment_ratio"], "allotment_ratio", minimum=0) == 0:
+                raise ContractError("INVALID_FACTOR", "allotment_ratio")
             if row["fractional_policy"] not in {"REJECT", "CASH_IN_LIEU"}:
                 raise ContractError("UNSUPPORTED_FRACTIONAL_POLICY")
             if row["fractional_policy"] == "CASH_IN_LIEU":

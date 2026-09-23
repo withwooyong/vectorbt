@@ -9,6 +9,23 @@ import pandas as pd
 from .contracts import CONTRACT_VERSION, ContractError, validate_ledger
 
 
+QUANTITY_RATIO_EVENTS = {"SPLIT", "REVERSE_SPLIT"}
+STOCK_ISSUE_EVENTS = {"BONUS_ISSUE", "STOCK_DIVIDEND"}
+ENTITLEMENT_EVENTS = QUANTITY_RATIO_EVENTS | STOCK_ISSUE_EVENTS
+
+
+def entitlement_ratio(event):
+    """Total-quantity multiplier shared by splits and new-share entitlements.
+
+    Splits express it directly (``quantity_ratio``); stock issues express a
+    per-share allotment (``allotment_ratio``), so the equivalent total
+    multiplier is ``1 + allotment_ratio``.
+    """
+    if event["event_type"] in QUANTITY_RATIO_EVENTS:
+        return event["quantity_ratio"]
+    return 1 + event["allotment_ratio"]
+
+
 def split_quantities(quantity, ratio, fractional_policy):
     """Return whole new shares and fraction; never silently discard a fraction."""
     exact = quantity * ratio
@@ -30,6 +47,7 @@ class CorporateActionBook:
         self.receivables = 0.0
         self.sequence = 0
         self.delisted = set()
+        self.stock_issue_processed = False
         seen = set()
         for event in market.delivery["events"]:
             key = (event["instrument_id"], event["effective_date"])
@@ -41,10 +59,15 @@ class CorporateActionBook:
                 raise ContractError("NON_SESSION_EVENT_UNSUPPORTED", event["event_id"])
             if pd.Timestamp(event["announced_at"]) >= pd.Timestamp(session["opens_at"]):
                 raise ContractError("EVENT_NOT_KNOWN_AT_OPEN", event["event_id"])
-            if event["event_type"] in {"SPLIT", "REVERSE_SPLIT"}:
+            if event["event_type"] in QUANTITY_RATIO_EVENTS:
                 ratio = event["quantity_ratio"]
                 if (event["event_type"] == "SPLIT" and ratio <= 1) or (event["event_type"] == "REVERSE_SPLIT" and ratio >= 1):
                     raise ContractError("INVALID_SPLIT_DIRECTION", event["event_id"])
+            elif event["event_type"] in STOCK_ISSUE_EVENTS:
+                if event.get("allotment_ratio_admitted") is not True:
+                    raise ContractError("UNADMITTED_ALLOTMENT_RATIO", event["event_id"])
+                if event["allotment_ratio"] <= 0:
+                    raise ContractError("INVALID_FACTOR", event["event_id"])
 
     def record(self, day, instrument_id, kind, *, quantity_delta=0, cost_basis_delta=0.0,
                cash_delta=0.0, receivable_delta=0.0, fee=0.0, tax=0.0, event_id=None, fill_id=None):
@@ -68,7 +91,7 @@ class CorporateActionBook:
 
     @staticmethod
     def adjust_plans(event, plans):
-        day, ratio = pd.Timestamp(event["effective_date"]), event["quantity_ratio"]
+        day, ratio = pd.Timestamp(event["effective_date"]), entitlement_ratio(event)
         for plan in plans:
             if (plan.get("status") == "planned" and plan["code"] == event["instrument_id"]
                     and plan["signal_date"] < day <= plan["entry_date"]):
@@ -78,7 +101,7 @@ class CorporateActionBook:
 
     def prepare_plans(self, start, plans):
         for event in sorted(self.market.delivery["events"], key=lambda row: row["effective_date"]):
-            if event["event_type"] in {"SPLIT", "REVERSE_SPLIT"} and pd.Timestamp(event["effective_date"]) < start:
+            if event["event_type"] in ENTITLEMENT_EVENTS and pd.Timestamp(event["effective_date"]) < start:
                 self.adjust_plans(event, plans)
 
     def process(self, day, positions, plans, trades):
@@ -91,8 +114,10 @@ class CorporateActionBook:
             quantity = pos.size if pos else 0
             basis = quantity * pos.entry_price + pos.entry_fees if pos else 0.0
             delta, basis_delta, amount, tax = 0, 0.0, 0.0, 0.0
-            if kind in {"SPLIT", "REVERSE_SPLIT"}:
-                ratio = event["quantity_ratio"]
+            if kind in ENTITLEMENT_EVENTS:
+                if kind in STOCK_ISSUE_EVENTS:
+                    self.stock_issue_processed = True
+                ratio = entitlement_ratio(event)
                 # Transform only pre-event decisions; event-day close signals are already new units.
                 self.adjust_plans(event, plans)
                 if pos:
@@ -155,6 +180,8 @@ class CorporateActionBook:
         result["source_kind"] = "SYNTHETIC"
         result["limitations"] = ["SYNTHETIC_EXECUTION_ONLY", "SINGLE_MARKET_ZERO_SLIPPAGE_IMMEDIATE_TRADE_SETTLEMENT",
                                  "PAYMENT_ON_EXPLICIT_CALENDAR_DATE"]
+        if self.stock_issue_processed:
+            result["limitations"].append("DEEMED_DIVIDEND_TAX_ON_STOCK_ISSUES_NOT_MODELLED")
         return result
 
 
