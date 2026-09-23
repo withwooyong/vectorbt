@@ -22,18 +22,47 @@ def _read(path: Path) -> tuple[dict, str]:
     return json.loads(data), hashlib.sha256(data).hexdigest()
 
 
+def _coverage(evaluated) -> dict:
+    """Fold the evaluation-window bars into a per-year admission scorecard."""
+    coverage: dict[str, dict] = {}
+    years = evaluated["date"].dt.year
+    for year, rows in evaluated.groupby(years, sort=True):
+        total = len(rows)
+        adjusted = int(rows["adjusted_valid"].sum())
+        volume_adjusted = int(rows["volume_adjusted_valid"].sum())
+        coverage[str(int(year))] = dict(
+            total_bars=total,
+            adjusted_valid_bars=adjusted,
+            adjusted_valid_ratio=f"{(adjusted / total if total else 0):.4f}",
+            volume_adjusted_valid_bars=volume_adjusted,
+            volume_adjusted_valid_ratio=f"{(volume_adjusted / total if total else 0):.4f}",
+            signal_eligible_bars=int(rows["signal_eligible"].sum()),
+            order_eligible_bars=int(rows["order_eligible"].sum()),
+            codes=int(rows["code"].nunique()),
+        )
+    return coverage
+
+
 def preflight(root: Path) -> dict:
     """Verify actual cached data and list every blocked requested execution."""
     package = root / "data/sources/ohlcv-admission-20260922/corrected-input-v4"
     evidence = root / "docs/research/evidence/ohlcv-admission-2026-09-22"
-    factor, factor_sha = _read(evidence / "factor-admission-v1.json")
+    factor, factor_sha = _read(evidence / "factor-admission-v2.json")
     settlement, settlement_sha = _read(evidence / "settlement-compilation-v4.json")
     eligibility_record, eligibility_sha = _read(
         evidence / "ohlcv20-eligibility-v2.json"
     )
     package_manifest, _ = _read(package / "manifest.json")
+    admitted_factors_path = (
+        root
+        / "data/sources/ohlcv-admission-20260922/factor-admission-v2"
+        / "factor-admission-audit.parquet"
+    )
     prepared = load_corrected_v4(
-        package, base_snapshot=Path(package_manifest["base_snapshot"])
+        package,
+        base_snapshot=Path(package_manifest["base_snapshot"]),
+        admitted_factors=admitted_factors_path,
+        admitted_factors_sha256=factor["output_sha256"],
     )
     if factor["source_manifest_sha256"] != prepared.manifest_sha256:
         raise ValueError("FACTOR_AND_INPUT_MANIFEST_MISMATCH")
@@ -76,17 +105,24 @@ def preflight(root: Path) -> dict:
         for issue in prepared.issues
         if issue != "DAILY_POINT_IN_TIME_ELIGIBILITY_UNVERIFIED"
     ]
-    if factor["price_factors_admitted"] != factor["candidate_keys"]:
+    if factor["price_factors_admitted"] == 0:
         reasons.append("PRICE_FACTORS_NOT_ADMITTED")
-    if factor["volume_factors_admitted"] != factor["candidate_keys"]:
+    if factor["volume_factors_admitted"] == 0:
         reasons.append("VOLUME_FACTORS_NOT_ADMITTED")
     if not settlement["execution_admitted"]:
         reasons.append("RIGHTS_CONTRACT_NOT_EXECUTION_ADMITTED")
     if not prepared.real_execution_admitted:
         reasons.append("CORRECTED_INPUT_NOT_EXECUTION_ADMITTED")
-    # A rights-aware REAL core exists, but the admitted factor/signal and
-    # official event schedule have not been delivered to its inputs.
-    reasons.append("SIGNAL_AND_RIGHTS_INPUT_PIPELINE_NOT_WIRED")
+    # A partial factor admission does not by itself grant a signal; the audit
+    # tracks that separately from per-key price/volume admission.
+    if not factor.get("signal_admitted"):
+        reasons.append("SIGNAL_ADMISSION_NOT_GRANTED")
+    # The adjusted series is only wired for order/signal use once the input
+    # adapter received the sealed admitted-factor evidence and it actually
+    # admitted at least one bar.
+    admission = prepared.adjusted_admission
+    if admission is None or admission.adjusted_valid_bars == 0:
+        reasons.append("ADJUSTED_INPUT_NOT_WIRED")
     reasons = sorted(set(reasons))
     configurations = [
         dict(
@@ -124,12 +160,20 @@ def preflight(root: Path) -> dict:
             evaluation_signal_eligible_rows=int(evaluated.signal_eligible.sum()),
             order_eligible_rows=int(evaluated.order_eligible.sum()),
             adjusted_valid_rows=int(prepared.bars.adjusted_valid.sum()),
+            admitted_factor_evidence_sha256=admission.evidence_sha256
+            if admission
+            else None,
+            provider_mismatch_bars=admission.provider_mismatch_bars
+            if admission
+            else None,
         ),
         factors=dict(
             evidence_sha256=factor_sha,
             candidate_keys=factor["candidate_keys"],
             price_admitted=factor["price_factors_admitted"],
             volume_admitted=factor["volume_factors_admitted"],
+            both_factors_admitted=factor["both_factors_admitted"],
+            signal_admitted=factor["signal_admitted"],
         ),
         rights=dict(
             evidence_sha256=settlement_sha,
@@ -138,6 +182,7 @@ def preflight(root: Path) -> dict:
             source_sha256=settlement["output_sha256"],
         ),
         reason_codes=reasons,
+        coverage=_coverage(evaluated),
         configurations=configurations,
     )
 

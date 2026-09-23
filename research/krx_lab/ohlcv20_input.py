@@ -4,6 +4,12 @@ The corrected package contains historical bars and a monthly candidate list,
 but does not establish daily point-in-time capitalization rechecks or an
 approved adjusted-price convention.  Consequently order_eligible and
 adjusted_valid remain false until separately verified facts are supplied.
+
+A caller may supply the sealed factor-admission audit through admitted_factors.
+An adjusted price is built by restating the past from a later vantage point, so
+a bar's adjusted series is only trustworthy when every entitlement event that
+takes effect after that bar carries an approved factor, and when the provider's
+own adjusted close reproduces the product of those approved factors.
 """
 
 from __future__ import annotations
@@ -11,8 +17,10 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from decimal import Decimal
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 
@@ -36,7 +44,40 @@ _FIELDS = {
         "regular_session_execution_allowed",
         "valuation_or_entitlements_resolved",
     },
+    "factor-admission": {
+        "stock_code",
+        "effective_date",
+        "price_factor",
+        "volume_factor",
+        "price_admitted",
+        "volume_admitted",
+    },
 }
+
+# sha256 of the factor-admission audit sealed on 2026-09-22; the admission
+# report of the same date records it as output_sha256.  A caller overrides it
+# only to exercise a synthetic fixture.
+_ADMITTED_FACTOR_SHA256 = (
+    "927fe6d9b4e197112c27a64ad330902a0b285c68d1dc3c07f6bdc2944b5eecc8"
+)
+# Same relative tolerance the admission policy applies to a parsed allotment
+# ratio, reused here to compare a provider series with the approved factors.
+_ADJUSTED_RELATIVE_TOLERANCE = 0.005
+
+
+@dataclass(frozen=True)
+class AdjustedAdmission:
+    """Counted evidence behind adjusted_valid and volume_adjusted_valid."""
+
+    evidence_sha256: str
+    event_keys: int
+    price_admitted_events: int
+    volume_admitted_events: int
+    codes_without_events: int
+    adjusted_valid_bars: int
+    volume_adjusted_valid_bars: int
+    provider_mismatch_bars: int
+    provider_uncomparable_bars: int
 
 
 @dataclass(frozen=True)
@@ -47,6 +88,7 @@ class Ohlcv20Input:
     issues: tuple[str, ...]
     manifest_sha256: str
     real_execution_admitted: bool = False
+    adjusted_admission: AdjustedAdmission | None = None
 
 
 def _sha256(path: Path) -> str:
@@ -70,14 +112,126 @@ def _date(series: pd.Series) -> pd.Series:
     return value
 
 
+def _factor(value: object) -> Decimal:
+    number = Decimal(str(value))
+    if not number.is_finite() or number <= 0:
+        raise ValueError("NON_POSITIVE_ADMITTED_FACTOR")
+    return number
+
+
+def _load_admitted_factors(path: Path, expected_sha256: str) -> tuple[pd.DataFrame, str]:
+    """Verify the sealed audit and keep an approved factor as an exact Decimal."""
+    if not path.is_file():
+        raise ValueError("MISSING_ADMITTED_FACTOR_EVIDENCE")
+    digest = _sha256(path)
+    if digest != expected_sha256:
+        raise ValueError("ADMITTED_FACTOR_EVIDENCE_HASH_MISMATCH")
+    frame = pd.read_parquet(path)
+    if not _FIELDS["factor-admission"].issubset(frame.columns):
+        raise ValueError("MISSING_ADMITTED_FACTOR_COLUMNS")
+    events = pd.DataFrame(
+        {
+            "code": frame["stock_code"].astype(str),
+            "date": _date(frame["effective_date"]),
+        }
+    )
+    for side in ("price", "volume"):
+        admitted = frame[f"{side}_admitted"]
+        if admitted.dtype != bool:
+            raise ValueError("NON_BOOLEAN_FACTOR_ADMISSION_FLAG")
+        column = frame[f"{side}_factor"]
+        if column[admitted].isna().any():
+            raise ValueError("ADMITTED_FACTOR_VALUE_MISSING")
+        events[f"{side}_admitted"] = admitted.to_numpy(dtype=bool)
+        events[f"{side}_factor"] = [
+            _factor(value) if flag else None for value, flag in zip(column, admitted)
+        ]
+    if events.duplicated(["code", "date"]).any():
+        raise ValueError("DUPLICATE_ADMITTED_FACTOR_KEY")
+    return events.sort_values(["code", "date"], ignore_index=True), digest
+
+
+def _suffix(events: pd.DataFrame, side: str) -> tuple[np.ndarray, np.ndarray]:
+    """Fold one code's events backwards into per-slot blockers and products.
+
+    Slot i answers for a bar that precedes event i: blocked[i] tells whether any
+    event from i onwards lacks admission, and product[i] multiplies the approved
+    factors from i onwards.  Slot len(events) covers bars after the last event.
+    """
+    flags = events[f"{side}_admitted"].to_numpy(dtype=bool)
+    values = list(events[f"{side}_factor"])
+    count = len(flags)
+    blocked = np.zeros(count + 1, dtype=bool)
+    product = np.ones(count + 1, dtype=float)
+    running = Decimal(1)
+    for index in range(count - 1, -1, -1):
+        if flags[index]:
+            running *= values[index]
+        blocked[index] = bool(blocked[index + 1]) or not bool(flags[index])
+        product[index] = float(running)
+    return blocked, product
+
+
+def _admit_adjusted(bars: pd.DataFrame, events: pd.DataFrame) -> dict[str, int]:
+    """Decide adjusted_valid per bar from the events effective after that bar.
+
+    A code absent from the audit is not evidence that it never had an
+    entitlement event; it may simply never have reached the candidate list.  So
+    its bars are not granted on the event test alone and still have to reconcile
+    with the provider series, which an unaccounted factor would break.
+    """
+    size = len(bars)
+    price_ok = np.ones(size, dtype=bool)
+    volume_ok = np.ones(size, dtype=bool)
+    expected = np.ones(size, dtype=float)
+    grouped = dict(tuple(events.groupby("code", sort=False)))
+    dates = bars["date"].to_numpy("datetime64[ns]")
+    missing = 0
+    for code, rows in bars.groupby("code", sort=False).indices.items():
+        group = grouped.get(code)
+        if group is None:
+            missing += 1
+            continue
+        slot = np.searchsorted(
+            group["date"].to_numpy("datetime64[ns]"), dates[rows], side="right"
+        )
+        price_blocked, price_product = _suffix(group, "price")
+        volume_blocked, _ = _suffix(group, "volume")
+        price_ok[rows] = ~price_blocked[slot]
+        volume_ok[rows] = ~volume_blocked[slot]
+        expected[rows] = price_product[slot]
+    close = bars["close"].to_numpy(dtype=float)
+    adjusted = bars["adjusted_close"].to_numpy(dtype=float)
+    observed = np.divide(adjusted, close, out=np.full(size, np.nan), where=close > 0)
+    comparable = np.isfinite(observed)
+    matched = comparable & (
+        np.abs(observed - expected) <= _ADJUSTED_RELATIVE_TOLERANCE * expected
+    )
+    bars["adjusted_valid"] = price_ok & matched
+    bars["volume_adjusted_valid"] = volume_ok
+    return dict(
+        codes_without_events=missing,
+        adjusted_valid_bars=int(bars["adjusted_valid"].sum()),
+        volume_adjusted_valid_bars=int(bars["volume_adjusted_valid"].sum()),
+        provider_mismatch_bars=int((price_ok & comparable & ~matched).sum()),
+        provider_uncomparable_bars=int((price_ok & ~comparable).sum()),
+    )
+
+
 def load_corrected_v4(
-    package: str | Path, *, base_snapshot: str | Path | None = None
+    package: str | Path,
+    *,
+    base_snapshot: str | Path | None = None,
+    admitted_factors: str | Path | None = None,
+    admitted_factors_sha256: str | None = None,
 ) -> Ohlcv20Input:
     """Verify sealed files and prepare conservative daily input frames.
 
     No read from a live database, network, or data after 2023 is performed.
     Source flags are deliberately conservative: a monthly ranked candidate is
     not proof of the same day's market cap or ordinary-share eligibility.
+    Without admitted_factors the adjusted series stays wholly unadmitted, which
+    keeps every existing caller on its previous result.
     """
     root = Path(package)
     manifest_path = root / "manifest.json"
@@ -211,12 +365,25 @@ def load_corrected_v4(
     # Admission is not inferred from a provider's adjusted series or a monthly
     # universe selection. Both need separate approved daily historical facts.
     bars["adjusted_valid"] = False
+    bars["volume_adjusted_valid"] = False
     bars["order_eligible"] = False
+    admission = None
+    if admitted_factors is not None:
+        events, evidence_sha256 = _load_admitted_factors(
+            Path(admitted_factors),
+            admitted_factors_sha256 or _ADMITTED_FACTOR_SHA256,
+        )
+        admission = AdjustedAdmission(
+            evidence_sha256=evidence_sha256,
+            event_keys=len(events),
+            price_admitted_events=int(events["price_admitted"].sum()),
+            volume_admitted_events=int(events["volume_admitted"].sum()),
+            **_admit_adjusted(bars, events),
+        )
     observed_dates = pd.DatetimeIndex(sorted(bars["date"].unique()))
-    issues = [
-        "DAILY_POINT_IN_TIME_ELIGIBILITY_UNVERIFIED",
-        "ADJUSTED_PRICE_DEFINITION_UNADMITTED",
-    ]
+    issues = ["DAILY_POINT_IN_TIME_ELIGIBILITY_UNVERIFIED"]
+    if admission is None:
+        issues.append("ADJUSTED_PRICE_DEFINITION_UNADMITTED")
     if base_snapshot is None:
         calendar = observed_dates
         issues.append("EXCHANGE_CALENDAR_NOT_VERIFIED_FROM_PRICE_DATES")
@@ -252,6 +419,7 @@ def load_corrected_v4(
         "mark_valid",
         "adjusted_valid",
         "order_eligible",
+        "volume_adjusted_valid",
     ]
     return Ohlcv20Input(
         bars[columns],
@@ -259,4 +427,5 @@ def load_corrected_v4(
         calendar,
         tuple(issues),
         hashlib.sha256(manifest_bytes).hexdigest(),
+        adjusted_admission=admission,
     )
