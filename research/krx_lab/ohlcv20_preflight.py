@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 from .ohlcv20_eligibility import attach_daily_eligibility, load_candidate_metadata
@@ -43,8 +44,25 @@ def _coverage(evaluated) -> dict:
     return coverage
 
 
-def preflight(root: Path) -> dict:
-    """Verify actual cached data and list every blocked requested execution."""
+@dataclass(frozen=True)
+class PreflightInputs:
+    """Hash-verified inputs and the blocking decision derived from them."""
+
+    prepared: object
+    eligibility: object
+    evaluated: object
+    factor: dict
+    factor_sha256: str
+    settlement: dict
+    settlement_sha256: str
+    eligibility_sha256: str
+    metadata_sha256: str
+    rights: dict
+    reasons: list[str]
+
+
+def load_preflight_inputs(root: Path) -> PreflightInputs:
+    """Load and verify the sealed inputs exactly as the preflight judges them."""
     package = root / "data/sources/ohlcv-admission-20260922/corrected-input-v4"
     evidence = root / "docs/research/evidence/ohlcv-admission-2026-09-22"
     factor, factor_sha = _read(evidence / "factor-admission-v2.json")
@@ -123,7 +141,29 @@ def preflight(root: Path) -> dict:
     admission = prepared.adjusted_admission
     if admission is None or admission.adjusted_valid_bars == 0:
         reasons.append("ADJUSTED_INPUT_NOT_WIRED")
-    reasons = sorted(set(reasons))
+    return PreflightInputs(
+        prepared=prepared,
+        eligibility=eligibility,
+        evaluated=evaluated,
+        factor=factor,
+        factor_sha256=factor_sha,
+        settlement=settlement,
+        settlement_sha256=settlement_sha,
+        eligibility_sha256=eligibility_sha,
+        metadata_sha256=metadata_sha,
+        rights=rights,
+        reasons=sorted(set(reasons)),
+    )
+
+
+def preflight(root: Path) -> dict:
+    """Verify actual cached data and list every blocked requested execution."""
+    loaded = load_preflight_inputs(root)
+    prepared, evaluated, factor = loaded.prepared, loaded.evaluated, loaded.factor
+    settlement, rights, reasons = loaded.settlement, loaded.rights, loaded.reasons
+    factor_sha, settlement_sha = loaded.factor_sha256, loaded.settlement_sha256
+    eligibility_sha = loaded.eligibility_sha256
+    admission = prepared.adjusted_admission
     configurations = [
         dict(
             strategy=e.key,
