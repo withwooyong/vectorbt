@@ -1,5 +1,13 @@
 # 현재 인수인계: 기존 백테스트 결과와 OHLCV20 입력 연구
 
+## AI 트레이딩 PRD v1 착수 · 데이터 정리(트랙 B) — 2026-09-23
+
+아래 「다음 세션 시작점」 의 브레인스토밍은 [PRD](docs/strategy-research/AI_알고리즘_트레이딩_백테스팅_PRD.md) 로 대체되었다. [작업 계획](docs/strategy-research/backtest-lab/prd-v1-plan-2026-09-23.md)과 [데이터 진단](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/README.md)을 먼저 읽는다. 브랜치는 `research/prd-v1-data-20260923` 이다.
+
+- B1 완료: 로컬 Parquet 에 `security_type`·상장폐지·일별 거래상태가 없어 PRD 기준 Universe 를 만들 수 없다. PostgreSQL `backtest_universe_v2` 재추출(B1b)이 선행 조건이다.
+- B2 완료(2차 출처): 2014~2026 거래세·가격제한폭·호가단위 효력일 이력. 시장 지수는 2026-09-21 에 이미 인수되었다(재수집 자료).
+- 다음: B1b(DB 접근 확인 필요) 또는 B3(무상증자·주식배당 수량 정산, 독립 착수 가능). 계획서 §4 의 사용자 결정 D1~D4 는 미정이다.
+
 ## OHLCV20 탐색 결과의 2020 편중 분석 — 2026-09-23
 
 [분석 보고서](docs/strategy-research/backtest-lab/ohlcv20-exploratory-2020-analysis-2026-09-23/README.md): 원시 가격 전체 종목 동일가중(2020 +50.2%)에 투자 비중 24.1% 를 곱한 예측치 +12.1% 를 실제 +18.2% 가 웃돈다. 2021~2023 은 예측치를 4.0~9.6%p 밑돈다. 회귀 alpha 는 2020 만 양수(+11.8%, t=1.51)이고 네 해 모두 5% 유의수준에 미달한다. 2020 수익의 57% 는 상위 5개 종목, 82% 는 4월·11월에서 나왔다. 지속되는 신호 효과는 확인되지 않았다.
