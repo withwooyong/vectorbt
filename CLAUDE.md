@@ -150,8 +150,13 @@ pickle 이 동작한다.
   필드별 근사 비교다.
 - `.coveragerc` 는 플로팅 · 외부 데이터 소스 · Telegram 등 I/O 모듈을 커버리지에서 제외한다.
 
+## Claude Code 설정
+
+개발 프로젝트이므로 `ted-skills-plugin`(`scout` · `verifier` · `reviewer` · `security-reviewer` 팀원)을
+`.claude/settings.local.json` 의 `enabledPlugins` 로 켠다. 전역에서는 꺼 두는 플러그인이다. 이 파일은 전역
+gitignore 대상이라 커밋되지 않으므로, 새 PC 에서는 다시 만들어야 한다.
+
 ## 커밋 관례
 
-리포의 기존 커밋은 영어이며 `fix(generic): ...` 형태의 conventional commit 접두어를 쓰는 경우가 있다.
-전역 규칙(`~/.claude/CLAUDE.md`)은 한글 커밋 메시지를 요구하므로, 이 리포에서 커밋할 때는 어느 쪽을
-따를지 사용자에게 확인한다.
+커밋 메시지는 `docs(research): B3 수량 정산 결과 기록` 처럼 conventional commit 접두어는 영어로, 요약은
+한글로 쓴다. upstream 의 영어 접두어 관례와 전역 규칙의 한글 요구를 합친 형태이며, 커밋마다 따로 확인하지 않는다.
