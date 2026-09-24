@@ -1,0 +1,396 @@
+{
+  "admission_status": "READ_ONLY_DIAGNOSTIC_NOT_ADMITTED",
+  "note": "이 결과는 백테스트 실행이나 전략 승인의 근거가 아니다. Gate A(데이터 인수) 전수 검증이며, 최종 PRD Universe(D1~D5)는 사용자 결정에 달려 있다. 여기서 PASS 는 'Gate A 데이터 수준 적격' 만을 뜻한다.",
+  "generated_at": "2026-09-24T11:03:16.466926",
+  "runtime_seconds": 54.7,
+  "date_cutoff": {
+    "cutoff": "2024-01-01",
+    "saw_rows_on_or_after_cutoff_by_source": {
+      "calendar": false,
+      "price": false,
+      "adjustment": false,
+      "admission_issue": false,
+      "status": false,
+      "corporate_action": false
+    },
+    "note": "각 소스는 전체를 읽은 뒤 컷오프 이후 행을 집계 직전에 제외했다(사전 필터링 아님). 이 v3 스냅샷은 추출 SQL 자체가 2014-01-01~2023-12-31 로 이미 제한되어 있어(research/krx_lab/v3_snapshot.py SPECS 의 DAY 상수) 모든 값이 false 로 예상된다."
+  },
+  "input_sha256": {
+    "seal_file": "910dfa63f3109a2c4452eebeac73d1a006b92d6a29d4fc2a517c9b7032684e78",
+    "tables_manifest.json": "ab366b22bf7e010ac5e29fdc7d17fae375afcfc5f44fbcae1ce47b049c8d5cde",
+    "universe-00097.parquet": "51db7e1bce39482a7115ea37ba16e5d345cceb4f65d208899aa24da1307dbc0a",
+    "status-00110.parquet": "ee634ae325f055dd731acd8c9bd7ecbff71b5d09b8afb58e97eb2f7ecb73b65e",
+    "corporate_action-00111.parquet": "5b3b3237f9bc420de2b3e4222e5aefba3b2b3f3f0691a34f7c32f40c772ef64c",
+    "adjustment-00112.parquet": "0ac6da01c8c07937c68ec264ab0d56f5e47554ea7fb5d84aab1cce70b47b78b4",
+    "admission_issue-00114.parquet": "9d08f1ddfccf6f3e0838b25d881522a93150f467538f93223272f573493f4e25",
+    "cohort.json": "69b8233145ccad2e3c5b6e2d73d23c42ee4c5878a3f9bed267f29e70dc0e8ff0",
+    "issues.parquet": "af25303260002d22977df5bd2e8edda00054541ce788cc6423dd652b173213c1",
+    "calendar.parquet": "af61cfa3bee686602cc671717ed086721fd59a43f840a3df8760c157482ceef9",
+    "tables_calendar-00108.parquet": "df98d1e723a457d8e2ac7bc9513b214694a2c813ad283db4874b3340d7632e3b",
+    "price_parquet_files": {
+      "price-00000.parquet": "379e008556f3e0298205b218a60758be11c92e149797f5fe3e0155ea21ec80ba",
+      "price-00001.parquet": "fc6a6d1d0212580d94e7a75817f1b223cf1a361f3a46dab6414b354b045162b7",
+      "price-00002.parquet": "bcac99cf2c5e939cf693afa8ed6cf50c9222b0e51e0eea9c8b592fbe6550bac0",
+      "price-00003.parquet": "5f241f5c5d9b5caa79fdff985c23f5cb219f8eac3e059b363ba4b3d09a52d54a",
+      "price-00004.parquet": "bc288922075bd8782262cc2177a7eca927da97a2ddc99bb7cbf1bca54f170000",
+      "price-00005.parquet": "698736566cd924b651e894917cab3d77149977e09537bf652fd5f15989e98d39",
+      "price-00006.parquet": "82da8466bb6974ce10f184fcc30c15edcbedc2abad1b136141e906cadcef6517",
+      "price-00007.parquet": "776840d73494d482dcef0acff8093eafcd14418e9643174e1e097e2a374e67c4",
+      "price-00008.parquet": "dc3341364489e31de53f5423cf0ff6eebeb082684a3ad83c5f966a1fcba741f2",
+      "price-00009.parquet": "777b02591510e28ba9acaf57794dd2afdda668da086a782aaa5373459baa4e52",
+      "price-00010.parquet": "f3b2d1ff268e28efc9854efb15c8cb488c6ceebbc800d43a5b08b977dfdac6b3",
+      "price-00011.parquet": "168dc35d7d32c3fb181938e1f603ef35cd3fef79eafc3a6ec71a021476154cc1",
+      "price-00012.parquet": "e1703aae1de57e81b230cf0aa1da7fff3c056f96e2f8036e72aaab19acca97f6",
+      "price-00013.parquet": "0ba5f015418385b2eab3be382e2c032d66e89d638a947c22c8670bdfb2790215",
+      "price-00014.parquet": "0c3018ff621ff3759e60bc8b7df1fb2b1cbd5f36944cb0228d6e4e4ce8895d79",
+      "price-00015.parquet": "2fe2996fa00e6e9158e053778bd42c63ee792cb445a7c8cd147347b43a209d40",
+      "price-00016.parquet": "792c1b6e4c162999acf67519222a761937698c118905e7a03566a7758e683705",
+      "price-00017.parquet": "422bc6f561380066a11988ef3aa032c955518448e4140109eff2809b1bf91d21",
+      "price-00018.parquet": "3d46792a11f867287b0aa0df41ff037c430c2932377f5d3b3ae4076c1989a1c3",
+      "price-00019.parquet": "b1029b596921741c8f12cf74b60faa4f8217c713525bada3db952a5fb33a5dee",
+      "price-00020.parquet": "20643dd1abb2ec15ebd9d81e2106c80da1bf35ec064e13c9eb6169d78b2686cb",
+      "price-00021.parquet": "d5527fc4d2f2ac5b9a4fa68ef9ee595d8e18248455cf29e8886db39b89c7425d",
+      "price-00022.parquet": "9aebd1e8914d2ab005de46f07a9fb5dc073defd13a16b2cfad0b1bc732905644",
+      "price-00023.parquet": "01e7d0e22992d5a80721277a5a5e99dab79a37e085320eee624b2d74b39556e1",
+      "price-00024.parquet": "b6d8fe96ae4f5209db4bccb131f565b79563560c1e0d1a3b9c4c547760dd4283",
+      "price-00025.parquet": "73f60f643bb60380e6873affd894a7d50893b374cab0de9706c3304df3018a9a",
+      "price-00026.parquet": "1740d52d6e144d32f24322be8e9b12d8bd8267b64ca4a29a3841ed4520d6cf6e",
+      "price-00027.parquet": "784d4bbb9d501ecc4d8983f590e5bfb43b44813e5c663564f5e4d9b38b3d85fd",
+      "price-00028.parquet": "577b75118c55a7bf84547fa62d5d41c651271a60a4560cc3324c9ea8c0debcc1",
+      "price-00029.parquet": "0441916b9e2c29d80177079755feb6209d6db6d8569df345e525832cd3319566",
+      "price-00030.parquet": "b8569098e7541dfc500d7476784eb17b94e8dbb5d3338ed0576ad2fb32360ec8",
+      "price-00031.parquet": "1d9ba614e29ffd439b4b69e9e4116496be2e6efdb97996ad2641e1b1fc54efab",
+      "price-00032.parquet": "e71f73b14fac6ef64fbc3d39764beda6046f876f182499c122c29ee83a07a110",
+      "price-00033.parquet": "bdd45c9580a62e241737121cf87e11fc38bb25672395532cb780bd89894ed04c",
+      "price-00034.parquet": "ae0d0347576c5d7703fa339a473769bdeda5098bd6e6e0722a54feda31365635",
+      "price-00035.parquet": "8842365bcbfd72f6ddb86c042424abf5d3e51ba8ff440d668e59a3d4fc6c6f92",
+      "price-00036.parquet": "82ac82b507669f796be99f115a51a470ee4217fc30c3e6807b3d82b73cf7c569",
+      "price-00037.parquet": "f270454157e968ba0f33a1e30eb4ace20942f3cf8e0aa4140a0175a90899abb4",
+      "price-00038.parquet": "56629b52abe51fa0e4bbdb2a10d1cc538fcab36a978bc3d195b81d8c9eb5ed1a",
+      "price-00039.parquet": "f264e5e3cef39ddd69a18496c019ea45400c185428be3682dd0b1983d02de855",
+      "price-00040.parquet": "c9142587b65193fb8640afa7d535893a28d75f62726aa254f0e0d802f5e50bb0",
+      "price-00041.parquet": "23bac14d029f91b7a3444d2a7c9c07ef086fd1317ca5102f03902e4c40c5dc8f",
+      "price-00042.parquet": "8f0e9f9f152e20f1b5e6517d779a6ad7214a97216d6b5fa08b76b761cc1f4420",
+      "price-00043.parquet": "8b623c29b13b8706ed01fab5d649a560358994b3b71b342ddfef9be891de0f3e",
+      "price-00044.parquet": "b662e4a89180cb04917edc803e98cca09ea0b0fe433bfdc1ee7f1e2d90cbbc1f",
+      "price-00045.parquet": "c237989611e2721f288c6b4ab89389f7115364d56cff16c96536bbb47b946ea6",
+      "price-00046.parquet": "c598a1847a0bba4515bbb6f42167dd3382262561dafa6ffdd7916830368b86db",
+      "price-00047.parquet": "b2c1b8a50873e921525c4e9e60d1f81eeb70105873ac62a3125e6b8bcb9736e5",
+      "price-00048.parquet": "a0f66119212b58518e8a8a02f435575e03d578fbc7c8b09688a8eeb031302825",
+      "price-00049.parquet": "ff502381997bad4dc42cac0617822f83fe79b2ddbeb466731d1945a3e92d6ed2",
+      "price-00050.parquet": "0dabd581239efe33c247f77d62d8a6cacc2be262523ccc9978397431d52cdbd4",
+      "price-00051.parquet": "213a52911093cfadd75b9d9245eee0f37f88e1f922a6b59af95bf8ec84afd703",
+      "price-00052.parquet": "f546a79a26fe599a62335529291982701641e52d6fb5fcf79724c0082851fca5",
+      "price-00053.parquet": "2501c161e4957a72163288923ccde16426736e1f2f3be970d9b2913d07542d27",
+      "price-00054.parquet": "ff1d5e4363b47d002f41a8e93cf5255f00ff246af79ed3af701052ff323a1c99",
+      "price-00055.parquet": "daad01d30fa86e0b0b82beb55080a48e09cfe2f86d5a4b2b2b393ad3e2231d8c",
+      "price-00056.parquet": "6a7c8f2d13e34b62481d5933205e32b4c1e8be0a3ad2331282427b07f4ce2c32",
+      "price-00057.parquet": "73f124e1fbb95fd9416cd5a1690fd3141c24da419b26afde476eee6b80914252",
+      "price-00058.parquet": "e46d743d5e5b7d4c26b683352494d8a27d6da0591de7a3dd8337e7ddd3627104",
+      "price-00059.parquet": "0683b3e4a01ce2b20fdf5577e3b5fa9d649396d431875a7e65bb0914c1c62e87",
+      "price-00060.parquet": "5fae716d088f7c632b4709e687a917d35f96edddbc722700f31259da91518514",
+      "price-00061.parquet": "18c5e70c6130b6c2a1a1dd0b9b6feffc634c6c5cfacaa61d1deb79632f015442",
+      "price-00062.parquet": "8699d4c5dc1ac6b7cf2fcfcdc9a855c65fa66f26288196bb6f3012df707483fd",
+      "price-00063.parquet": "e10472d32314de69db4fa07bbd900c41c805e906932fab8d326eaba7d028896c",
+      "price-00064.parquet": "edbaf9a6e806acf1126b7c41f0a47d045809720c33f1a4d665bf0b4a9627b923",
+      "price-00065.parquet": "825a417152869bd8b51b9cc1795812e6fbd3c2bca26463becabcec231da9b43d",
+      "price-00066.parquet": "04115d3c5292ff5e9719dc654e4b4b07e1f1009c0b41db1a341f34b94da2f459",
+      "price-00067.parquet": "8fadee074df68693f5e4600c07d29e5a1e309341b28e63244e71b2098c80c9bb",
+      "price-00068.parquet": "bd18304878059f56e182441294b8b6b93e158b81cc90b710940eab57b37df87f",
+      "price-00069.parquet": "23c3304009c66bd37f7cbfc038de06defaba0a7549768a2d7e12fbdb0ed813f5",
+      "price-00070.parquet": "ab3af279b17e4c4e53d1ad1d5f45c10768922eb7669ed55ac27db96c7329b42e",
+      "price-00071.parquet": "11996a82cafe48d064dac4ba97e1720f6a22f56383bfe2dd74f21f454807295d",
+      "price-00072.parquet": "9c4efd157383ba7444a08e05a56e7447f6e4c60cbec646c306785029095a5d92",
+      "price-00073.parquet": "cc4b60c8e604d7fd971184b144cad87792df4cdb7c5df6443063fb4996ad500b",
+      "price-00074.parquet": "aac7e6af15cde9f41dc82865da12800afecd41a8b2ea2f020d8aed301f1a3543",
+      "price-00075.parquet": "159205d45e1425dca52475f348b455602a4882de3beedbcd7d1f6edefce04b2c",
+      "price-00076.parquet": "8945dc13ace0ef027dfe09fd1095a349509511c0adcf13a91ead0923e90b5046",
+      "price-00077.parquet": "aa7bcd3f1e9395114ca946b581deb5f4769ab8f7d6c5f0c84e268d6bc4553077",
+      "price-00078.parquet": "5b824d3af0ec93334abc5e403a435dbee1d8bbe0a742edcaf1631b1d89c0ae42",
+      "price-00079.parquet": "ed7061eb825cba5bce472cd889c0a29b90b0614801b61ef8a24833bddeaa8410",
+      "price-00080.parquet": "07e04c5fcabd5fae84c4ea5275dd5e019162fcf963beddba4d630b44d1934249",
+      "price-00081.parquet": "7adf642b181de43860fd6bb242317cc9e283960ff1623b76ab3b1fbf26562803",
+      "price-00082.parquet": "937bfe3e2e2bd0d145d4069986e41877fd9d3a6e23da22aa65e3afdc30a67005",
+      "price-00083.parquet": "630c9d66449c2f13cd2bdb1c9b58769be1f458b0d0653f0abce2cc310131c132",
+      "price-00084.parquet": "8fd67c0fab25c2ea911a7854241292836acf0e870a0731eb7c3ba8689818601e",
+      "price-00085.parquet": "846be95de7b5de9cbd3e488bcca0fc3c0ad4bf592bf762beb98c1983052aaef1",
+      "price-00086.parquet": "b4e18fc6e7bacf09419b38a864fc074d8308378eea860a471cd0f16790f17bde",
+      "price-00087.parquet": "4d36f2f15c20e171c3cc8361b713eb8edc6bdce4b7d85f7509b917ed9126761c",
+      "price-00088.parquet": "226c9780712c755e45655a7e39b21698d2f887f84a4d5ee5878328224fda616b",
+      "price-00089.parquet": "c242d9cf3fe44ba04727ee0c56fe0bbd668ff7d78fffe8240172e2177a4f83a9",
+      "price-00090.parquet": "1004feca66f72c4b52ec0f4d6c0280029b3e51c40d405483fff0c78c41ebb22d",
+      "price-00091.parquet": "ae194e280c876a40029cc3a01b261b9f93b50629ef062d13d56661814c621cc0",
+      "price-00092.parquet": "bd051bee3ba710ab288c2d8f3b44ca8a65b07ce9af5ddb33d81648023b6e5817",
+      "price-00093.parquet": "e267cd4424b3a819713f2e85fa45e063f1b19100f9da84be22ab36f666fbc713",
+      "price-00094.parquet": "06ea9b49d785220d422f02dbf9c577d56768525eaf62a478dc6348eacecd217d",
+      "price-00095.parquet": "8f9fa6bd342b2736d052afa8407da2105043a8da29ae265d391d21f0dd7e5991",
+      "price-00096.parquet": "85ac84723c15967ea4c1d013922e40ed49b3aeb714e4fa5cb89fcc2eafe69279"
+    }
+  },
+  "check1_member_seal": {
+    "seal_file": "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\prd-v1-data-2026-09-23\\gate-a-db-member-seal.txt",
+    "seal_file_sha256": "910dfa63f3109a2c4452eebeac73d1a006b92d6a29d4fc2a517c9b7032684e78",
+    "seal_parsed": {
+      "revision_status": "SEALED",
+      "revision_content_sha256": "e95066aa516971ff63e4d6da19a7639b0eab18783eca159a428dc268a2bd13c2",
+      "member_kinds": [
+        "ADJUSTMENT",
+        "ADMISSION_ISSUE",
+        "BENCHMARK",
+        "CALENDAR",
+        "CORPORATE_ACTION",
+        "EXECUTION_RULE",
+        "IDENTIFIER",
+        "PRICE",
+        "SOURCE_PAYLOAD",
+        "STATUS",
+        "UNIVERSE"
+      ]
+    },
+    "verify_v3_snapshot": {
+      "status": "PASS",
+      "seconds": 44.9
+    },
+    "db_seal_vs_snapshot_manifest": {
+      "revision_status_match": true,
+      "revision_content_sha256_match": true,
+      "member_count_checked": 11,
+      "mismatches": [],
+      "all_11_match": true
+    },
+    "tables_dir": {
+      "manifest_sha256": "ab366b22bf7e010ac5e29fdc7d17fae375afcfc5f44fbcae1ce47b049c8d5cde",
+      "manifest_revision_id_matches_code_constant": true,
+      "manifest_revision_content_sha256_matches_code_constant": true,
+      "manifest_revision_id_matches_snapshot": true,
+      "manifest_revision_content_sha256_matches_snapshot": true,
+      "physical_row_counts_by_member_kind": {
+        "ADJUSTMENT": 2947,
+        "ADMISSION_ISSUE": 2304,
+        "BENCHMARK": 4918,
+        "CALENDAR": 3652,
+        "CORPORATE_ACTION": 26584,
+        "EXECUTION_RULE": 15,
+        "IDENTIFIER": 907098,
+        "PRICE": 9674453,
+        "SOURCE_PAYLOAD": 24266,
+        "STATUS": 292,
+        "UNIVERSE": 31475
+      },
+      "row_count_mismatches_vs_seal": []
+    },
+    "overall_pass": true
+  },
+  "check2_price_pair_completeness": {
+    "note": "격자 = 공식 개장일(calendar member, market=KRX & is_open) × 보통주 유효기간(universe member, security_type=COMMON_STOCK). RAW_ONLY/NEITHER 의 설명은 status member 정지(HALTED/NO_BAR_HALTED/PARTIAL_TRADING)를 먼저 확인하고, 그다음 RAW_ONLY 에 한해 원가 OHLC<=0(무거래)을 확인한다. NEITHER 는 원가 행 자체가 없어 OHLC<=0 판정을 적용할 수 없으므로 정지 여부로만 설명한다.",
+    "expected_grid_rows": 5099694,
+    "raw_price_load_stats": {
+      "total_rows": 5099694,
+      "off_calendar_holiday_rows": 0,
+      "on_calendar_rows": 5099694,
+      "duplicate_stock_day_rows": 0,
+      "distinct_stock_day_pairs": 5099694
+    },
+    "adjusted_price_load_stats": {
+      "total_rows": 4574759,
+      "off_calendar_holiday_rows": 0,
+      "on_calendar_rows": 4574759,
+      "duplicate_stock_day_rows": 0,
+      "distinct_stock_day_pairs": 4574759
+    },
+    "raw_rows_outside_grid": 0,
+    "adjusted_rows_outside_grid": 0,
+    "pair_status_counts": {
+      "BOTH": 4574759,
+      "RAW_ONLY": 524935
+    },
+    "raw_only_or_neither_explanation": {
+      "explained_by_halt": 207,
+      "explained_by_nonpositive_raw_ohlc": 64496,
+      "unexplained": 460232
+    },
+    "adj_only_count": 0,
+    "grid_construction": {
+      "common_stock_instruments": 2787,
+      "universe_segments_common_stock": 31475,
+      "grid_rows_before_segment_union": 5099694,
+      "grid_rows_after_segment_union": 5099694,
+      "overlapping_segment_duplicate_rows": 0
+    }
+  },
+  "check3_ohlc_validity": {
+    "note": "TRADING 정의 출처: research/krx_lab/v3_inputs.py:205-223 (status derivation), :221-223 (eligible). 아래 raw_valid_within_trading 은 TRADING 정의 자체가 raw_valid 를 전제하므로 항상 100%가 되어야 하는 동어반복적 확인(재구현 검산)이다. adjusted_valid_within_trading 은 독립적인 검사다(TRADING 정의가 adjusted 값을 보지 않기 때문).",
+    "trading_rows": 4963965,
+    "trading_raw_valid_rows": 4963965,
+    "trading_raw_invalid_rows": 0,
+    "trading_rows_with_adjusted_row_present": 4503733,
+    "trading_rows_with_adjusted_row_missing": 460232,
+    "trading_rows_with_valid_adjusted": 4503733,
+    "trading_rows_with_invalid_adjusted": 0,
+    "raw_traded_ohlc_invalid": {
+      "source_file_line": "research/krx_lab/v3_scope.py:39-45",
+      "rows": 18,
+      "instruments": 18,
+      "instrument_ids": [
+        27,
+        83,
+        259,
+        510,
+        539,
+        1147,
+        1148,
+        1311,
+        1407,
+        1468,
+        3031,
+        3198,
+        362138,
+        362214,
+        362284,
+        362345,
+        362463,
+        390420
+      ],
+      "compare_to_cohort_RAW_TRADED_OHLC_INVALID": 18,
+      "compare_to_B4_unexplained_rows": 18,
+      "compare_note": "cohort.json exclusions 의 RAW_TRADED_OHLC_INVALID 종목 수, B4 (nonpositive-ohlc-reconciliation.json)의 UNEXPLAINED 행 수와 대조용 상수(팀장 브리프 제공치). 이 스크립트가 실제로 계산한 값은 위 instruments 다."
+    },
+    "source_admission_issue_row_counts_for_reference": {
+      "RAW_NONPOSITIVE_PRICE_TRADED": 13,
+      "ADJUSTED_NONPOSITIVE_PRICE_TRADED": 4,
+      "ADJUSTED_OHLC_ORDER_VIOLATION": 284,
+      "note": "이 3개 코드의 admission_issue 행은 affected_scope 가 'stock:' 형식이 아니고(종목 키 없음), v3_scope.py:83-93 의 DIFFERENT_SOURCE_PAIR_CURRENT_ROWS_REVALIDATED 분기로 전부 해소되어 cohort 제외 사유에 나타나지 않는다(과거 PYKRX 소스쌍 전용 이슈). 이 스크립트는 그 분기를 재구현하지 않았다 — 사유 생성에 영향이 없기 때문이다(판단 근거는 최종 보고 참고)."
+    }
+  },
+  "check4_vendor_factor_reconciliation": {
+    "source_file_line": "research/krx_lab/v3_scope.py:104-118; research/krx_lab/source_contract_admission.py:164-165 (explanation_status 값 정의는 DB 업스트림, 이 리포에는 별도 허용오차 상수가 없다 — explanation_status 필드를 그대로 읽는다)",
+    "adjustment_member_explanation_status_counts": {
+      "EXPLAINED_KIND": 1746,
+      "OBSERVED_VENDOR_FACTOR": 1061,
+      "EXPLAINED_RATIO_MATCH": 140
+    },
+    "bad_status_rows": 1061,
+    "bad_status_distinct_stock_ids": 452,
+    "bad_status_stock_ids_inside_2787_population": 397,
+    "bad_status_stock_ids_outside_population": 55,
+    "compare_to_cohort_UNEXPLAINED_VENDOR_FACTOR_397": 397,
+    "reproduced_set_equals_cohort_set": true,
+    "symmetric_difference_count": 0,
+    "source_admission_issue_row_count_UNEXPLAINED_VENDOR_FACTOR": 1061,
+    "candidate_event_ids_optional_crosscheck": {
+      "note": "가능하면(브리프 optional) 가격비율 변화일이 사건으로 설명되는지 보는 경량 대용치. candidate_event_ids 가 비어있지 않은 비율만 본다 — 실제 사건 매칭 자체는 explanation_status 가 이미 DB 업스트림에서 계산해 둔 값이므로 이 스크립트가 다시 계산하지 않는다.",
+      "bad_status_rows_with_candidate_event_ids": 1061,
+      "bad_status_rows_without_candidate_event_ids": 0
+    }
+  },
+  "check5_per_instrument_reconciliation": {
+    "note": "cohort.json 의 exclusions/instrument_ids(사실상 ground truth, DB 봉인 데이터)와 이 스크립트가 tables-dir 원천 member 만으로 독립 재현한 사유 집합을 맞댄 결과다. (a)=포함+독립결함없음(정상), (b)=포함인데 독립결함 있음(0이어야 함), (c)=제외+사유재현됨, (d)=제외인데 사유재현 안됨.",
+    "population_size": 2787,
+    "class_a_included_no_independent_defect": 1076,
+    "class_b_included_but_independent_defect_found": 0,
+    "class_b_list": [],
+    "class_c_excluded_reason_reproduced": 1711,
+    "class_d_excluded_reason_not_reproduced": 0,
+    "class_d_list": [],
+    "class_d_truncated": false,
+    "independent_reproduction_sources": {
+      "unsupported_or_unpriced_event": {
+        "source_file_line": "research/krx_lab/v3_scope.py:119-138",
+        "corporate_action_rows_considered": 2742,
+        "unsupported_rows": 2742,
+        "unsupported_instruments_by_event_type": {
+          "CAPITAL_REDUCTION": 203,
+          "DIVIDEND_OFF": 183,
+          "PAID_CAPITAL_INCREASE": 22,
+          "REVERSE_SPLIT": 1,
+          "RIGHTS_OFF": 848,
+          "SPLIT": 194,
+          "UNKNOWN_QUANTITY_TRANSFORM": 5
+        },
+        "compare_to_cohort_counts": {
+          "RIGHTS_OFF": 831,
+          "CAPITAL_REDUCTION": 198,
+          "SPLIT": 179,
+          "DIVIDEND_OFF": 141,
+          "PAID_CAPITAL_INCREASE": 22,
+          "UNKNOWN_QUANTITY_TRANSFORM": 4
+        }
+      },
+      "corporate_action_partial": {
+        "source_file_line": "research/krx_lab/v3_scope.py:95-103 (이 스크립트는 admission_issue 의 날짜 매칭 단계를 생략하고 corporate_action.resolution_status=='PARTIAL' 을 직접 썼다 — 실제 데이터에서 PARTIAL 이벤트는 전부 admission_issue 의 CORPORATE_ACTION_PARTIAL 일자와 대응한다고 가정)",
+        "partial_rows": 160,
+        "partial_instruments": 137,
+        "compare_to_cohort_CORPORATE_ACTION_PARTIAL_130": 130
+      },
+      "adjusted_price_unavailable_generic": {
+        "source_file_line": "research/krx_lab/v3_scope.py:74-79 (REJECT/QUARANTINE 이고 affected_scope 가 'stock:<code>' 형식인 이슈는 코드에 관계없이 그 종목의 사유가 된다; 이번 데이터는 ADJUSTED_PRICE_UNAVAILABLE 475건만 이 형식이다)",
+        "stock_scoped_reject_quarantine_rows": 475,
+        "unmapped_stock_code_rows": 0,
+        "issue_code_counts": {
+          "ADJUSTED_PRICE_UNAVAILABLE": 475
+        },
+        "compare_to_cohort_ADJUSTED_PRICE_UNAVAILABLE_475": 475
+      },
+      "warmup_250_sessions": {
+        "source_file_line": "research/krx_lab/v3_scope.py:46-52",
+        "instruments_below_250_grid_sessions": 176,
+        "compare_to_cohort_WARMUP_176": 176,
+        "note": "세션 수는 grid(개장일×유효기간) 행 수를 썼다 — v3_scope.py:47-52 의 'history' 도 같은 방식으로 만들어진 prices 프레임의 종목별 행 수를 쓴다고 가정했다(판단 근거는 최종 보고 참고)."
+      },
+      "vendor_factor": {
+        "source_file_line": "research/krx_lab/v3_scope.py:104-118; research/krx_lab/source_contract_admission.py:164-165 (explanation_status 값 정의는 DB 업스트림, 이 리포에는 별도 허용오차 상수가 없다 — explanation_status 필드를 그대로 읽는다)",
+        "distinct_instruments": 452
+      },
+      "adjusted_pair_invalid_or_missing": {
+        "source_file_line": "research/krx_lab/v3_scope.py:34-38"
+      },
+      "raw_traded_ohlc_invalid": {
+        "source_file_line": "research/krx_lab/v3_scope.py:39-45"
+      }
+    },
+    "warmup_only_instruments_prd_120_session_check": {
+      "note": "cohort 제외 사유가 WARMUP_250_COMPLETE_SESSIONS_UNAVAILABLE 하나뿐인 종목만 대상. PRD 기준(120거래일)을 참고로만 적용하며, cohort 를 다시 만들지 않는다.",
+      "instrument_count": 97,
+      "meets_prd_120_sessions": 38,
+      "below_prd_120_sessions": 59
+    },
+    "unresolved_admission_issue_rows_source_note": "research/krx_lab/v3_scope.py:39-45"
+  },
+  "check6_b1_correction": {
+    "note": "B1(universe_diagnosis.py analyze_gap)의 1차 사유가 NO_ADMISSION_ISSUE_RECORD 였던 종목의 cohort.json 실제 제외 사유 분포. 종목 하나가 사유를 여럿 가지면 전부 센다(중복 허용).",
+    "b1_no_record_instrument_count": 1184,
+    "cohort_reason_distribution_for_those_instruments": {
+      "UNSUPPORTED_OR_UNPRICED_EVENT:RIGHTS_OFF": 702,
+      "UNEXPLAINED_VENDOR_FACTOR": 295,
+      "UNSUPPORTED_OR_UNPRICED_EVENT:SPLIT": 147,
+      "UNSUPPORTED_OR_UNPRICED_EVENT:CAPITAL_REDUCTION": 133,
+      "UNSUPPORTED_OR_UNPRICED_EVENT:DIVIDEND_OFF": 130,
+      "WARMUP_250_COMPLETE_SESSIONS_UNAVAILABLE": 106,
+      "CORPORATE_ACTION_PARTIAL": 97,
+      "UNSUPPORTED_OR_UNPRICED_EVENT:PAID_CAPITAL_INCREASE": 16,
+      "RAW_TRADED_OHLC_INVALID": 10,
+      "UNSUPPORTED_OR_UNPRICED_EVENT:UNKNOWN_QUANTITY_TRANSFORM": 4
+    },
+    "instruments_with_no_cohort_reason_either": 0,
+    "instruments_with_no_cohort_reason_either_ids": []
+  },
+  "check7_gate_a_status": {
+    "gate_a_status_definition": {
+      "PASS": "cohort 에 포함되고 독립 재현 결함이 없다",
+      "PASS_WITH_UNRESOLVED_INDEPENDENT_FLAG": "cohort 에는 포함되지만 이 스크립트의 독립 재현이 결함을 찾은 종목(class_b, 0건이어야 한다)",
+      "EXCLUDED_WARMUP_ONLY": "cohort 제외 사유가 WARMUP_250_COMPLETE_SESSIONS_UNAVAILABLE 하나뿐",
+      "EXCLUDED_DATA_DEFECT": "cohort 제외 사유에 데이터 결함 계열(ADJUSTED_PAIR_INVALID_OR_MISSING·RAW_TRADED_OHLC_INVALID·UNEXPLAINED_VENDOR_FACTOR·ADJUSTED_PRICE_UNAVAILABLE·CORPORATE_ACTION_PARTIAL)이 포함",
+      "EXCLUDED_UNSUPPORTED_EVENT": "cohort 제외 사유가 UNSUPPORTED_OR_UNPRICED_EVENT:* 계열(위 데이터_결함이 없을 때)",
+      "EXCLUDED_OTHER": "위 어디에도 해당하지 않는 제외"
+    },
+    "counts": {
+      "PASS": 1076,
+      "EXCLUDED_DATA_DEFECT": 843,
+      "EXCLUDED_UNSUPPORTED_EVENT": 771,
+      "EXCLUDED_WARMUP_ONLY": 97
+    },
+    "csv_path": "C:\\Users\\aeby\\vscode\\stock\\vectorbt\\docs\\strategy-research\\backtest-lab\\prd-v1-data-2026-09-23\\gate-a-instruments.csv",
+    "csv_row_count": 2787
+  },
+  "overall_gate_a_data_level_eligible_count": 1076
+}

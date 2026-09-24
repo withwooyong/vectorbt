@@ -1,4 +1,4 @@
-# B1·B1b·B2·B2b·B3·B4 데이터 정리 결과
+# B1·B1b·B2·B2b·B3·B4·B5 데이터 정리 결과
 
 기준 문서: [PRD v1 실행 계획](../prd-v1-plan-2026-09-23.md)
 작성일: 2026-09-23
@@ -31,6 +31,8 @@
 | 1차 사유: 이슈 기록 없음(원인 미확인) | 1,184종목 |
 
 표가 말하는 것: 누락 1,711종목 중 사유가 밝혀진 것은 527종목뿐이고, 나머지 1,184종목은 `universe-diagnosis.json` 에도 원인 코드가 없다.
+
+정정(B5): 1,184종목은 `cohort.json` 의 `exclusions` 에 모두 사유가 있다. 아래 「B5 Gate A 전수 검증」 절을 본다.
 
 이슈 귀속에는 한계가 있다. `issues.parquet` 2,304행 중 종목에 매핑되는 것은 781행(34%)뿐이다. 나머지 1,523행(미설명 수정계수 1,061건·수정 OHLC 순서 위반 284건·기업행사 부분 160건 등)은 `affected_scope` 가 날짜·사건 단위 라벨이라 종목에 귀속할 수 없다. 그래서 위 1,184종목의 원인이 이 1,523행 안에 섞여 있을 수 있다.
 
@@ -259,3 +261,31 @@ MSE 정지 구간(HALTED→다음 TRADING/DELISTED 전날, 개장일 기준, 끝
 
 - 한계: "정지 이력 있음" 은 대상 기간(≤2023-12-31) 어느 시점에든 HALTED/HALT 기록이 한 번이라도 있으면 참으로 두었다. 그 정지가 cohort 제외와 시점적으로 관련 있는지는 보지 않았다.
 - 한계: `stock.listed_date` 와 `instrument_history` 가 다른 12종목(A 절)처럼, "상장 시점" 버킷이 실제 IPO 일과 다를 수 있는 종목이 섞여 있을 수 있다.
+
+## B5 Gate A 전수 검증
+
+재실행: `.venv/Scripts/python -X utf8 docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/gate_a_verification.py`(리포 루트 기준, 54.7초). 출력은 [`gate-a-verification.json`](gate-a-verification.json)과 종목별 [`gate-a-instruments.csv`](gate-a-instruments.csv)(2,787행)이며, 2024-01-01 이후 행은 어느 입력에서도 읽히지 않았다(`saw_rows_on_or_after_cutoff_by_source` 전부 `false`).
+
+| 검사 | 결과 |
+| --- | --- |
+| member 봉인 | `verify_v3_snapshot` 로 11개 member 내용 해시를 다시 계산해 통과했다. 운영 DB 의 revision·member 봉인값([`gate-a-db-member-seal.txt`](gate-a-db-member-seal.txt), 2026-09-24 읽기 전용 조회)과 11/11 일치한다. |
+| 가격쌍 완전성 | 개장일×보통주 유효기간 격자 5,099,694행 중 원가·수정가 쌍 4,574,759행, 원가만 524,935행, 수정가만 0행이다. 격자 밖 가격 행과 중복은 0건이다. |
+| 원가만 있는 행 | 정지 207행과 무거래 64,496행으로 설명되고 460,232행은 미설명이다. 미설명 행은 전부 수정가가 아예 없는 475종목에 속하며, 합격 종목에는 0행이다. |
+| OHLC 유효성 | 거래 행(`research/krx_lab/v3_inputs.py:205-223` 정의) 4,963,965행에서 수정가 OHLC 위반은 0건이다. 원가 위반 종목은 18종목으로 cohort·B4 와 같다. |
+| 수정계수 | adjustment member 의 미설명 계수 1,061행(452종목) 중 대상 모집단에 드는 397종목이 cohort 의 397종목과 정확히 같다. |
+| 종목별 대조 | 합격 1,076종목에서 독립 결함은 0건이고, 제외 1,711종목은 모두 사유가 재현되었다(재현 안 됨 0건). |
+
+표가 말하는 것: 봉인 스냅샷과 cohort 는 독립 재계산과 전량 일치하므로, 현재 Gate A 데이터 수준 적격 종목은 기존 1,076종목 그대로다.
+
+| `gate_a_status` | 종목 | 뜻 |
+| --- | --- | --- |
+| PASS | 1,076 | 가격쌍 완전, 결함·미지원 사건 없음 |
+| EXCLUDED_DATA_DEFECT | 843 | 수정가 부재·미설명 계수·원가 OHLC 위반·기업행사 부분 반영 중 하나 이상 |
+| EXCLUDED_UNSUPPORTED_EVENT | 771 | 데이터 결함은 없고 가격이 매겨지지 않은 사건(권리락·감자·분할·배당락 등)만 있음 |
+| EXCLUDED_WARMUP_ONLY | 97 | 250 완전 세션 부족만 있음. PRD 기준(120거래일)을 채우는 종목은 38개다 |
+
+표가 말하는 것: 「최종 종목」 은 Gate A 데이터 수준에서 1,076종목으로 확정되지만, PRD Universe 는 워밍업 기준(D5)과 미지원 사건 처리(B6·D4) 결정에 따라 늘어날 수 있다. 이번 검증은 cohort 를 다시 만들지 않았다.
+
+**B1 정정.** B1 이 「원인 미확인」 으로 센 1,184종목은 모두 `cohort.json` 에 사유가 있다(사유 없음 0건). 주요 사유는 권리락 702·미설명 계수 295·분할 147·감자 133·배당락 130·워밍업 106종목이다(중복 허용). B1 은 `issues.parquet` 만 매핑하고 `cohort.json` 의 `exclusions` 를 보지 않았다. 이에 따라 [R2](requests/r2-issue-attribution.md)의 근거를 「제외 사유가 원천 이슈 행까지 추적되지 않는다」 로 고쳤고 요청 내용은 그대로다.
+
+한계: 수정계수의 미설명 판정은 원천이 계산한 `explanation_status` 를 따른다. 이 리포에는 그 판정을 재계산할 허용오차 상수가 없어, 수정가/원가 비율 변화일과 사건의 대응은 대용치만 냈다(JSON `check4`). 구 PYKRX 원천쌍 전용 분기(`v3_scope.py` 의 `current_source_pair`)는 이 스냅샷에서 사유를 만들지 않아 재구현하지 않았다.

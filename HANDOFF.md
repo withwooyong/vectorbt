@@ -4,14 +4,16 @@
 
 아래 「다음 세션 시작점」 의 브레인스토밍은 [PRD](docs/strategy-research/AI_알고리즘_트레이딩_백테스팅_PRD.md) 로 대체되었다. [작업 계획](docs/strategy-research/backtest-lab/prd-v1-plan-2026-09-23.md)과 [데이터 진단](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/README.md)을 먼저 읽는다. 브랜치는 `research/prd-v1-data-20260923` 이다.
 
-- B1 완료: 누락 1,711종목 중 1,184종목은 원인 코드가 없다. B1 의 「로컬에 `security_type` 없음」 은 오류였다(로컬 universe 2,787종목 전부 보통주).
+- B1 완료: 「1,184종목 원인 코드 없음」 은 B5 에서 틀린 것으로 확인했다(`cohort.json` 에 1,711종목 전부 사유가 있다). B1 의 「로컬에 `security_type` 없음」 은 오류였다(로컬 universe 2,787종목 전부 보통주).
 - B1b 완료(2026-09-24): `ssh home` 으로 기반 테이블 4개를 읽기 전용 추출해 `../vectorbt-data/krx-prd-v1-b1b-20260924/` 에 두었다. 상장일 2,364종목, 폐지 근거 398종목, 일찍 끊긴 284종목 중 수집 절단 후보 30종목이다. 무거래 135,419행 중 정지로 설명되는 행은 53,007~104,067행이고, KOSPI 21,409행은 정지 원천이 없어 판별되지 않는다.
 - B2 완료(2차 출처): 2014~2026 거래세·가격제한폭·호가단위 효력일 이력. 시장 지수는 2026-09-21 에 이미 인수되었다(재수집 자료).
 - B3 완료(합성 검증): `CorporateActionBook` 이 무상증자·주식배당 신주를 정산하며, 미승인 배정비율은 `UNADMITTED_ALLOTMENT_RATIO` 로 막힌다. OHLCV20 탐색의 176건 제외는 별도 무효화 경로라 B3b 연결 전까지 그대로다.
 - B4 완료: 원가 OHLC≤0 135,717행 중 정지 280·무거래 135,419·미설명 18건. 18건은 종목·일로 확정했고 17건은 체결 단가가 전일 종가와 같다(시간외 종가매매 가설, 원천 미확인).
 - B2b 완료(2026-09-24): 증권거래세 5개 시행본을 law.go.kr 원문(브라우저 열람)으로 확인했고 세율은 기존 표와 같다. 기존 `rules.parquet` 는 2014년 SELL_TAX 가 비어 조회 490건이 실패하고, 법령(양도분=결제일) 경계를 체결일 조회에 그대로 썼다. 원천 수정은 ted-startup 몫이므로 [요청서](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/requests/README.md) R1 로 넘겼고, `../vectorbt-data/krx-prd-v1-b2b-20260924/` 는 원천을 대체하지 않는 대조용 기대값이다.
 - 역할 경계: 수집·적재·원천 보정은 ted-startup 이 한다. 이 리포는 결함을 찾으면 보정 사본 대신 `requests/` 에 요청서를 쓰고, 전달은 사용자가 한다. B7 은 R2, B1b 원천 결함은 R3 으로 요청서만 썼다.
-- 다음: B5 또는 ted-startup 납품(R1~R3) 대조. DB 접속은 드라이버 없이 `research/krx_lab/v3_snapshot.py` 의 `COMMAND` 방식으로 된다. B3b 는 실행 경로를 건드리므로 `BLOCKED` 해제와 함께 다룬다. 계획서 §4 의 사용자 결정 D1~D4 는 미정이다.
+- B5 완료(2026-09-24): 11개 member 해시 재계산과 DB 봉인값 대조가 11/11 일치하고, 가격쌍·OHLC·수정계수 독립 재계산이 cohort 2,787종목과 전량 일치한다. Gate A 데이터 수준 적격은 1,076종목이다(결함 843·미지원 사건 771·워밍업만 97, 그중 PRD 120거래일 충족 38). [B5 결과](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/README.md#b5-gate-a-전수-검증)
+- R1~R3 납품은 2026-09-24 기준 미도착이다(원천 SELL_TAX 는 여전히 2015-01-01 시작, 최신 revision 은 2026-09-21 봉인본). ted-startup 전달용 프롬프트는 사용자에게 전달했다.
+- 다음: ted-startup 납품(R1~R3) 대조. DB 접속은 드라이버 없이 `research/krx_lab/v3_snapshot.py` 의 `COMMAND` 방식으로 된다. B3b 는 실행 경로를 건드리므로 `BLOCKED` 해제와 함께 다룬다. 계획서 §4 의 사용자 결정 D1~D4 는 미정이다.
 
 ## OHLCV20 탐색 결과의 2020 편중 분석 — 2026-09-23
 

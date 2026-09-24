@@ -1,6 +1,6 @@
 # R2. 미귀속 이슈 1,523행에 종목·일 귀속 키를 붙여 달라
 
-목적: PRD v1 Universe 재구성(B5)이 막혀 있는 원인 후보(미귀속 이슈)를 원천에서 귀속시켜 달라고 요청한다. 대상은 ted-startup, 작성자는 vectorbt 리포다. 이 문서를 외부에 전송하지 않았다. 전체 데이터 인수는 현재 `BLOCKED` 다.
+목적: 종목·일로 추적되지 않는 원천 이슈 행(미귀속 이슈)을 원천에서 귀속시켜, 소비자의 종목 제외 사유를 원천 이슈 행과 대조할 수 있게 해 달라고 요청한다. 대상은 ted-startup, 작성자는 vectorbt 리포다. 이 문서를 외부에 전송하지 않았다. 전체 데이터 인수는 현재 `BLOCKED` 다.
 
 ## 1. 배경
 
@@ -30,7 +30,9 @@
 
 ## 3. 왜 필요한가
 
-`../README.md` B1 절 기준 원가 누락 1,711종목 중 1,184종목은 `universe-diagnosis.json` 에 원인 코드가 없다(`NO_ADMISSION_ISSUE_RECORD`). 그 실제 원인이 위 1,523행 안에 섞여 있을 가능성이 있으나, 종목 키가 없어 대조할 수 없다. Universe 재구성(B5)이 이 지점에서 막힌다.
+소비자 쪽 제외 1,711종목은 모두 `cohort.json` 에 종목별 사유가 있다. 이 사유는 이 리포가 adjustment·corporate_action member 에서 다시 판정한 것이며, 원천 이슈 행에서 온 것이 아니다. Gate A 는 제외 범위가 원천 행까지 추적되기를 요구하는데(`backtest-data-requirements-2026-09-20.md` Gate A), 위 1,523행은 종목 키가 없어 소비자 사유와 행 단위로 맞댈 수 없다.
+
+정정(2026-09-24): 이 절의 이전 판은 「1,184종목은 원인 코드가 없어 B5 가 막힌다」 고 썼다. 이는 B1 이 `issues.parquet` 만 보고 `cohort.json` 의 사유를 보지 않은 탓이며, 요청 내용(§4)은 바뀌지 않는다.
 
 ## 4. 요청 내용
 
@@ -44,6 +46,6 @@
 
 1. 재납품 `issues.parquet` 에서 `mapped=False` 이면서 사유 코드도 없는 행이 0건인지 확인한다.
 2. 기존 781행의 `instrument_id`·`issue_code` 조합이 바뀌지 않았는지 대조한다.
-3. 새로 귀속된 행을 `universe_diagnosis.py` 의 1,184종목(`NO_ADMISSION_ISSUE_RECORD`)과 교차해, 원인이 설명되는 종목 수가 늘었는지 확인한다.
+3. 새로 귀속된 행을 `cohort.json` 의 종목별 제외 사유와 교차해, 원천 이슈와 소비자 사유가 종목 단위로 일치하는지 확인한다.
 
 첨부: [`r2-unattributed-issues.csv`](r2-unattributed-issues.csv) — 미귀속 1,523행 전부(`issue_code`·`affected_scope`·`affected_from`·`affected_to`·`decision`·`severity`·`signal_blocking`·`details` 원래 열과 행 식별용 `row_hash`, SHA-256 앞 16자).
