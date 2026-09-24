@@ -23,6 +23,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from . import ohlcv20_real_execution as _engine
+from .ohlcv20_real_execution import _ADMISSION_FLAGS
+
 
 _FIELDS = {
     "prices": {
@@ -89,6 +92,21 @@ class Ohlcv20Input:
     manifest_sha256: str
     real_execution_admitted: bool = False
     adjusted_admission: AdjustedAdmission | None = None
+    admission_receipt: dict | None = None
+    admission_receipt_path: Path | None = None
+    admission_receipt_sha256: str | None = None
+    manifest_path: Path | None = None
+
+    def engine_admission(self) -> dict:
+        """Arguments the execution gate re-reads; only a receipt-bound input has them."""
+        if not self.real_execution_admitted or self.admission_receipt is None:
+            raise ValueError("REAL_EXECUTION_NOT_ADMITTED")
+        return dict(
+            {key: self.admission_receipt[key] for key in _ADMISSION_FLAGS},
+            source_manifest_path=str(self.manifest_path),
+            admission_evidence_path=str(self.admission_receipt_path),
+            admission_evidence_sha256=self.admission_receipt_sha256,
+        )
 
 
 def _sha256(path: Path) -> str:
@@ -97,6 +115,42 @@ def _sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def _verify_receipt(
+    path: Path, root: Path, manifest: dict, manifest_bytes: bytes
+) -> tuple[dict, str]:
+    """Bind the admission receipt to this manifest and to the rights file bytes.
+
+    The manifest's own true flag is one key; the receipt is the other. Neither
+    opens real execution alone, and the rights hash is recomputed from disk.
+    """
+    try:
+        receipt_bytes = path.read_bytes()
+    except OSError as exc:
+        raise ValueError("REAL_ADMISSION_RECEIPT_MISSING") from exc
+    # Hash the bytes as stored; the receipt is LF and kept -text in ted-startup.
+    if hashlib.sha256(receipt_bytes).hexdigest() != _engine._ADMISSION_RECEIPT_SHA256:
+        raise ValueError("ADMISSION_RECEIPT_NOT_PINNED")
+    receipt = json.loads(receipt_bytes)
+    names = {item["file"] for item in manifest["files"]}
+    rights_path = root / "rights-terms.parquet"
+    if (
+        receipt.get("schema") != "ohlcv20-real-admission-v1"
+        or manifest.get("admission_receipt_schema") != receipt.get("schema")
+        or receipt.get("status") != "ADMITTED"
+        or receipt.get("blocked_reasons") != []
+        or any(receipt.get(key) is not True for key in _ADMISSION_FLAGS)
+    ):
+        raise ValueError("REAL_ADMISSION_RECEIPT_NOT_ADMITTED")
+    if receipt.get("source_manifest_sha256") != hashlib.sha256(manifest_bytes).hexdigest():
+        raise ValueError("REAL_ADMISSION_RECEIPT_MANIFEST_MISMATCH")
+    if (
+        not {"rights-terms.parquet", "market-rules.parquet"} <= names
+        or receipt.get("rights_terms_sha256") != _sha256(rights_path)
+    ):
+        raise ValueError("REAL_ADMISSION_RECEIPT_RIGHTS_MISMATCH")
+    return receipt, hashlib.sha256(receipt_bytes).hexdigest()
 
 
 def _date(series: pd.Series) -> pd.Series:
@@ -224,6 +278,7 @@ def load_corrected_v4(
     base_snapshot: str | Path | None = None,
     admitted_factors: str | Path | None = None,
     admitted_factors_sha256: str | None = None,
+    admission_receipt: str | Path | None = None,
 ) -> Ohlcv20Input:
     """Verify sealed files and prepare conservative daily input frames.
 
@@ -232,6 +287,10 @@ def load_corrected_v4(
     not proof of the same day's market cap or ordinary-share eligibility.
     Without admitted_factors the adjusted series stays wholly unadmitted, which
     keeps every existing caller on its previous result.
+
+    Real execution opens only for a package whose manifest declares it and
+    whose admission receipt is bound to that manifest and its rights file.
+    An unadmitted package loads for research checks but never with a receipt.
     """
     root = Path(package)
     manifest_path = root / "manifest.json"
@@ -239,8 +298,14 @@ def load_corrected_v4(
     manifest = json.loads(manifest_bytes)
     if manifest.get("schema") != "ohlcv-corrected-candidate-input-v1":
         raise ValueError("UNEXPECTED_CORRECTED_INPUT_SCHEMA")
-    if manifest.get("real_execution_admitted") is not False:
+    declared = manifest.get("real_execution_admitted")
+    if declared is True:
+        if admission_receipt is None:
+            raise ValueError("REAL_ADMISSION_RECEIPT_REQUIRED")
+    elif declared is not False:
         raise ValueError("UNEXPECTED_REAL_ADMISSION_FLAG")
+    elif admission_receipt is not None:
+        raise ValueError("RECEIPT_CANNOT_ADMIT_UNADMITTED_INPUT")
     parts = manifest.get("files")
     if not isinstance(parts, list) or not parts:
         raise ValueError("EMPTY_CORRECTED_INPUT_MANIFEST")
@@ -265,6 +330,11 @@ def load_corrected_v4(
             raise ValueError(f"MISSING_MANIFEST_FILE:{relative}")
         if _sha256(path) != item["sha256"]:
             raise ValueError(f"MANIFEST_HASH_MISMATCH:{relative}")
+    receipt, receipt_sha256 = None, None
+    if declared is True:
+        receipt, receipt_sha256 = _verify_receipt(
+            Path(admission_receipt), root, manifest, manifest_bytes
+        )
     frames = [
         pd.read_parquet(root / name, columns=sorted(_FIELDS["prices"]))
         for name in names
@@ -398,7 +468,8 @@ def load_corrected_v4(
             calendar.difference(observed_dates)
         ):
             raise ValueError("CORRECTED_PRICE_CALENDAR_MISMATCH")
-    issues.append("REAL_EXECUTION_NOT_ADMITTED")
+    if receipt is None:
+        issues.append("REAL_EXECUTION_NOT_ADMITTED")
     columns = [
         "date",
         "code",
@@ -427,5 +498,10 @@ def load_corrected_v4(
         calendar,
         tuple(issues),
         hashlib.sha256(manifest_bytes).hexdigest(),
+        real_execution_admitted=receipt is not None,
         adjusted_admission=admission,
+        admission_receipt=receipt,
+        admission_receipt_path=None if receipt is None else Path(admission_receipt),
+        admission_receipt_sha256=receipt_sha256,
+        manifest_path=manifest_path,
     )

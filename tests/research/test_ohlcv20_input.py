@@ -4,6 +4,7 @@ import json
 import pandas as pd
 import pytest
 
+from research.krx_lab import ohlcv20_real_execution as engine
 from research.krx_lab.ohlcv20_input import load_corrected_v4
 
 
@@ -244,3 +245,120 @@ def test_rejects_admitted_factor_evidence_with_unexpected_hash(tmp_path):
     path, _ = _audit(tmp_path, [("2015-06-17", "0.5", True, "1", True)])
     with pytest.raises(ValueError, match="ADMITTED_FACTOR_EVIDENCE_HASH_MISMATCH"):
         load_corrected_v4(folder, admitted_factors=path)
+
+
+_FLAGS = (
+    "immutable_input_verified",
+    "daily_universe_admitted",
+    "adjusted_price_admitted",
+    "volume_factors_admitted",
+    "corporate_coverage_admitted",
+    "rights_admitted",
+    "market_rules_admitted",
+    "real_execution_admitted",
+)
+
+
+def _admitted_package(tmp_path, price=None, pin=None, **receipt_changes):
+    """Seal a v5-shaped package and a receipt bound to its manifest bytes."""
+    folder = _package(tmp_path, price)
+    manifest_path = folder / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    for name, frame in (
+        ("rights-terms.parquet", pd.DataFrame(dict(event_id=["e:1"]))),
+        ("market-rules.parquet", pd.DataFrame(dict(stock_code=["005930"]))),
+    ):
+        frame.to_parquet(folder / name, index=False)
+        manifest["files"].append(
+            dict(
+                file=name,
+                rows=len(frame),
+                sha256=hashlib.sha256((folder / name).read_bytes()).hexdigest(),
+            )
+        )
+    manifest.update(
+        real_execution_admitted=True,
+        admission_receipt_schema="ohlcv20-real-admission-v1",
+    )
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    receipt = dict(
+        schema="ohlcv20-real-admission-v1",
+        status="ADMITTED",
+        blocked_reasons=[],
+        **{name: True for name in _FLAGS},
+        source_manifest_sha256=hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        rights_terms_sha256=hashlib.sha256(
+            (folder / "rights-terms.parquet").read_bytes()
+        ).hexdigest(),
+        admission_scope=dict(
+            development_period=dict(start="2015-06-15", end="2023-12-31")
+        ),
+    )
+    receipt.update(receipt_changes)
+    receipt_path = tmp_path / "admission.json"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    if pin is not None:
+        # The engine pins the sealed receipt; a fixture pins its own digest.
+        pin.setattr(
+            engine,
+            "_ADMISSION_RECEIPT_SHA256",
+            hashlib.sha256(receipt_path.read_bytes()).hexdigest(),
+        )
+    return folder, receipt_path
+
+
+def test_receipt_bound_package_opens_real_execution(tmp_path, monkeypatch):
+    folder, receipt = _admitted_package(tmp_path, pin=monkeypatch)
+    value = load_corrected_v4(folder, admission_receipt=receipt)
+    assert value.real_execution_admitted is True
+    assert "REAL_EXECUTION_NOT_ADMITTED" not in value.issues
+    admission = value.engine_admission()
+    assert all(admission[name] is True for name in _FLAGS)
+    assert admission["admission_evidence_sha256"] == hashlib.sha256(
+        receipt.read_bytes()
+    ).hexdigest()
+
+
+def test_admitted_manifest_without_receipt_does_not_open(tmp_path):
+    folder, _ = _admitted_package(tmp_path)
+    with pytest.raises(ValueError, match="REAL_ADMISSION_RECEIPT_REQUIRED"):
+        load_corrected_v4(folder)
+
+
+def test_receipt_cannot_open_an_unadmitted_v4_package(tmp_path):
+    _, receipt = _admitted_package(tmp_path / "v5")
+    value = load_corrected_v4(_package(tmp_path))
+    with pytest.raises(ValueError, match="REAL_EXECUTION_NOT_ADMITTED"):
+        value.engine_admission()
+    with pytest.raises(ValueError, match="RECEIPT_CANNOT_ADMIT_UNADMITTED_INPUT"):
+        load_corrected_v4(_package(tmp_path / "again"), admission_receipt=receipt)
+
+
+@pytest.mark.parametrize(
+    "changes, error",
+    [
+        (dict(status="BLOCKED"), "REAL_ADMISSION_RECEIPT_NOT_ADMITTED"),
+        (dict(rights_admitted=False), "REAL_ADMISSION_RECEIPT_NOT_ADMITTED"),
+        (dict(source_manifest_sha256="0" * 64), "REAL_ADMISSION_RECEIPT_MANIFEST_MISMATCH"),
+        (dict(rights_terms_sha256="0" * 64), "REAL_ADMISSION_RECEIPT_RIGHTS_MISMATCH"),
+    ],
+)
+def test_receipt_must_be_admitted_and_bound_to_file_bytes(
+    tmp_path, monkeypatch, changes, error
+):
+    folder, receipt = _admitted_package(tmp_path, pin=monkeypatch, **changes)
+    with pytest.raises(ValueError, match=error):
+        load_corrected_v4(folder, admission_receipt=receipt)
+
+
+def test_receipt_keeps_validation_years_locked(tmp_path, monkeypatch):
+    price = _prices([("2015-06-15", 100, 100), ("2024-01-02", 100, 100)])
+    folder, receipt = _admitted_package(tmp_path, price, pin=monkeypatch)
+    with pytest.raises(ValueError, match="DATE_OUTSIDE_LOCKED_HISTORY"):
+        load_corrected_v4(folder, admission_receipt=receipt)
+
+
+def test_only_the_pinned_receipt_opens_real_execution(tmp_path):
+    folder, receipt = _admitted_package(tmp_path)
+    with pytest.raises(ValueError, match="ADMISSION_RECEIPT_NOT_PINNED"):
+        load_corrected_v4(folder, admission_receipt=receipt)
