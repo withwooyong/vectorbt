@@ -1,8 +1,8 @@
 {
   "admission_status": "READ_ONLY_DIAGNOSTIC_NOT_ADMITTED",
   "note": "이 결과는 백테스트 실행이나 전략 승인의 근거가 아니다. Gate A(데이터 인수) 전수 검증이며, 최종 PRD Universe(D1~D5)는 사용자 결정에 달려 있다. 여기서 PASS 는 'Gate A 데이터 수준 적격' 만을 뜻한다.",
-  "generated_at": "2026-09-24T11:03:16.466926",
-  "runtime_seconds": 54.7,
+  "generated_at": "2026-09-24T11:43:33.575240",
+  "runtime_seconds": 83.5,
   "date_cutoff": {
     "cutoff": "2024-01-01",
     "saw_rows_on_or_after_cutoff_by_source": {
@@ -27,6 +27,120 @@
     "issues.parquet": "af25303260002d22977df5bd2e8edda00054541ce788cc6423dd652b173213c1",
     "calendar.parquet": "af61cfa3bee686602cc671717ed086721fd59a43f840a3df8760c157482ceef9",
     "tables_calendar-00108.parquet": "df98d1e723a457d8e2ac7bc9513b214694a2c813ad283db4874b3340d7632e3b",
+    "identifier-00098.parquet": "f05ebf8c3bcdfa15d18f011aaed5d6e2ae613dd01cb7ce7e7168fe84ddbb9bb5",
+    "identifier-00099.parquet": "2fdc7ce3c841de54f2fc99ae6a185b6d8d324f38dfe55ef7734e20b6a49b2c29",
+    "identifier-00100.parquet": "8ca3f6cf0a3aee0135d8125edc87d1b47a4a7c8835718428e59af15a931eea85",
+    "identifier-00101.parquet": "b8a73c70ae2a0f029e551663604a750998dbb770933fbe5c690daab6ebe6b76c",
+    "identifier-00102.parquet": "ce44b0444f4ee933240574734a2cb8fe5a6d15e0ec9d1f0cc140f26c66e32693",
+    "identifier-00103.parquet": "2b65b89576f2dc74d82c226a1cf1392fae64dcb8f39245d6b6c9ed9c05157118",
+    "identifier-00104.parquet": "dd8a048fbe3074bc0c3518f00444c915f0144182f286b4d7b7228d804a5fffb1",
+    "identifier-00105.parquet": "253934eb1d8f56055653fede44bbee4ff04e04648213c59539ba862f08b7d3ca",
+    "identifier-00106.parquet": "626318630f2973a247d68d98141d7a911b612dd2e494558faf4704b818d56de8",
+    "identifier-00107.parquet": "dfa1406f4cd4500b3990ad21be920c5cd189a29865d678c7abebb6b9dcfa07b8",
+    "execution_rule-00113.parquet": "cc928aeb56c8134b41b04460f6beafa3f6b467ba0aec25c100baac3d5badf2f1",
+    "benchmark-00109.parquet": "22e1e072769e304f936c22f2c5f46b0b5626ce59d69485488108dc3384d82e5e",
+    "source_payload-00115.parquet": "4bf4371eaad9451ab2e745460a25e0bf7a16c9231d66f0ba9a856dd53e588d7d",
+    "price_lineage_parquet_files": {
+      "price-00000.parquet": "379e008556f3e0298205b218a60758be11c92e149797f5fe3e0155ea21ec80ba",
+      "price-00001.parquet": "fc6a6d1d0212580d94e7a75817f1b223cf1a361f3a46dab6414b354b045162b7",
+      "price-00002.parquet": "bcac99cf2c5e939cf693afa8ed6cf50c9222b0e51e0eea9c8b592fbe6550bac0",
+      "price-00003.parquet": "5f241f5c5d9b5caa79fdff985c23f5cb219f8eac3e059b363ba4b3d09a52d54a",
+      "price-00004.parquet": "bc288922075bd8782262cc2177a7eca927da97a2ddc99bb7cbf1bca54f170000",
+      "price-00005.parquet": "698736566cd924b651e894917cab3d77149977e09537bf652fd5f15989e98d39",
+      "price-00006.parquet": "82da8466bb6974ce10f184fcc30c15edcbedc2abad1b136141e906cadcef6517",
+      "price-00007.parquet": "776840d73494d482dcef0acff8093eafcd14418e9643174e1e097e2a374e67c4",
+      "price-00008.parquet": "dc3341364489e31de53f5423cf0ff6eebeb082684a3ad83c5f966a1fcba741f2",
+      "price-00009.parquet": "777b02591510e28ba9acaf57794dd2afdda668da086a782aaa5373459baa4e52",
+      "price-00010.parquet": "f3b2d1ff268e28efc9854efb15c8cb488c6ceebbc800d43a5b08b977dfdac6b3",
+      "price-00011.parquet": "168dc35d7d32c3fb181938e1f603ef35cd3fef79eafc3a6ec71a021476154cc1",
+      "price-00012.parquet": "e1703aae1de57e81b230cf0aa1da7fff3c056f96e2f8036e72aaab19acca97f6",
+      "price-00013.parquet": "0ba5f015418385b2eab3be382e2c032d66e89d638a947c22c8670bdfb2790215",
+      "price-00014.parquet": "0c3018ff621ff3759e60bc8b7df1fb2b1cbd5f36944cb0228d6e4e4ce8895d79",
+      "price-00015.parquet": "2fe2996fa00e6e9158e053778bd42c63ee792cb445a7c8cd147347b43a209d40",
+      "price-00016.parquet": "792c1b6e4c162999acf67519222a761937698c118905e7a03566a7758e683705",
+      "price-00017.parquet": "422bc6f561380066a11988ef3aa032c955518448e4140109eff2809b1bf91d21",
+      "price-00018.parquet": "3d46792a11f867287b0aa0df41ff037c430c2932377f5d3b3ae4076c1989a1c3",
+      "price-00019.parquet": "b1029b596921741c8f12cf74b60faa4f8217c713525bada3db952a5fb33a5dee",
+      "price-00020.parquet": "20643dd1abb2ec15ebd9d81e2106c80da1bf35ec064e13c9eb6169d78b2686cb",
+      "price-00021.parquet": "d5527fc4d2f2ac5b9a4fa68ef9ee595d8e18248455cf29e8886db39b89c7425d",
+      "price-00022.parquet": "9aebd1e8914d2ab005de46f07a9fb5dc073defd13a16b2cfad0b1bc732905644",
+      "price-00023.parquet": "01e7d0e22992d5a80721277a5a5e99dab79a37e085320eee624b2d74b39556e1",
+      "price-00024.parquet": "b6d8fe96ae4f5209db4bccb131f565b79563560c1e0d1a3b9c4c547760dd4283",
+      "price-00025.parquet": "73f60f643bb60380e6873affd894a7d50893b374cab0de9706c3304df3018a9a",
+      "price-00026.parquet": "1740d52d6e144d32f24322be8e9b12d8bd8267b64ca4a29a3841ed4520d6cf6e",
+      "price-00027.parquet": "784d4bbb9d501ecc4d8983f590e5bfb43b44813e5c663564f5e4d9b38b3d85fd",
+      "price-00028.parquet": "577b75118c55a7bf84547fa62d5d41c651271a60a4560cc3324c9ea8c0debcc1",
+      "price-00029.parquet": "0441916b9e2c29d80177079755feb6209d6db6d8569df345e525832cd3319566",
+      "price-00030.parquet": "b8569098e7541dfc500d7476784eb17b94e8dbb5d3338ed0576ad2fb32360ec8",
+      "price-00031.parquet": "1d9ba614e29ffd439b4b69e9e4116496be2e6efdb97996ad2641e1b1fc54efab",
+      "price-00032.parquet": "e71f73b14fac6ef64fbc3d39764beda6046f876f182499c122c29ee83a07a110",
+      "price-00033.parquet": "bdd45c9580a62e241737121cf87e11fc38bb25672395532cb780bd89894ed04c",
+      "price-00034.parquet": "ae0d0347576c5d7703fa339a473769bdeda5098bd6e6e0722a54feda31365635",
+      "price-00035.parquet": "8842365bcbfd72f6ddb86c042424abf5d3e51ba8ff440d668e59a3d4fc6c6f92",
+      "price-00036.parquet": "82ac82b507669f796be99f115a51a470ee4217fc30c3e6807b3d82b73cf7c569",
+      "price-00037.parquet": "f270454157e968ba0f33a1e30eb4ace20942f3cf8e0aa4140a0175a90899abb4",
+      "price-00038.parquet": "56629b52abe51fa0e4bbdb2a10d1cc538fcab36a978bc3d195b81d8c9eb5ed1a",
+      "price-00039.parquet": "f264e5e3cef39ddd69a18496c019ea45400c185428be3682dd0b1983d02de855",
+      "price-00040.parquet": "c9142587b65193fb8640afa7d535893a28d75f62726aa254f0e0d802f5e50bb0",
+      "price-00041.parquet": "23bac14d029f91b7a3444d2a7c9c07ef086fd1317ca5102f03902e4c40c5dc8f",
+      "price-00042.parquet": "8f0e9f9f152e20f1b5e6517d779a6ad7214a97216d6b5fa08b76b761cc1f4420",
+      "price-00043.parquet": "8b623c29b13b8706ed01fab5d649a560358994b3b71b342ddfef9be891de0f3e",
+      "price-00044.parquet": "b662e4a89180cb04917edc803e98cca09ea0b0fe433bfdc1ee7f1e2d90cbbc1f",
+      "price-00045.parquet": "c237989611e2721f288c6b4ab89389f7115364d56cff16c96536bbb47b946ea6",
+      "price-00046.parquet": "c598a1847a0bba4515bbb6f42167dd3382262561dafa6ffdd7916830368b86db",
+      "price-00047.parquet": "b2c1b8a50873e921525c4e9e60d1f81eeb70105873ac62a3125e6b8bcb9736e5",
+      "price-00048.parquet": "a0f66119212b58518e8a8a02f435575e03d578fbc7c8b09688a8eeb031302825",
+      "price-00049.parquet": "ff502381997bad4dc42cac0617822f83fe79b2ddbeb466731d1945a3e92d6ed2",
+      "price-00050.parquet": "0dabd581239efe33c247f77d62d8a6cacc2be262523ccc9978397431d52cdbd4",
+      "price-00051.parquet": "213a52911093cfadd75b9d9245eee0f37f88e1f922a6b59af95bf8ec84afd703",
+      "price-00052.parquet": "f546a79a26fe599a62335529291982701641e52d6fb5fcf79724c0082851fca5",
+      "price-00053.parquet": "2501c161e4957a72163288923ccde16426736e1f2f3be970d9b2913d07542d27",
+      "price-00054.parquet": "ff1d5e4363b47d002f41a8e93cf5255f00ff246af79ed3af701052ff323a1c99",
+      "price-00055.parquet": "daad01d30fa86e0b0b82beb55080a48e09cfe2f86d5a4b2b2b393ad3e2231d8c",
+      "price-00056.parquet": "6a7c8f2d13e34b62481d5933205e32b4c1e8be0a3ad2331282427b07f4ce2c32",
+      "price-00057.parquet": "73f124e1fbb95fd9416cd5a1690fd3141c24da419b26afde476eee6b80914252",
+      "price-00058.parquet": "e46d743d5e5b7d4c26b683352494d8a27d6da0591de7a3dd8337e7ddd3627104",
+      "price-00059.parquet": "0683b3e4a01ce2b20fdf5577e3b5fa9d649396d431875a7e65bb0914c1c62e87",
+      "price-00060.parquet": "5fae716d088f7c632b4709e687a917d35f96edddbc722700f31259da91518514",
+      "price-00061.parquet": "18c5e70c6130b6c2a1a1dd0b9b6feffc634c6c5cfacaa61d1deb79632f015442",
+      "price-00062.parquet": "8699d4c5dc1ac6b7cf2fcfcdc9a855c65fa66f26288196bb6f3012df707483fd",
+      "price-00063.parquet": "e10472d32314de69db4fa07bbd900c41c805e906932fab8d326eaba7d028896c",
+      "price-00064.parquet": "edbaf9a6e806acf1126b7c41f0a47d045809720c33f1a4d665bf0b4a9627b923",
+      "price-00065.parquet": "825a417152869bd8b51b9cc1795812e6fbd3c2bca26463becabcec231da9b43d",
+      "price-00066.parquet": "04115d3c5292ff5e9719dc654e4b4b07e1f1009c0b41db1a341f34b94da2f459",
+      "price-00067.parquet": "8fadee074df68693f5e4600c07d29e5a1e309341b28e63244e71b2098c80c9bb",
+      "price-00068.parquet": "bd18304878059f56e182441294b8b6b93e158b81cc90b710940eab57b37df87f",
+      "price-00069.parquet": "23c3304009c66bd37f7cbfc038de06defaba0a7549768a2d7e12fbdb0ed813f5",
+      "price-00070.parquet": "ab3af279b17e4c4e53d1ad1d5f45c10768922eb7669ed55ac27db96c7329b42e",
+      "price-00071.parquet": "11996a82cafe48d064dac4ba97e1720f6a22f56383bfe2dd74f21f454807295d",
+      "price-00072.parquet": "9c4efd157383ba7444a08e05a56e7447f6e4c60cbec646c306785029095a5d92",
+      "price-00073.parquet": "cc4b60c8e604d7fd971184b144cad87792df4cdb7c5df6443063fb4996ad500b",
+      "price-00074.parquet": "aac7e6af15cde9f41dc82865da12800afecd41a8b2ea2f020d8aed301f1a3543",
+      "price-00075.parquet": "159205d45e1425dca52475f348b455602a4882de3beedbcd7d1f6edefce04b2c",
+      "price-00076.parquet": "8945dc13ace0ef027dfe09fd1095a349509511c0adcf13a91ead0923e90b5046",
+      "price-00077.parquet": "aa7bcd3f1e9395114ca946b581deb5f4769ab8f7d6c5f0c84e268d6bc4553077",
+      "price-00078.parquet": "5b824d3af0ec93334abc5e403a435dbee1d8bbe0a742edcaf1631b1d89c0ae42",
+      "price-00079.parquet": "ed7061eb825cba5bce472cd889c0a29b90b0614801b61ef8a24833bddeaa8410",
+      "price-00080.parquet": "07e04c5fcabd5fae84c4ea5275dd5e019162fcf963beddba4d630b44d1934249",
+      "price-00081.parquet": "7adf642b181de43860fd6bb242317cc9e283960ff1623b76ab3b1fbf26562803",
+      "price-00082.parquet": "937bfe3e2e2bd0d145d4069986e41877fd9d3a6e23da22aa65e3afdc30a67005",
+      "price-00083.parquet": "630c9d66449c2f13cd2bdb1c9b58769be1f458b0d0653f0abce2cc310131c132",
+      "price-00084.parquet": "8fd67c0fab25c2ea911a7854241292836acf0e870a0731eb7c3ba8689818601e",
+      "price-00085.parquet": "846be95de7b5de9cbd3e488bcca0fc3c0ad4bf592bf762beb98c1983052aaef1",
+      "price-00086.parquet": "b4e18fc6e7bacf09419b38a864fc074d8308378eea860a471cd0f16790f17bde",
+      "price-00087.parquet": "4d36f2f15c20e171c3cc8361b713eb8edc6bdce4b7d85f7509b917ed9126761c",
+      "price-00088.parquet": "226c9780712c755e45655a7e39b21698d2f887f84a4d5ee5878328224fda616b",
+      "price-00089.parquet": "c242d9cf3fe44ba04727ee0c56fe0bbd668ff7d78fffe8240172e2177a4f83a9",
+      "price-00090.parquet": "1004feca66f72c4b52ec0f4d6c0280029b3e51c40d405483fff0c78c41ebb22d",
+      "price-00091.parquet": "ae194e280c876a40029cc3a01b261b9f93b50629ef062d13d56661814c621cc0",
+      "price-00092.parquet": "bd051bee3ba710ab288c2d8f3b44ca8a65b07ce9af5ddb33d81648023b6e5817",
+      "price-00093.parquet": "e267cd4424b3a819713f2e85fa45e063f1b19100f9da84be22ab36f666fbc713",
+      "price-00094.parquet": "06ea9b49d785220d422f02dbf9c577d56768525eaf62a478dc6348eacecd217d",
+      "price-00095.parquet": "8f9fa6bd342b2736d052afa8407da2105043a8da29ae265d391d21f0dd7e5991",
+      "price-00096.parquet": "85ac84723c15967ea4c1d013922e40ed49b3aeb714e4fa5cb89fcc2eafe69279"
+    },
+    "data-admission.json": "5504bc47f36b82efd4669b51c401f266ee0521ebb2dc77d87c57df89c38a0c48",
+    "b1b_extract_manifest.json": "d50581ef49ce17203b92401c6c9c795e9c71b9474002049fa86ad52195b269b7",
     "price_parquet_files": {
       "price-00000.parquet": "379e008556f3e0298205b218a60758be11c92e149797f5fe3e0155ea21ec80ba",
       "price-00001.parquet": "fc6a6d1d0212580d94e7a75817f1b223cf1a361f3a46dab6414b354b045162b7",
@@ -149,7 +263,7 @@
     },
     "verify_v3_snapshot": {
       "status": "PASS",
-      "seconds": 44.9
+      "seconds": 43.3
     },
     "db_seal_vs_snapshot_manifest": {
       "revision_status_match": true,
@@ -373,6 +487,528 @@
     },
     "instruments_with_no_cohort_reason_either": 0,
     "instruments_with_no_cohort_reason_either_ids": []
+  },
+  "check8_pk_fk_source_traceability": {
+    "pk_duplicates_by_member": {
+      "PRICE": {
+        "natural_key": [
+          "stock_id",
+          "trading_date",
+          "adjusted"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:26",
+        "rows": 9674453,
+        "duplicate_rows": 0
+      },
+      "UNIVERSE": {
+        "natural_key": [
+          "stock_id",
+          "market",
+          "valid_from"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:27",
+        "rows": 31475,
+        "duplicate_rows": 0
+      },
+      "IDENTIFIER": {
+        "natural_key": [
+          "stock_id",
+          "identifier_type",
+          "identifier_value",
+          "valid_from"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:28",
+        "rows": 907098,
+        "duplicate_rows": 0
+      },
+      "CALENDAR": {
+        "natural_key": [
+          "market",
+          "trading_date"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:29",
+        "rows": 3652,
+        "duplicate_rows": 0
+      },
+      "BENCHMARK": {
+        "natural_key": [
+          "benchmark_code",
+          "trading_date"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:30",
+        "rows": 4918,
+        "duplicate_rows": 0
+      },
+      "STATUS": {
+        "natural_key": [
+          "stock_id",
+          "trading_date"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:31",
+        "rows": 292,
+        "duplicate_rows": 0
+      },
+      "CORPORATE_ACTION": {
+        "natural_key": [
+          "event_id"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:32",
+        "rows": 26584,
+        "duplicate_rows": 0
+      },
+      "ADJUSTMENT": {
+        "natural_key": [
+          "stock_id",
+          "trading_date",
+          "event_id"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:33",
+        "rows": 2947,
+        "duplicate_rows": 0
+      },
+      "EXECUTION_RULE": {
+        "natural_key": [
+          "rule_kind",
+          "market",
+          "effective_from"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:34",
+        "rows": 15,
+        "duplicate_rows": 0
+      },
+      "ADMISSION_ISSUE": {
+        "natural_key": [
+          "issue_code",
+          "affected_scope",
+          "affected_from",
+          "affected_to",
+          "decision",
+          "severity",
+          "details"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:35 — 원 정렬열은 to_jsonb(x)::text(행 전체)이므로 PK 검사도 로딩한 전체 컬럼(issue_code·affected_scope·affected_from·affected_to·decision·severity·details) 을 키로 썼다.",
+        "rows": 2304,
+        "duplicate_rows": 75,
+        "reference_only_same_code_window_decision_different_details": {
+          "natural_key": [
+            "issue_code",
+            "affected_from",
+            "affected_to",
+            "decision"
+          ],
+          "duplicate_rows": 983,
+          "note": "FAIL 판정에 쓰지 않는다(브리프 (d)). 코드·구간·결정만 같고 details 만 다른 행 수 참고치."
+        }
+      },
+      "SOURCE_PAYLOAD": {
+        "natural_key": [
+          "payload_id"
+        ],
+        "source_file_line": "research/krx_lab/v3_snapshot.py:36",
+        "rows": 24266,
+        "duplicate_rows": 0
+      }
+    },
+    "pk_all_zero_duplicates": false,
+    "fk_stock_id_membership": {
+      "note": "universe(모든 security_type) ∪ identifier 의 stock_id 합집합을 참조 대상으로 삼았다.",
+      "known_stock_id_count": 3027,
+      "PRICE": {
+        "rows_checked": 9674453,
+        "unknown_stock_id_rows": 0,
+        "unknown_stock_id_examples": []
+      },
+      "ADJUSTMENT": {
+        "rows_checked": 2947,
+        "unknown_stock_id_rows": 0,
+        "unknown_stock_id_examples": []
+      },
+      "CORPORATE_ACTION": {
+        "rows_checked": 26584,
+        "unknown_stock_id_rows": 0,
+        "unknown_stock_id_examples": []
+      },
+      "STATUS": {
+        "rows_checked": 292,
+        "unknown_stock_id_rows": 0,
+        "unknown_stock_id_examples": []
+      }
+    },
+    "fk_source_lineage": {
+      "note": "가격 행의 source_record_id 는 SOURCE_PAYLOAD member 자체에는 없어(그 member 는 payload_id·payload_sha256 만 담는다) 전수 해석은 이 리포의 오프라인 자료만으로 불가능하다 — check10 표본에서 DB 의 kiwoom.source_record 로 직접 해석 가능함을 확인했다(NOT_VERIFIABLE_OFFLINE, 표본으로 대체 확인).",
+      "source_record_id_null_rows": 0,
+      "payload_sha256_null_rows": 0,
+      "payload_sha256_resolved_against_SOURCE_PAYLOAD_member": 9674453,
+      "payload_sha256_unresolved_rows": 0,
+      "payload_sha256_unresolved_examples": [],
+      "rows_checked": 9674453
+    }
+  },
+  "check9_validity_period_continuity": {
+    "note": "브리프 (a) 반영: 겹침=같은 그룹 안에서 valid_from 이 이전 구간의 누적 최대 valid_to 이하. 공백=이전 구간 valid_to 와 다음 구간 valid_from 사이에 공식 개장일(calendar member, is_open)이 1개 이상 있을 때만 잡는다(gap_open_days). execution_rule 은 구간-사이 공백이 아니라 전체 개장일 커버리지 검사로 바꿨다(브리프 (b), check_execution_rule_coverage 참고).",
+    "universe": {
+      "group_key": "stock_id (모든 security_type)",
+      "segments": 31475,
+      "overlap_count": 0,
+      "overlap_examples": [],
+      "gap_count": 0,
+      "gap_explanation": {
+        "explainable": true,
+        "gap_count": 0,
+        "explained": 0,
+        "unexplained": 0,
+        "unexplained_examples": []
+      }
+    },
+    "identifier": {
+      "group_key": "(stock_id, identifier_type)",
+      "segments": 907098,
+      "overlap_count": 0,
+      "gap_count": 0,
+      "note": "B1b(listing-halt-reconciliation.json) 는 상장·정지 근거이지 식별자 이력 근거가 아니라서 겹침·공백 건수만 세고 설명 여부는 나누지 않았다(브리프 지시대로 개장일 기준만 다시 적용)."
+    },
+    "execution_rule": {
+      "note": "브리프 (b): (rule_kind,market) 마다 2014~2023 개장일이 정확히 한 구간에 포함되는지 검사한다 (compute_overlaps_gaps 의 구간-사이 공백 검사가 아니라 전체 구간 커버리지 검사다).",
+      "by_group": [
+        {
+          "rule_kind": "COMMISSION",
+          "market": "ALL",
+          "uncovered_open_days": 0,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": false
+        },
+        {
+          "rule_kind": "PRICE_LIMIT",
+          "market": "ALL",
+          "uncovered_open_days": 0,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": false
+        },
+        {
+          "rule_kind": "SELL_TAX",
+          "market": "KOSDAQ",
+          "uncovered_open_days": 245,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": true
+        },
+        {
+          "rule_kind": "SELL_TAX",
+          "market": "KOSPI",
+          "uncovered_open_days": 245,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": true
+        },
+        {
+          "rule_kind": "SETTLEMENT",
+          "market": "ALL",
+          "uncovered_open_days": 0,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": false
+        },
+        {
+          "rule_kind": "TICK_SIZE",
+          "market": "ALL",
+          "uncovered_open_days": 2229,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": false
+        },
+        {
+          "rule_kind": "TICK_SIZE",
+          "market": "KOSDAQ",
+          "uncovered_open_days": 230,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": false
+        },
+        {
+          "rule_kind": "TICK_SIZE",
+          "market": "KOSPI",
+          "uncovered_open_days": 230,
+          "duplicated_open_days": 0,
+          "known_r1_sell_tax_2014": false
+        }
+      ],
+      "sell_tax_uncovered_open_days_total": 490,
+      "sell_tax_uncovered_matches_r1_expected_490": true,
+      "non_r1_uncovered_open_days_total": 2689,
+      "duplicated_open_days_total": 0,
+      "known_r1_note": "execution_rule 의 SELL_TAX 는 2014년 구간이 없다(2015-01-01 부터 시작). docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/requests/r1-execution-rule-sell-tax.md 로 이미 ted-startup 에 원천 수정을 요청했다(예상 245개장일×2시장=490건). 이 스크립트는 이를 KNOWN_R1_REQUESTED 로 분류하되, 미해결 결함이므로 gate_a_items 4번 FAIL 사유에 반영한다(새로 발견한 결함이 아님)."
+    },
+    "status": {
+      "note": "STATUS member 는 예외일만 담는 이벤트 테이블이라 valid_from/valid_to 가 없다 — 유효기간 겹침·공백 개념이 적용되지 않는다. (stock_id,trading_date) 유일성은 check8 참고."
+    },
+    "sector": {
+      "note": "업종(섹터) 원천 자체가 없다.",
+      "admission_issue_rows": 1,
+      "status": "POINT_IN_TIME_SECTOR_UNAVAILABLE(원천 없음)"
+    }
+  },
+  "check10_fixed_sample_source_reproduction": {
+    "verdict": "PASS",
+    "sample_rows": 210,
+    "db_rows_returned": 210,
+    "rows_with_no_db_match": 0,
+    "payload_sha256_mismatch_rows": 0,
+    "rows_without_matched_payload_element": 0,
+    "unknown_entity_kind_rows": 0,
+    "unknown_entity_kind_examples": [],
+    "rows_field_checked": 210,
+    "field_mismatches": [],
+    "field_mismatch_count": 0,
+    "payload_field_map": {
+      "DAILY_PRICE": {
+        "array_key": "OutBlock_1",
+        "match_fields": {
+          "ISU_CD": "stock_code",
+          "BAS_DD": "trading_date_yyyymmdd"
+        },
+        "columns": {
+          "open_price": "TDD_OPNPRC",
+          "high_price": "TDD_HGPRC",
+          "low_price": "TDD_LWPRC",
+          "close_price": "TDD_CLSPRC",
+          "trade_volume": "ACC_TRDVOL"
+        },
+        "rounding": "문자열로 저장된 정수를 그대로 int 캐스트(단위·반올림 변환 없음)"
+      },
+      "DAILY_PRICE_VENDOR": {
+        "array_key": "stk_dt_pole_chart_qry",
+        "match_fields": {
+          "dt": "trading_date_yyyymmdd"
+        },
+        "columns": {
+          "open_price": "open_pric",
+          "high_price": "high_pric",
+          "low_price": "low_pric",
+          "close_price": "cur_prc",
+          "trade_volume": "trde_qty"
+        },
+        "rounding": "문자열로 저장된 정수를 그대로 int 캐스트(단위·반올림 변환 없음). trde_prica(거래대금)는 백만원 단위로 보이며 trade_amount 와 단위가 달라 이번 재현 대상에서 뺐다(브리프가 요구한 필드는 OHLC·거래량뿐이다)."
+      }
+    },
+    "extract_dir": "C:\\Users\\aeby\\vscode\\stock\\vectorbt-data\\krx-prd-v1-b5-20260924"
+  },
+  "check11_issue_disposition_tracking": {
+    "note": "cohort.json 의 issue_dispositions(REJECT/QUARANTINE 이슈 순회 기록)와 tables-dir admission_issue member, prepared-r2/issues.parquet(같은 행 순서로 보인다) 을 대조했다.",
+    "issue_dispositions_count": 2304,
+    "admission_issue_member_rows": 2304,
+    "count_matches_2304": true,
+    "issue_code_multiset_matches_tables_vs_prepared": true,
+    "position_index_code_mismatches": 0,
+    "position_index_code_mismatch_examples": [],
+    "unresolved_issues_count": 0,
+    "unresolved_issues_is_zero": true,
+    "excluded_instrument_count": 1711,
+    "excluded_instruments_with_empty_reasons": 0,
+    "excluded_instruments_with_empty_reasons_examples": [],
+    "data_admission_json": {
+      "decision": "CONDITIONALLY_ADMITTED",
+      "excluded_issue_count": 1711,
+      "included_record_count": 6,
+      "issue_policy_present": true,
+      "checks_present": true
+    }
+  },
+  "check12_volume_validity": {
+    "volume_validity": {
+      "raw": {
+        "rows": 5099694,
+        "missing": 0,
+        "negative": 0,
+        "non_integer": 0,
+        "affected_instruments": 0
+      },
+      "adjusted": {
+        "rows": 4574759,
+        "missing": 0,
+        "negative": 0,
+        "non_integer": 0,
+        "affected_instruments": 0
+      },
+      "same_day_raw_vs_adjusted_zero_positive_mismatch": {
+        "both_present_rows": 4574759,
+        "mismatched_rows": 100,
+        "affected_instruments": 14,
+        "pass_instrument_rows": 27,
+        "pass_instruments": 3
+      }
+    },
+    "coefficient_reconciliation": {
+      "adjustment_member_columns": [
+        "candidate_event_ids",
+        "event_id",
+        "explanation_status",
+        "factor_ratio",
+        "previous_factor",
+        "price_factor",
+        "stock_id",
+        "trading_date"
+      ],
+      "adjustment_member_has_volume_factor_field": false,
+      "adjustment_member_volume_factor_columns": [],
+      "ohlcv20_factor_v2_539_of_733_context": {
+        "source_file_line": "docs/strategy-research/backtest-lab/ohlcv20-factor-v2-intake-2026-09-23/README.md 표(§1) — '계수 v2 733키 | 양쪽 승인 539 / 가격만 승인 104 / 양쪽 미승인 90'",
+        "note": "이 539/733 은 사건 키(공시·행사) 단위 인수표이며, v3 스냅샷의 ADJUSTMENT member((종목,일) 단위, 필드: candidate_event_ids·event_id·explanation_status·factor_ratio·previous_factor·price_factor)와는 서로 다른 키·서로 다른 파이프라인이다. 두 자료를 연결할 조인 키가 이 리포 코드 어디에도 없어(연결 코드를 찾지 못함) 이 스크립트는 둘을 조인하지 않았다."
+      },
+      "verdict": "NOT_VERIFIABLE",
+      "verdict_reason": "ADJUSTMENT member 에 거래량 계수 필드·상태가 없다(가격 계수 필드만 있다). 따라서 '거래량 비율 변화일이 adjustment member 의 거래량 계수 사건과 대응하는지'는 이 데이터로 확인할 수 없다. 추정하지 않는다.",
+      "volume_ratio_tolerance_source": "research/krx_lab/ohlcv20_input.py:65 (_ADJUSTED_RELATIVE_TOLERANCE = 0.005)",
+      "volume_ratio_tolerance": 0.005,
+      "internal_price_vs_volume_ratio_change_mismatch": {
+        "computed": true,
+        "note": "BOTH 행에서 전일 대비 수정가/원가 종가비율 변화와 수정가/원가 거래량비율 변화를 허용오차 0.005(상대) 로 각각 표시하고, 둘 중 하나만 바뀐 날을 '어긋남'으로 센다. 외부 사건표 없이 내부 일관성만 본다(12.2 verdict 참고).",
+        "rows_with_prev_day_compared": 4501438,
+        "price_ratio_changed_rows": 2250,
+        "volume_ratio_changed_rows": 6452,
+        "mismatch_rows": 4456,
+        "mismatch_instruments": 267,
+        "pass_instrument_rows": 390,
+        "pass_instruments": 82,
+        "mismatch_rows_by_corporate_action_event_that_day": {
+          "LISTED_SHARE_CHANGE": 10,
+          "NO_CORPORATE_ACTION_EVENT_THAT_DAY": 4446
+        }
+      }
+    },
+    "pass_instruments_with_volume_findings": {
+      "note": "check7 판정(gate_a_status)은 바꾸지 않는다. 1,076 PASS 종목 중 check12 에서 결함이 나온 종목·행만 나열한다(판정 변경 없음). 행 수는 volume_validity 하위 각 항목의 pass_instrument_rows/pass_instruments 를 참고.",
+      "pass_instrument_count": 1076,
+      "volume_validity_raw_or_adjusted_instruments": [],
+      "same_day_zero_positive_mismatch_instruments": [
+        1125,
+        1158,
+        1284
+      ],
+      "internal_price_vs_volume_ratio_mismatch_instruments": [
+        56,
+        87,
+        126,
+        127,
+        132,
+        136,
+        138,
+        160,
+        184,
+        198,
+        208,
+        211,
+        219,
+        226,
+        253,
+        257,
+        263,
+        269,
+        271,
+        274,
+        278,
+        301,
+        305,
+        317,
+        325,
+        338,
+        355,
+        356,
+        366,
+        368,
+        378,
+        380,
+        386,
+        406,
+        409,
+        420,
+        429,
+        445,
+        446,
+        449,
+        465,
+        468,
+        484,
+        498,
+        499,
+        503,
+        509,
+        536,
+        540,
+        558,
+        568,
+        569,
+        573,
+        580,
+        593,
+        623,
+        629,
+        632,
+        645,
+        672,
+        755,
+        783,
+        785,
+        813,
+        829,
+        842,
+        844,
+        851,
+        935,
+        948,
+        1024,
+        1079,
+        1118,
+        1125,
+        1140,
+        1158,
+        1230,
+        1284,
+        3104,
+        3131,
+        3144,
+        3168
+      ]
+    }
+  },
+  "gate_a_items": {
+    "1_pk_fk_source_traceability": {
+      "based_on": [
+        "check1",
+        "check8"
+      ],
+      "status": "FAIL",
+      "reason": "check8 PK 중복: {'ADMISSION_ISSUE': 75} | source_record_id 전수 해석은 오프라인 불가(check10 표본 210/210 으로 부분 확인, payload_sha256 은 9674453/9674453 전수 해석됨) — 판정에는 반영하지 않음"
+    },
+    "2_expected_grid_completeness": {
+      "based_on": [
+        "check2"
+      ],
+      "status": "PASS",
+      "reason": "격자 자체(원가 커버리지)는 완전하나 수정가 RAW_ONLY 미설명 460,232행이 있다(결함 아님, 규모만 보고 — check2.raw_only_or_neither_explanation 참고)."
+    },
+    "3_ohlcv_validity_and_field_coefficients": {
+      "based_on": [
+        "check3",
+        "check12"
+      ],
+      "status": "PASS",
+      "reason": "가격 계수(check3)는 cohort 18종목과 일치. 거래량 계수 대응(check12.2)은 NOT_VERIFIABLE(adjustment member 에 거래량 계수 필드 없음)."
+    },
+    "4_validity_period_continuity": {
+      "based_on": [
+        "check9"
+      ],
+      "status": "FAIL",
+      "reason": "execution_rule 미분류(R1 아님) 미포함 개장일 2689건; execution_rule SELL_TAX 2014 미포함 490건(R1 로 요청됨, 새 결함 아님)"
+    },
+    "5_fixed_sample_source_reproduction": {
+      "based_on": [
+        "check10"
+      ],
+      "status": "PASS",
+      "reason": ""
+    },
+    "6_issue_disposition_tracking": {
+      "based_on": [
+        "check11"
+      ],
+      "status": "PASS",
+      "reason": ""
+    }
   },
   "check7_gate_a_status": {
     "gate_a_status_definition": {

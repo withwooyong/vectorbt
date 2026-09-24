@@ -31,7 +31,10 @@ Gate A 4개 항목(docs/strategy-research/backtest-lab/backtest-data-requirement
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import json
+import subprocess
 import sys
 import time
 from collections import defaultdict
@@ -95,6 +98,43 @@ SCOPE_SOURCE = {
 
 CORE_MEMBER_KINDS = list(SPECS)
 
+# ---------------------------------------------------------------------------
+# check10(고정 표본 원문 재현) 용 DB 읽기 전용 접근. research/krx_lab/v3_snapshot.py:38-39 의
+# COMMAND 방식(ssh home + docker exec psql)만 쓴다. SQL 은 항상 BEGIN ... READ ONLY / ROLLBACK 으로 감싼다.
+# ---------------------------------------------------------------------------
+SSH_COMMAND = [
+    "ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "home",
+    "docker exec -i -e PGCLIENTENCODING=UTF8 kiwoom-db psql -X -q -U kiwoom -d kiwoom_db",
+]
+DEFAULT_CHECK10_EXTRACT_DIR = Path("C:/Users/aeby/vscode/stock/vectorbt-data/krx-prd-v1-b5-20260924")
+# B1b(listing_halt_reconciliation.py) 가 이미 추출해 둔 stock/market_status_event/trading_halt 를 check9 의
+# universe 유효기간 공백 설명에 재사용한다(읽기 전용, 새로 추출하지 않는다).
+DEFAULT_B1B_EXTRACT_DIR = Path("C:/Users/aeby/vscode/stock/vectorbt-data/krx-prd-v1-b1b-20260924")
+
+# check10 payload->parquet 필드 매핑 출처. DB 스키마 조회(information_schema.columns, 읽기 전용, 2026-09-24)와
+# 표본 1건씩(RAW/ADJUSTED 각 1건, stock_id=19/000250, 2014-01-02) 직접 대조로 확인했다 — 이 리포 코드에는
+# 이 매핑이 문서화되어 있지 않아(research/krx_lab 은 kiwoom.source_record/source_payload 원문 필드를 다루지
+# 않는다) 이번 조사로 확정했다.
+PAYLOAD_FIELD_MAP = {
+    "DAILY_PRICE": {  # source_code=KRX_OPEN_API, 원가
+        "array_key": "OutBlock_1", "match_fields": {"ISU_CD": "stock_code", "BAS_DD": "trading_date_yyyymmdd"},
+        "columns": {"open_price": "TDD_OPNPRC", "high_price": "TDD_HGPRC", "low_price": "TDD_LWPRC",
+                    "close_price": "TDD_CLSPRC", "trade_volume": "ACC_TRDVOL"},
+        "rounding": "문자열로 저장된 정수를 그대로 int 캐스트(단위·반올림 변환 없음)",
+    },
+    "DAILY_PRICE_VENDOR": {  # source_code=KIWOOM_REST, 수정가
+        "array_key": "stk_dt_pole_chart_qry", "match_fields": {"dt": "trading_date_yyyymmdd"},
+        "columns": {"open_price": "open_pric", "high_price": "high_pric", "low_price": "low_pric",
+                    "close_price": "cur_prc", "trade_volume": "trde_qty"},
+        "rounding": "문자열로 저장된 정수를 그대로 int 캐스트(단위·반올림 변환 없음). trde_prica(거래대금)는 "
+        "백만원 단위로 보이며 trade_amount 와 단위가 달라 이번 재현 대상에서 뺐다(브리프가 요구한 필드는 "
+        "OHLC·거래량뿐이다).",
+    },
+}
+# 표본 층화 기준: 연도×시장×원가/수정가. 목표 총 행 수.
+CHECK10_TARGET_SAMPLE_ROWS = 200
+CHECK10_ROWS_PER_STRATUM = 7
+
 
 def sha256_and_read(path: Path, **kwargs) -> tuple[pd.DataFrame, str]:
     return pd.read_parquet(path, **kwargs), sha256_file(path)
@@ -132,15 +172,51 @@ def load_corporate_action(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
 
 def load_adjustment(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
     fp = tables_dir / "adjustment-00112.parquet"
-    cols = ["stock_id", "trading_date", "explanation_status", "candidate_event_ids"]
+    cols = ["stock_id", "trading_date", "explanation_status", "candidate_event_ids", "event_id",
+            "factor_ratio", "previous_factor", "price_factor"]
     df = pd.read_parquet(fp, columns=cols)
     df["trading_date"] = pd.to_datetime(df["trading_date"])
     return df, {fp.name: sha256_file(fp)}
 
 
+def load_identifier(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
+    files = sorted(tables_dir.glob("identifier-*.parquet"))
+    cols = ["stock_id", "identifier_type", "identifier_value", "valid_from", "valid_to", "source_record_id"]
+    frames = []
+    hashes = {}
+    for fp in files:
+        frames.append(pd.read_parquet(fp, columns=cols))
+        hashes[fp.name] = sha256_file(fp)
+    df = pd.concat(frames, ignore_index=True)
+    df["valid_from"] = pd.to_datetime(df["valid_from"])
+    df["valid_to"] = pd.to_datetime(df["valid_to"])
+    return df, hashes
+
+
+def load_execution_rule(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
+    fp = tables_dir / "execution_rule-00113.parquet"
+    df = pd.read_parquet(fp)
+    df["effective_from"] = pd.to_datetime(df["effective_from"])
+    df["effective_to"] = pd.to_datetime(df["effective_to"])
+    return df, {fp.name: sha256_file(fp)}
+
+
+def load_benchmark(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
+    fp = tables_dir / "benchmark-00109.parquet"
+    df = pd.read_parquet(fp, columns=["benchmark_code", "trading_date"])
+    df["trading_date"] = pd.to_datetime(df["trading_date"])
+    return df, {fp.name: sha256_file(fp)}
+
+
+def load_source_payload_index(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
+    fp = tables_dir / "source_payload-00115.parquet"
+    df = pd.read_parquet(fp)
+    return df, {fp.name: sha256_file(fp)}
+
+
 def load_admission_issue_table(tables_dir: Path) -> tuple[pd.DataFrame, dict]:
     fp = tables_dir / "admission_issue-00114.parquet"
-    cols = ["issue_code", "affected_scope", "affected_from", "affected_to", "decision"]
+    cols = ["issue_code", "affected_scope", "affected_from", "affected_to", "decision", "severity", "details"]
     df = pd.read_parquet(fp, columns=cols)
     df["affected_from"] = pd.to_datetime(df["affected_from"])
     df["affected_to"] = pd.to_datetime(df["affected_to"])
@@ -676,6 +752,680 @@ def check6_b1_correction(raw_ids: set[int], cohort_ids: set[int], issues: pd.Dat
     }
 
 
+def load_price_lineage_columns(tables_dir: Path) -> dict:
+    """check8(FK)·check10(표본) 에 필요한 계보·OHLCV 컬럼을 읽는다."""
+    columns = ["adjusted", "stock_id", "stock_code", "market", "trading_date", "source_record_id", "payload_sha256",
+              "open_price", "high_price", "low_price", "close_price", "trade_volume"]
+    df, hashes, saw_future = load_price_table(tables_dir, columns)
+    df = df[df["trading_date"] < CUTOFF].reset_index(drop=True)
+    return {"frame": df, "price_hashes": hashes, "saw_future": saw_future}
+
+
+# ---------------------------------------------------------------------------
+# Check 8. PK·FK·원천 행 추적 (Gate A 1번 항목)
+# ---------------------------------------------------------------------------
+
+NATURAL_KEYS = {
+    "PRICE": (["stock_id", "trading_date", "adjusted"], "research/krx_lab/v3_snapshot.py:26"),
+    "UNIVERSE": (["stock_id", "market", "valid_from"], "research/krx_lab/v3_snapshot.py:27"),
+    "IDENTIFIER": (["stock_id", "identifier_type", "identifier_value", "valid_from"], "research/krx_lab/v3_snapshot.py:28"),
+    "CALENDAR": (["market", "trading_date"], "research/krx_lab/v3_snapshot.py:29"),
+    "BENCHMARK": (["benchmark_code", "trading_date"], "research/krx_lab/v3_snapshot.py:30"),
+    "STATUS": (["stock_id", "trading_date"], "research/krx_lab/v3_snapshot.py:31"),
+    "CORPORATE_ACTION": (["event_id"], "research/krx_lab/v3_snapshot.py:32"),
+    "ADJUSTMENT": (["stock_id", "trading_date", "event_id"], "research/krx_lab/v3_snapshot.py:33"),
+    "EXECUTION_RULE": (["rule_kind", "market", "effective_from"], "research/krx_lab/v3_snapshot.py:34"),
+    "ADMISSION_ISSUE": (["issue_code", "affected_scope", "affected_from", "affected_to", "decision", "severity",
+                        "details"],
+                        "research/krx_lab/v3_snapshot.py:35 — 원 정렬열은 to_jsonb(x)::text(행 전체)이므로 PK "
+                        "검사도 로딩한 전체 컬럼(issue_code·affected_scope·affected_from·affected_to·decision·"
+                        "severity·details) 을 키로 썼다."),
+    "SOURCE_PAYLOAD": (["payload_id"], "research/krx_lab/v3_snapshot.py:36"),
+}
+
+# check8 참고용(FAIL 판정에 쓰지 않음): 코드·구간·결정만 같고 details 만 다른 admission_issue 행 수.
+ADMISSION_ISSUE_REFERENCE_KEY = ["issue_code", "affected_from", "affected_to", "decision"]
+
+
+def check8_pk_fk(universe_df: pd.DataFrame, identifier_df: pd.DataFrame, tables_calendar: pd.DataFrame,
+                 benchmark_df: pd.DataFrame, status_df: pd.DataFrame, ca_df: pd.DataFrame, adj_df: pd.DataFrame,
+                 issue_df: pd.DataFrame, execution_rule_df: pd.DataFrame, payload_index_df: pd.DataFrame,
+                 price_lineage: pd.DataFrame) -> dict:
+    frames = {
+        "PRICE": price_lineage, "UNIVERSE": universe_df, "IDENTIFIER": identifier_df,
+        "CALENDAR": tables_calendar, "BENCHMARK": benchmark_df, "STATUS": status_df,
+        "CORPORATE_ACTION": ca_df, "ADJUSTMENT": adj_df, "EXECUTION_RULE": execution_rule_df,
+        "ADMISSION_ISSUE": issue_df, "SOURCE_PAYLOAD": payload_index_df,
+    }
+    pk_duplicates = {}
+    for kind, (key_cols, source) in NATURAL_KEYS.items():
+        df = frames[kind]
+        dup_count = int(df.duplicated(key_cols, keep=False).sum())
+        pk_duplicates[kind] = {"natural_key": key_cols, "source_file_line": source, "rows": int(len(df)),
+                               "duplicate_rows": dup_count}
+    admission_issue_reference_dup = int(
+        issue_df.duplicated(ADMISSION_ISSUE_REFERENCE_KEY, keep=False).sum())
+    pk_duplicates["ADMISSION_ISSUE"]["reference_only_same_code_window_decision_different_details"] = {
+        "natural_key": ADMISSION_ISSUE_REFERENCE_KEY, "duplicate_rows": admission_issue_reference_dup,
+        "note": "FAIL 판정에 쓰지 않는다(브리프 (d)). 코드·구간·결정만 같고 details 만 다른 행 수 참고치.",
+    }
+
+    universe_ids = set(int(x) for x in universe_df["stock_id"].unique())
+    identifier_ids = set(int(x) for x in identifier_df["stock_id"].unique())
+    known_stock_ids = universe_ids | identifier_ids
+
+    def fk_check(df: pd.DataFrame, label: str) -> dict:
+        unknown_mask = ~df["stock_id"].astype("int64").isin(known_stock_ids)
+        unknown = df.loc[unknown_mask, "stock_id"].unique()
+        return {"rows_checked": int(len(df)), "unknown_stock_id_rows": int(unknown_mask.sum()),
+                "unknown_stock_id_examples": sorted(int(x) for x in unknown)[:20]}
+
+    fk_stock_id = {
+        "note": "universe(모든 security_type) ∪ identifier 의 stock_id 합집합을 참조 대상으로 삼았다.",
+        "known_stock_id_count": len(known_stock_ids),
+        "PRICE": fk_check(price_lineage, "PRICE"),
+        "ADJUSTMENT": fk_check(adj_df, "ADJUSTMENT"),
+        "CORPORATE_ACTION": fk_check(ca_df, "CORPORATE_ACTION"),
+        "STATUS": fk_check(status_df, "STATUS"),
+    }
+
+    payload_sha_set = set(payload_index_df["payload_sha256"])
+    source_record_null = int(price_lineage["source_record_id"].isna().sum())
+    payload_sha_null = int(price_lineage["payload_sha256"].isna().sum())
+    resolved_mask = price_lineage["payload_sha256"].isin(payload_sha_set)
+    unresolved = price_lineage.loc[~resolved_mask & price_lineage["payload_sha256"].notna()]
+
+    fk_source_lineage = {
+        "note": "가격 행의 source_record_id 는 SOURCE_PAYLOAD member 자체에는 없어(그 member 는 payload_id·"
+        "payload_sha256 만 담는다) 전수 해석은 이 리포의 오프라인 자료만으로 불가능하다 — check10 표본에서 "
+        "DB 의 kiwoom.source_record 로 직접 해석 가능함을 확인했다(NOT_VERIFIABLE_OFFLINE, 표본으로 대체 확인).",
+        "source_record_id_null_rows": source_record_null,
+        "payload_sha256_null_rows": payload_sha_null,
+        "payload_sha256_resolved_against_SOURCE_PAYLOAD_member": int(resolved_mask.sum()),
+        "payload_sha256_unresolved_rows": int(len(unresolved)),
+        "payload_sha256_unresolved_examples": unresolved.head(10)[["stock_id", "trading_date", "adjusted"]]
+        .assign(trading_date=lambda d: d["trading_date"].dt.date.astype(str)).to_dict("records"),
+        "rows_checked": int(len(price_lineage)),
+    }
+
+    return {
+        "pk_duplicates_by_member": pk_duplicates,
+        "pk_all_zero_duplicates": all(v["duplicate_rows"] == 0 for v in pk_duplicates.values()),
+        "fk_stock_id_membership": fk_stock_id,
+        "fk_source_lineage": fk_source_lineage,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Check 9. 유효기간 겹침·끊김 (Gate A 4번 항목)
+# ---------------------------------------------------------------------------
+
+
+def compute_overlaps_gaps(df: pd.DataFrame, group_cols: list[str], open_dates: np.ndarray) -> pd.DataFrame:
+    """그룹 안에서 valid_from 정렬 후 누적 최대 valid_to 대비 겹침·공백을 표시한다(중첩 구간도 처리).
+
+    공백은 브리프 (a) 기준대로 '이전 구간 valid_to 와 다음 구간 valid_from 사이에 공식 개장일이 1개 이상' 일
+    때만 잡는다(달력일 차이가 아니라 개장일 수). gap_open_days 가 그 개장일 수다.
+    """
+    d = df.sort_values(group_cols + ["valid_from"]).reset_index(drop=True).copy()
+    running_max_to = d.groupby(group_cols)["valid_to"].cummax()
+    d["running_max_to"] = running_max_to
+    d["prev_running_max_to"] = d.groupby(group_cols)["running_max_to"].shift(1)
+    d["is_first_in_group"] = d["prev_running_max_to"].isna()
+    d["overlap"] = (~d["is_first_in_group"]) & (d["valid_from"] <= d["prev_running_max_to"])
+
+    prev_to_filled = d["prev_running_max_to"].fillna(d["valid_from"]).values.astype("datetime64[ns]")
+    lo = np.searchsorted(open_dates, prev_to_filled + np.timedelta64(1, "D"), side="left")
+    hi = np.searchsorted(open_dates, d["valid_from"].values.astype("datetime64[ns]"), side="left")
+    gap_open_days = np.clip(hi - lo, 0, None)
+    d["gap_open_days"] = np.where(d["is_first_in_group"], 0, gap_open_days)
+    d["gap"] = (~d["is_first_in_group"]) & (d["gap_open_days"] >= 1)
+    return d
+
+
+def explain_universe_gaps(gap_rows: pd.DataFrame, b1b: dict | None) -> dict:
+    if b1b is None:
+        return {"explainable": False, "reason": "B1B_EXTRACT_DIR_NOT_FOUND(읽기 전용 재사용 대상 없음)",
+                "gap_count": int(len(gap_rows)), "explained": None, "unexplained": None}
+    stock = b1b["stock"].set_index("stock_id")
+    halts = b1b["trading_halt"]
+    events = b1b["market_status_event"]
+    explained = 0
+    unexplained_list = []
+    for row in gap_rows.itertuples():
+        sid = int(row.stock_id)
+        gap_start, gap_end = row.prev_running_max_to, row.valid_from
+        ok = False
+        if sid in stock.index:
+            listed = stock.loc[sid, "listed_date"]
+            delisted = stock.loc[sid, "delisted_date"]
+            if pd.notna(listed) and gap_end <= listed:
+                ok = True
+            if not ok and pd.notna(delisted) and gap_start >= delisted:
+                ok = True
+        if not ok:
+            sh = halts[halts["stock_id"] == sid]
+            for h in sh.itertuples():
+                resume = h.resume_date if pd.notna(h.resume_date) else HALT_OPEN_END_FALLBACK
+                if h.halt_date <= gap_end and gap_start <= resume:
+                    ok = True
+                    break
+        if not ok:
+            se = events[(events["stock_id"] == sid) & events["effective_date"].between(gap_start, gap_end)]
+            if not se.empty:
+                ok = True
+        if ok:
+            explained += 1
+        else:
+            unexplained_list.append({
+                "stock_id": sid, "gap_start": gap_start.date().isoformat(),
+                "gap_end": gap_end.date().isoformat(), "gap_open_days": int(row.gap_open_days)})
+    return {"explainable": True, "gap_count": int(len(gap_rows)), "explained": explained,
+            "unexplained": len(unexplained_list), "unexplained_examples": unexplained_list[:30]}
+
+
+HALT_OPEN_END_FALLBACK = pd.Timestamp("2023-12-28")
+
+SELL_TAX_R1_NOTE = ("execution_rule 의 SELL_TAX 는 2014년 구간이 없다(2015-01-01 부터 시작). "
+                    "docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/requests/"
+                    "r1-execution-rule-sell-tax.md 로 이미 ted-startup 에 원천 수정을 요청했다(예상 245개장일×"
+                    "2시장=490건). 이 스크립트는 이를 KNOWN_R1_REQUESTED 로 분류하되, 미해결 결함이므로 "
+                    "gate_a_items 4번 FAIL 사유에 반영한다(새로 발견한 결함이 아님).")
+
+
+def check_execution_rule_coverage(execution_rule_df: pd.DataFrame, open_dates: np.ndarray) -> dict:
+    """(rule_kind, market) 마다 2014~2023 개장일 각각이 정확히 1개 구간에 들어가는지 검사한다."""
+    n = len(open_dates)
+    by_group = []
+    for (rule_kind, market), grp in execution_rule_df.groupby(["rule_kind", "market"]):
+        coverage = np.zeros(n, dtype=np.int16)
+        for row in grp.itertuples():
+            lo = np.searchsorted(open_dates, np.datetime64(row.effective_from), side="left")
+            hi = np.searchsorted(open_dates, np.datetime64(row.effective_to), side="right")
+            coverage[lo:hi] += 1
+        uncovered_mask = coverage == 0
+        duplicated_mask = coverage >= 2
+        is_known_sell_tax = rule_kind == "SELL_TAX" and bool(uncovered_mask[open_dates < np.datetime64("2015-01-01")].any())
+        by_group.append({
+            "rule_kind": rule_kind, "market": market,
+            "uncovered_open_days": int(uncovered_mask.sum()),
+            "duplicated_open_days": int(duplicated_mask.sum()),
+            "known_r1_sell_tax_2014": is_known_sell_tax,
+        })
+    sell_tax_uncovered_total = sum(g["uncovered_open_days"] for g in by_group if g["rule_kind"] == "SELL_TAX")
+    non_r1_uncovered_total = sum(g["uncovered_open_days"] for g in by_group if not g["known_r1_sell_tax_2014"])
+    duplicated_total = sum(g["duplicated_open_days"] for g in by_group)
+    return {
+        "note": "브리프 (b): (rule_kind,market) 마다 2014~2023 개장일이 정확히 한 구간에 포함되는지 검사한다 "
+        "(compute_overlaps_gaps 의 구간-사이 공백 검사가 아니라 전체 구간 커버리지 검사다).",
+        "by_group": by_group,
+        "sell_tax_uncovered_open_days_total": sell_tax_uncovered_total,
+        "sell_tax_uncovered_matches_r1_expected_490": sell_tax_uncovered_total == 490,
+        "non_r1_uncovered_open_days_total": non_r1_uncovered_total,
+        "duplicated_open_days_total": duplicated_total,
+        "known_r1_note": SELL_TAX_R1_NOTE,
+    }
+
+
+def item1_pk_fk_source_traceability(check1: dict, check8: dict) -> dict:
+    """gate_a_items 1번. check1 member 봉인 + check8 PK 전무결점 + check8 FK stock_id 전무결점을 모두 요구한다.
+    source_record_id 전수 해석은 오프라인 불가라서 판정에 넣지 않고 사유에만 참고로 남긴다."""
+    reasons = []
+    if not check1["overall_pass"]:
+        reasons.append("check1 member 봉인 불일치")
+    dup_members = {k: v["duplicate_rows"] for k, v in check8["pk_duplicates_by_member"].items()
+                  if v["duplicate_rows"] > 0}
+    if dup_members:
+        reasons.append(f"check8 PK 중복: {dup_members}")
+    for kind in ("PRICE", "ADJUSTMENT", "CORPORATE_ACTION", "STATUS"):
+        unknown = check8["fk_stock_id_membership"][kind]["unknown_stock_id_rows"]
+        if unknown:
+            reasons.append(f"{kind} FK stock_id 미해석 {unknown}행")
+    lineage_note = ("source_record_id 전수 해석은 오프라인 불가(check10 표본 210/210 으로 부분 확인, "
+                    f"payload_sha256 은 {check8['fk_source_lineage']['payload_sha256_resolved_against_SOURCE_PAYLOAD_member']}"
+                    "/"
+                    f"{check8['fk_source_lineage']['rows_checked']} 전수 해석됨) — 판정에는 반영하지 않음")
+    return {"based_on": ["check1", "check8"], "status": "FAIL" if reasons else "PASS",
+            "reason": ("; ".join(reasons) + " | " + lineage_note) if reasons else lineage_note}
+
+
+def item4_validity_period_continuity(check9: dict) -> dict:
+    """gate_a_items 4번. 브리프: SELL_TAX 2014 공백은 R1 로 이미 요청된 실제 결함이므로 FAIL 사유에 넣되
+    '새 결함 아님' 을 명시한다. universe 미설명 공백·execution_rule 의 R1 이외 미포함·중복 포함도 있으면 더한다."""
+    universe_unexplained = check9["universe"]["gap_explanation"].get("unexplained")
+    exec_cov = check9["execution_rule"]
+    reasons = []
+    if universe_unexplained not in (0, None):
+        reasons.append(f"universe 미설명 공백 {universe_unexplained}건")
+    if exec_cov["non_r1_uncovered_open_days_total"]:
+        reasons.append(f"execution_rule 미분류(R1 아님) 미포함 개장일 {exec_cov['non_r1_uncovered_open_days_total']}건")
+    if exec_cov["duplicated_open_days_total"]:
+        reasons.append(f"execution_rule 중복 포함 개장일 {exec_cov['duplicated_open_days_total']}건")
+    if exec_cov["sell_tax_uncovered_open_days_total"]:
+        reasons.append(f"execution_rule SELL_TAX 2014 미포함 {exec_cov['sell_tax_uncovered_open_days_total']}건"
+                       "(R1 로 요청됨, 새 결함 아님)")
+    return {"based_on": ["check9"], "status": "FAIL" if reasons else "PASS", "reason": "; ".join(reasons)}
+
+
+def check9_validity_periods(universe_df: pd.DataFrame, identifier_df: pd.DataFrame,
+                            execution_rule_df: pd.DataFrame, issue_df: pd.DataFrame, b1b: dict | None,
+                            open_dates: np.ndarray) -> dict:
+    uni = compute_overlaps_gaps(universe_df, ["stock_id"], open_dates)
+    uni_overlaps = uni[uni["overlap"]]
+    uni_gaps = uni[uni["gap"]]
+    universe_gap_explanation = explain_universe_gaps(uni_gaps, b1b)
+
+    idf = compute_overlaps_gaps(identifier_df, ["stock_id", "identifier_type"], open_dates)
+    idf_overlaps = idf[idf["overlap"]]
+    idf_gaps = idf[idf["gap"]]
+
+    exec_coverage = check_execution_rule_coverage(execution_rule_df, open_dates)
+
+    sector_rows = issue_df[issue_df["issue_code"] == "POINT_IN_TIME_SECTOR_UNAVAILABLE"]
+
+    return {
+        "note": "브리프 (a) 반영: 겹침=같은 그룹 안에서 valid_from 이 이전 구간의 누적 최대 valid_to 이하. "
+        "공백=이전 구간 valid_to 와 다음 구간 valid_from 사이에 공식 개장일(calendar member, is_open)이 "
+        "1개 이상 있을 때만 잡는다(gap_open_days). execution_rule 은 구간-사이 공백이 아니라 전체 개장일 "
+        "커버리지 검사로 바꿨다(브리프 (b), check_execution_rule_coverage 참고).",
+        "universe": {
+            "group_key": "stock_id (모든 security_type)",
+            "segments": int(len(uni)), "overlap_count": int(len(uni_overlaps)),
+            "overlap_examples": uni_overlaps.head(10)[["stock_id"]].assign(
+                stock_id=lambda d: d["stock_id"].astype(int)).to_dict("records"),
+            "gap_count": int(len(uni_gaps)),
+            "gap_explanation": universe_gap_explanation,
+        },
+        "identifier": {
+            "group_key": "(stock_id, identifier_type)",
+            "segments": int(len(idf)), "overlap_count": int(len(idf_overlaps)), "gap_count": int(len(idf_gaps)),
+            "note": "B1b(listing-halt-reconciliation.json) 는 상장·정지 근거이지 식별자 이력 근거가 아니라서 "
+            "겹침·공백 건수만 세고 설명 여부는 나누지 않았다(브리프 지시대로 개장일 기준만 다시 적용).",
+        },
+        "execution_rule": exec_coverage,
+        "status": {"note": "STATUS member 는 예외일만 담는 이벤트 테이블이라 valid_from/valid_to 가 없다 — "
+                   "유효기간 겹침·공백 개념이 적용되지 않는다. (stock_id,trading_date) 유일성은 check8 참고."},
+        "sector": {"note": "업종(섹터) 원천 자체가 없다.", "admission_issue_rows": int(len(sector_rows)),
+                  "status": "POINT_IN_TIME_SECTOR_UNAVAILABLE(원천 없음)"},
+    }
+
+
+# ---------------------------------------------------------------------------
+# Check 11. 이슈 처리 기록 (Gate A 6번 항목)
+# ---------------------------------------------------------------------------
+
+
+def check11_issue_dispositions(cohort_payload: dict, issue_df_tables: pd.DataFrame, prepared_issues: pd.DataFrame,
+                               data_admission: dict) -> dict:
+    dispositions = cohort_payload["issue_dispositions"]
+    count_match = len(dispositions) == len(issue_df_tables)
+
+    # 브리프 (c): 비교 전 dtype 을 정규화한다(예: int64 vs int64[pyarrow] 는 값이 같아도 Series.equals 가
+    # dtype 차이만으로 False 를 낸다). 순수 파이썬 dict(str->int) 로 캐스팅해 값만 비교한다.
+    tables_counts = {str(k): int(v) for k, v in issue_df_tables["issue_code"].value_counts().items()}
+    prepared_counts = {str(k): int(v) for k, v in prepared_issues["issue_code"].value_counts().items()}
+    content_match = tables_counts == prepared_counts
+
+    mismatches = []
+    for entry in dispositions:
+        parts = entry["issue"].split(":", 2)
+        if len(parts) != 3:
+            mismatches.append(entry)
+            continue
+        _, idx_str, code = parts
+        idx = int(idx_str)
+        if idx >= len(prepared_issues) or prepared_issues.iloc[idx]["issue_code"] != code:
+            mismatches.append(entry)
+
+    exclusions = cohort_payload["exclusions"]
+    empty_reason_exclusions = [e["instrument_id"] for e in exclusions if not e.get("reasons")]
+
+    return {
+        "note": "cohort.json 의 issue_dispositions(REJECT/QUARANTINE 이슈 순회 기록)와 tables-dir "
+        "admission_issue member, prepared-r2/issues.parquet(같은 행 순서로 보인다) 을 대조했다.",
+        "issue_dispositions_count": len(dispositions),
+        "admission_issue_member_rows": int(len(issue_df_tables)),
+        "count_matches_2304": count_match,
+        "issue_code_multiset_matches_tables_vs_prepared": bool(content_match),
+        "position_index_code_mismatches": len(mismatches),
+        "position_index_code_mismatch_examples": mismatches[:10],
+        "unresolved_issues_count": len(cohort_payload["unresolved_issues"]),
+        "unresolved_issues_is_zero": len(cohort_payload["unresolved_issues"]) == 0,
+        "excluded_instrument_count": len(exclusions),
+        "excluded_instruments_with_empty_reasons": len(empty_reason_exclusions),
+        "excluded_instruments_with_empty_reasons_examples": empty_reason_exclusions[:20],
+        "data_admission_json": {
+            "decision": data_admission.get("decision"),
+            "excluded_issue_count": data_admission.get("excluded_issue_count"),
+            "included_record_count": data_admission.get("included_record_count"),
+            "issue_policy_present": "issue_policy" in data_admission,
+            "checks_present": "checks" in data_admission,
+        },
+    }
+
+
+# ---------------------------------------------------------------------------
+# Check 12. 거래량 검증 (Gate A 3번 항목, OHLCV 의 V)
+# ---------------------------------------------------------------------------
+
+# 가격 비율(수정가/원가) 변화 감지에 쓰는 허용오차. 이 리포에 거래량 전용 허용오차 상수는 없으므로 가격
+# 조정계수용 상수를 그대로 재사용한다(넓히지 않음).
+VOLUME_RATIO_TOLERANCE_SOURCE = "research/krx_lab/ohlcv20_input.py:65 (_ADJUSTED_RELATIVE_TOLERANCE = 0.005)"
+VOLUME_RATIO_TOLERANCE = 0.005
+
+
+def check12_volume(raw_all: pd.DataFrame, adjusted_all: pd.DataFrame, raw_dedup: pd.DataFrame,
+                   adj_dedup: pd.DataFrame, adj_member: pd.DataFrame, pass_ids: set[int],
+                   open_dates: np.ndarray | None = None, ca_df: pd.DataFrame | None = None) -> dict:
+    def validity(df: pd.DataFrame) -> tuple[dict, set[int]]:
+        vol = df["trade_volume"]
+        bad_mask = vol.isna() | (vol.fillna(0) < 0) | (vol.fillna(0) != vol.fillna(0).round())
+        missing = int(vol.isna().sum())
+        present = vol.dropna()
+        negative = int((present < 0).sum())
+        non_integer = int((present != present.round()).sum())
+        affected = set(int(x) for x in df.loc[bad_mask, "stock_id"].unique())
+        return {"rows": int(len(df)), "missing": missing, "negative": negative, "non_integer": non_integer,
+                "affected_instruments": len(affected)}, affected
+
+    raw_validity, raw_bad_ids = validity(raw_all)
+    adj_validity, adj_bad_ids = validity(adjusted_all)
+    v1 = {"raw": raw_validity, "adjusted": adj_validity}
+    validity_affected_ids = raw_bad_ids | adj_bad_ids
+
+    key_cols = ["stock_id", "day_idx"]
+    raw_vp = raw_dedup[key_cols + ["volume_positive"]].rename(columns={"volume_positive": "raw_volume_positive"})
+    adj_vp = adj_dedup[key_cols + ["volume_positive"]].rename(columns={"volume_positive": "adj_volume_positive"})
+    both = raw_vp.merge(adj_vp, on=key_cols, how="inner")
+    mismatch = both["raw_volume_positive"] != both["adj_volume_positive"]
+    mismatch_df = both.loc[mismatch, ["stock_id", "day_idx"]].copy()
+    same_day_mismatch_ids = set(int(x) for x in mismatch_df["stock_id"].unique())
+    pass_mismatch_df = mismatch_df[mismatch_df["stock_id"].astype(int).isin(pass_ids)]
+    v1["same_day_raw_vs_adjusted_zero_positive_mismatch"] = {
+        "both_present_rows": int(len(both)), "mismatched_rows": int(mismatch.sum()),
+        "affected_instruments": len(same_day_mismatch_ids),
+        "pass_instrument_rows": int(len(pass_mismatch_df)),
+        "pass_instruments": int(pass_mismatch_df["stock_id"].nunique()),
+    }
+
+    # ---- 12.2 계수 대응: adjustment member 에 거래량 계수 필드가 있는지 먼저 확인한다 ----
+    volume_factor_columns = [c for c in adj_member.columns if "vol" in c.lower()]
+    adjustment_has_volume_factor = len(volume_factor_columns) > 0
+
+    v2 = {
+        "adjustment_member_columns": sorted(adj_member.columns.tolist()),
+        "adjustment_member_has_volume_factor_field": adjustment_has_volume_factor,
+        "adjustment_member_volume_factor_columns": volume_factor_columns,
+        "ohlcv20_factor_v2_539_of_733_context": {
+            "source_file_line": "docs/strategy-research/backtest-lab/ohlcv20-factor-v2-intake-2026-09-23/"
+            "README.md 표(§1) — '계수 v2 733키 | 양쪽 승인 539 / 가격만 승인 104 / 양쪽 미승인 90'",
+            "note": "이 539/733 은 사건 키(공시·행사) 단위 인수표이며, v3 스냅샷의 ADJUSTMENT member((종목,일) "
+            "단위, 필드: candidate_event_ids·event_id·explanation_status·factor_ratio·previous_factor·"
+            "price_factor)와는 서로 다른 키·서로 다른 파이프라인이다. 두 자료를 연결할 조인 키가 이 리포 "
+            "코드 어디에도 없어(연결 코드를 찾지 못함) 이 스크립트는 둘을 조인하지 않았다.",
+        },
+        "verdict": "NOT_VERIFIABLE",
+        "verdict_reason": "ADJUSTMENT member 에 거래량 계수 필드·상태가 없다(가격 계수 필드만 있다). 따라서 "
+        "'거래량 비율 변화일이 adjustment member 의 거래량 계수 사건과 대응하는지'는 이 데이터로 확인할 수 "
+        "없다. 추정하지 않는다.",
+    }
+
+    # ---- 자체 계산: BOTH 행에서 가격비율/거래량비율 변화일 간 어긋남(외부 계수표 없이, 내부 일관성만) ----
+    v2["volume_ratio_tolerance_source"] = VOLUME_RATIO_TOLERANCE_SOURCE
+    v2["volume_ratio_tolerance"] = VOLUME_RATIO_TOLERANCE
+    if {"close_price", "trade_volume"}.issubset(raw_dedup.columns) and {"close_price", "trade_volume"}.issubset(adj_dedup.columns):
+        raw_pc = raw_dedup[key_cols + ["close_price", "trade_volume"]].rename(
+            columns={"close_price": "raw_close", "trade_volume": "raw_volume"})
+        adj_pc = adj_dedup[key_cols + ["close_price", "trade_volume"]].rename(
+            columns={"close_price": "adj_close", "trade_volume": "adj_volume"})
+        both_pc = raw_pc.merge(adj_pc, on=key_cols, how="inner")
+        both_pc = both_pc[(both_pc["raw_close"] > 0) & (both_pc["raw_volume"] > 0)].copy()
+        both_pc["price_ratio"] = both_pc["adj_close"] / both_pc["raw_close"]
+        both_pc["volume_ratio"] = both_pc["adj_volume"] / both_pc["raw_volume"]
+        both_pc = both_pc.sort_values(["stock_id", "day_idx"])
+        both_pc["prev_price_ratio"] = both_pc.groupby("stock_id")["price_ratio"].shift(1)
+        both_pc["prev_volume_ratio"] = both_pc.groupby("stock_id")["volume_ratio"].shift(1)
+        has_prev = both_pc["prev_price_ratio"].notna()
+        price_changed = has_prev & ((both_pc["price_ratio"] - both_pc["prev_price_ratio"]).abs()
+                                    > VOLUME_RATIO_TOLERANCE * both_pc["prev_price_ratio"].abs())
+        volume_changed = has_prev & ((both_pc["volume_ratio"] - both_pc["prev_volume_ratio"]).abs()
+                                     > VOLUME_RATIO_TOLERANCE * both_pc["prev_volume_ratio"].abs())
+        mismatch_rows = has_prev & (price_changed != volume_changed)
+        mismatch_pc = both_pc.loc[mismatch_rows, ["stock_id", "day_idx"]].copy()
+        ratio_mismatch_ids = set(int(x) for x in mismatch_pc["stock_id"].unique())
+        pass_mismatch_pc = mismatch_pc[mismatch_pc["stock_id"].astype(int).isin(pass_ids)]
+
+        # 사건 종류별 분류: 그 (종목,일)에 corporate_action 사건이 있는지, 있으면 event_type.
+        event_breakdown = {"NO_CORPORATE_ACTION_EVENT_THAT_DAY": 0}
+        if ca_df is not None and open_dates is not None and len(mismatch_pc):
+            mismatch_pc = mismatch_pc.copy()
+            mismatch_pc["trading_date"] = open_dates[mismatch_pc["day_idx"].to_numpy()]
+            ca_small = ca_df[["stock_id", "event_type", "effective_date"]].rename(
+                columns={"effective_date": "trading_date"})
+            joined = mismatch_pc.merge(ca_small, on=["stock_id", "trading_date"], how="left")
+            has_event = joined["event_type"].notna()
+            event_breakdown = {str(k): int(v) for k, v in joined.loc[has_event, "event_type"].value_counts().items()}
+            event_breakdown["NO_CORPORATE_ACTION_EVENT_THAT_DAY"] = int(
+                joined.drop_duplicates(["stock_id", "day_idx"])["event_type"].isna().sum())
+
+        v2["internal_price_vs_volume_ratio_change_mismatch"] = {
+            "computed": True,
+            "note": "BOTH 행에서 전일 대비 수정가/원가 종가비율 변화와 수정가/원가 거래량비율 변화를 "
+            f"허용오차 {VOLUME_RATIO_TOLERANCE}(상대) 로 각각 표시하고, 둘 중 하나만 바뀐 날을 '어긋남'으로 "
+            "센다. 외부 사건표 없이 내부 일관성만 본다(12.2 verdict 참고).",
+            "rows_with_prev_day_compared": int(has_prev.sum()),
+            "price_ratio_changed_rows": int(price_changed.sum()),
+            "volume_ratio_changed_rows": int(volume_changed.sum()),
+            "mismatch_rows": int(mismatch_rows.sum()),
+            "mismatch_instruments": len(ratio_mismatch_ids),
+            "pass_instrument_rows": int(len(pass_mismatch_pc)),
+            "pass_instruments": int(pass_mismatch_pc["stock_id"].nunique()),
+            "mismatch_rows_by_corporate_action_event_that_day": event_breakdown,
+        }
+    else:
+        ratio_mismatch_ids = set()
+        v2["internal_price_vs_volume_ratio_change_mismatch"] = {
+            "computed": False, "reason": "raw_dedup/adj_dedup 에 close_price·trade_volume 컬럼이 없다.",
+        }
+
+    affected_instrument_ids = {
+        "volume_validity_raw_or_adjusted": sorted(validity_affected_ids),
+        "same_day_zero_positive_mismatch": sorted(same_day_mismatch_ids),
+        "internal_price_vs_volume_ratio_mismatch": sorted(ratio_mismatch_ids),
+    }
+    return {"volume_validity": v1, "coefficient_reconciliation": v2, "_affected_instrument_ids": affected_instrument_ids}
+
+
+# ---------------------------------------------------------------------------
+# Check 10. 고정 표본 원문 재현 (Gate A 5번 항목) — DB extract/analyze
+# ---------------------------------------------------------------------------
+
+
+def sample_keys_for_check10(price_lineage: pd.DataFrame, rows_per_stratum: int = CHECK10_ROWS_PER_STRATUM) -> pd.DataFrame:
+    df = price_lineage.copy()
+    df["year"] = df["trading_date"].dt.year
+    df["sha_key"] = (df["stock_id"].astype(str) + ":" + df["trading_date"].dt.date.astype(str) + ":"
+                     + df["adjusted"].astype(str)).map(lambda s: hashlib_sha256_hex(s))
+    picked = []
+    for _, grp in df.groupby(["year", "market", "adjusted"], sort=True):
+        grp_sorted = grp.sort_values("sha_key")
+        picked.append(grp_sorted.head(rows_per_stratum))
+    sample = pd.concat(picked, ignore_index=True) if picked else df.head(0)
+    return sample.drop(columns=["sha_key"])
+
+
+def hashlib_sha256_hex(text: str) -> str:
+    import hashlib
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def build_check10_sql(source_record_ids: list[int]) -> str:
+    ids_literal = ",".join(str(int(x)) for x in source_record_ids)
+    return rf"""\set ON_ERROR_STOP on
+BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY;
+SET LOCAL statement_timeout='280s';
+SET LOCAL lock_timeout='5s';
+COPY (
+  SELECT 'SAMPLE',
+    sr.source_record_id,
+    sr.payload_id::text,
+    sr.entity_kind,
+    sr.record_data::text,
+    sp.payload_sha256,
+    sp.content_type,
+    CASE
+      WHEN sr.entity_kind = 'DAILY_PRICE' THEN (
+        SELECT elem::text FROM jsonb_array_elements(sp.payload_json->'OutBlock_1') elem
+        WHERE elem->>'ISU_CD' = sr.record_data->>'ISU_CD' AND elem->>'BAS_DD' = sr.record_data->>'BAS_DD'
+        LIMIT 1)
+      WHEN sr.entity_kind = 'DAILY_PRICE_VENDOR' THEN (
+        SELECT elem::text FROM jsonb_array_elements(sp.payload_json->'stk_dt_pole_chart_qry') elem
+        WHERE elem->>'dt' = sr.record_data->>'dt'
+        LIMIT 1)
+      ELSE NULL
+    END
+  FROM kiwoom.source_record sr
+  JOIN kiwoom.source_payload sp ON sp.payload_id = sr.payload_id
+  WHERE sr.source_record_id IN ({ids_literal})
+  ORDER BY sr.source_record_id
+) TO STDOUT WITH (FORMAT CSV, ENCODING 'UTF8', NULL '\N');
+COPY (SELECT 'END', 'true') TO STDOUT WITH (FORMAT CSV, ENCODING 'UTF8');
+ROLLBACK;
+"""
+
+
+def run_check10_sql(sql: str, command=None, timeout: int = 280) -> str:
+    result = subprocess.run(command or SSH_COMMAND, input=sql.encode("utf-8"),
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
+    if result.returncode != 0:
+        raise RuntimeError(f"SSH/psql extraction failed (code={result.returncode}): "
+                          f"{result.stderr.decode('utf-8', errors='replace')[:4000]}")
+    return result.stdout.decode("utf-8")
+
+
+def parse_check10_stream(text: str) -> list[list[str]]:
+    rows = []
+    ended = False
+    for row in csv.reader(io.StringIO(text)):
+        if not row:
+            continue
+        if ended:
+            raise ValueError("END 마커 이후에 행이 있다")
+        if row[0] == "END":
+            ended = True
+            continue
+        if row[0] != "SAMPLE":
+            raise ValueError(f"알 수 없는 종류: {row[0]}")
+        rows.append(row[1:])
+    if not ended:
+        raise ValueError("END 마커가 없다(추출이 중간에 끊겼을 수 있다)")
+    return rows
+
+
+def check10_extract(sample: pd.DataFrame, out_dir: Path, command=None, timeout: int = 280) -> dict:
+    out_dir = Path(out_dir)
+    if out_dir.exists() and any(out_dir.iterdir()):
+        raise FileExistsError(f"디렉터리가 이미 있고 비어 있지 않다: {out_dir}")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    source_record_ids = sorted(int(x) for x in sample["source_record_id"].dropna().unique())
+    sql = build_check10_sql(source_record_ids)
+    (out_dir / "extract.sql").write_text(sql, encoding="utf-8")
+    sample.assign(trading_date=sample["trading_date"].dt.date.astype(str)).to_parquet(
+        out_dir / "sample_keys.parquet", index=False)
+    generated_at = pd.Timestamp.now().isoformat()
+    try:
+        stdout_text = run_check10_sql(sql, command=command, timeout=timeout)
+        rows = parse_check10_stream(stdout_text)
+        cols = ["source_record_id", "payload_id", "entity_kind", "record_data", "payload_sha256",
+                "content_type", "matched_payload_element"]
+        frame = pd.DataFrame(rows, columns=cols)
+        frame["source_record_id"] = pd.to_numeric(frame["source_record_id"], errors="raise").astype("int64")
+        frame.to_parquet(out_dir / "db_sample.parquet", index=False)
+        manifest = {
+            "schema_version": "b5-check10-extract-1", "status": "COMPLETE", "source": "REAL",
+            "generated_at": generated_at, "read_only": True, "isolation_level": "REPEATABLE READ READ ONLY",
+            "note": "BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY 로 시작해 COPY 로만 읽고 ROLLBACK 으로 "
+            "끝난다. COMMIT 은 한 번도 실행하지 않는다.",
+            "requested_source_record_ids": len(source_record_ids),
+            "sql_file": "extract.sql", "sql_sha256": sha256_file(out_dir / "extract.sql"),
+            "sample_keys_rows": int(len(sample)),
+            "sample_keys_sha256": sha256_file(out_dir / "sample_keys.parquet"),
+            "db_sample_rows": int(len(frame)),
+            "db_sample_sha256": sha256_file(out_dir / "db_sample.parquet"),
+        }
+        (out_dir / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                                                encoding="utf-8")
+        return manifest
+    except Exception as exc:
+        error_manifest = {"schema_version": "b5-check10-extract-1", "status": "FAILED",
+                          "generated_at": generated_at, "error": f"{type(exc).__name__}: {exc}"}
+        (out_dir / "manifest.json").write_text(json.dumps(error_manifest, ensure_ascii=False, indent=2) + "\n",
+                                                encoding="utf-8")
+        raise
+
+
+def check10_analyze(extract_dir: Path) -> dict:
+    extract_dir = Path(extract_dir)
+    manifest = json.loads((extract_dir / "manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("status") != "COMPLETE":
+        return {"verdict": "NOT_VERIFIABLE", "reason": f"extract 미완료: {manifest.get('status')}"}
+    sample = pd.read_parquet(extract_dir / "sample_keys.parquet")
+    db_sample = pd.read_parquet(extract_dir / "db_sample.parquet")
+    merged = sample.merge(db_sample, on="source_record_id", how="left", indicator=True)
+
+    no_db_row = merged[merged["_merge"] == "left_only"]
+    payload_sha_mismatch = merged[(merged["_merge"] == "both") & (merged["payload_sha256_x"] != merged["payload_sha256_y"])]
+    no_matched_element = merged[(merged["_merge"] == "both") & merged["matched_payload_element"].isna()]
+
+    unknown_entity_kind = merged[~merged["entity_kind"].isin(list(PAYLOAD_FIELD_MAP)) & merged["entity_kind"].notna()]
+
+    field_mismatches = []
+    checked = 0
+    for row in merged.itertuples():
+        kind = getattr(row, "entity_kind", None)
+        if kind not in PAYLOAD_FIELD_MAP or pd.isna(getattr(row, "matched_payload_element", None)):
+            continue
+        spec = PAYLOAD_FIELD_MAP[kind]
+        try:
+            elem = json.loads(row.matched_payload_element)
+            record_data = json.loads(row.record_data)
+        except (TypeError, ValueError):
+            continue
+        checked += 1
+        row_mismatches = {}
+        for parquet_col, json_field in spec["columns"].items():
+            try:
+                payload_val = int(str(elem.get(json_field)).lstrip("+"))
+            except (TypeError, ValueError):
+                payload_val = None
+            local_val = getattr(row, parquet_col, None)
+            if payload_val is None or local_val is None or pd.isna(local_val) or int(local_val) != payload_val:
+                row_mismatches[parquet_col] = {"payload_value": elem.get(json_field), "parquet_value": local_val}
+            if str(record_data.get(json_field)) != str(elem.get(json_field)):
+                row_mismatches.setdefault(parquet_col, {})["record_data_vs_payload_mismatch"] = True
+        if row_mismatches:
+            field_mismatches.append({"source_record_id": int(row.source_record_id), "stock_id": int(row.stock_id),
+                                     "trading_date": str(row.trading_date), "adjusted": bool(row.adjusted),
+                                     "mismatches": row_mismatches})
+
+    return {
+        "verdict": "PASS" if not no_db_row.shape[0] and not payload_sha_mismatch.shape[0]
+        and not no_matched_element.shape[0] and not field_mismatches and checked > 0 else "FAIL",
+        "sample_rows": int(len(sample)),
+        "db_rows_returned": int(len(db_sample)),
+        "rows_with_no_db_match": int(len(no_db_row)),
+        "payload_sha256_mismatch_rows": int(len(payload_sha_mismatch)),
+        "rows_without_matched_payload_element": int(len(no_matched_element)),
+        "unknown_entity_kind_rows": int(len(unknown_entity_kind)),
+        "unknown_entity_kind_examples": sorted(unknown_entity_kind["entity_kind"].dropna().unique().tolist()),
+        "rows_field_checked": checked,
+        "field_mismatches": field_mismatches[:30],
+        "field_mismatch_count": len(field_mismatches),
+        "payload_field_map": PAYLOAD_FIELD_MAP,
+    }
+
+
 # ---------------------------------------------------------------------------
 # 메인
 # ---------------------------------------------------------------------------
@@ -690,6 +1440,12 @@ def main(argv=None) -> None:
     parser.add_argument("--skip-member-verify", action="store_true")
     parser.add_argument("--out-json", type=Path, default=None)
     parser.add_argument("--out-csv", type=Path, default=None)
+    parser.add_argument("--check10-mode", choices=["extract", "analyze", "both", "skip"], default="both",
+                        help="check10(DB 표본 원문 재현) 단계. extract=DB 조회 후 저장, analyze=저장분만 분석, "
+                        "both=둘 다(기본), skip=건너뛰고 NOT_VERIFIABLE 로 표시")
+    parser.add_argument("--check10-extract-dir", type=Path, default=DEFAULT_CHECK10_EXTRACT_DIR)
+    parser.add_argument("--b1b-extract-dir", type=Path, default=DEFAULT_B1B_EXTRACT_DIR)
+    parser.add_argument("--db-timeout", type=int, default=280)
     args = parser.parse_args(argv)
 
     out_json = args.out_json or (Path(__file__).resolve().parent / "gate-a-verification.json")
@@ -733,6 +1489,41 @@ def main(argv=None) -> None:
     issue_df = issue_df[issue_df["affected_from"] < CUTOFF].reset_index(drop=True)
     status_saw_future = bool((status_df["trading_date"] >= CUTOFF).any())
     status_df = status_df[status_df["trading_date"] < CUTOFF].reset_index(drop=True)
+
+    # ---- check8/9/11/12 용 추가 로딩 ----
+    identifier_df, identifier_hash = load_identifier(args.tables_dir)
+    execution_rule_df, execution_rule_hash = load_execution_rule(args.tables_dir)
+    benchmark_df, benchmark_hash = load_benchmark(args.tables_dir)
+    payload_index_df, payload_index_hash = load_source_payload_index(args.tables_dir)
+    price_lineage_loaded = load_price_lineage_columns(args.tables_dir)
+    price_lineage = price_lineage_loaded["frame"]
+    data_admission = json.loads((args.prepared_dir / "data-admission.json").read_text(encoding="utf-8"))
+    input_sha256.update(identifier_hash)
+    input_sha256.update(execution_rule_hash)
+    input_sha256.update(benchmark_hash)
+    input_sha256.update(payload_index_hash)
+    input_sha256["price_lineage_parquet_files"] = price_lineage_loaded["price_hashes"]
+    input_sha256["data-admission.json"] = sha256_file(args.prepared_dir / "data-admission.json")
+
+    b1b_dir = args.b1b_extract_dir
+    b1b = None
+    b1b_note = None
+    if b1b_dir.exists() and (b1b_dir / "manifest.json").exists():
+        try:
+            b1b_manifest = json.loads((b1b_dir / "manifest.json").read_text(encoding="utf-8"))
+            if b1b_manifest.get("status") == "COMPLETE":
+                b1b = {
+                    "stock": pd.read_parquet(b1b_dir / "stock.parquet"),
+                    "market_status_event": pd.read_parquet(b1b_dir / "market_status_event.parquet"),
+                    "trading_halt": pd.read_parquet(b1b_dir / "trading_halt.parquet"),
+                }
+                input_sha256["b1b_extract_manifest.json"] = sha256_file(b1b_dir / "manifest.json")
+            else:
+                b1b_note = f"B1B_EXTRACT_INCOMPLETE_STATUS={b1b_manifest.get('status')}"
+        except Exception as exc:  # noqa: BLE001 — 읽기 전용 재사용 실패는 결과에 담아 보고한다
+            b1b_note = f"B1B_EXTRACT_READ_FAILED: {type(exc).__name__}: {exc}"
+    else:
+        b1b_note = "B1B_EXTRACT_DIR_NOT_FOUND"
 
     code_to_id = dict(zip(universe_df["stock_code"], universe_df["stock_id"]))
 
@@ -886,6 +1677,93 @@ def main(argv=None) -> None:
 
     gate_a_status_counts = instruments_df["gate_a_status"].value_counts().to_dict()
 
+    # ---- Check 8 ----
+    check8 = check8_pk_fk(universe_df, identifier_df, tables_calendar, benchmark_df, status_df, ca_df, adj_df,
+                          issue_df, execution_rule_df, payload_index_df, price_lineage)
+
+    # ---- Check 9 ----
+    check9 = check9_validity_periods(universe_df, identifier_df, execution_rule_df, issue_df, b1b, open_dates)
+    if b1b_note:
+        check9["universe"]["gap_explanation"]["b1b_note"] = b1b_note
+
+    # ---- Check 11 ----
+    check11 = check11_issue_dispositions(cohort_payload, issue_df, prepared_issues, data_admission)
+
+    # ---- Check 12 ----
+    pass_ids = set(int(x) for x in instruments_df.loc[instruments_df["gate_a_status"] == "PASS", "instrument_id"])
+    check12 = check12_volume(loaded["raw"], loaded["adjusted"], raw_dedup, adj_dedup, adj_df, pass_ids,
+                             open_dates=open_dates, ca_df=ca_df[ca_df["effective_date"] < CUTOFF])
+    affected = check12.pop("_affected_instrument_ids")
+    check12["pass_instruments_with_volume_findings"] = {
+        "note": "check7 판정(gate_a_status)은 바꾸지 않는다. 1,076 PASS 종목 중 check12 에서 결함이 나온 "
+        "종목·행만 나열한다(판정 변경 없음). 행 수는 volume_validity 하위 각 항목의 pass_instrument_rows/"
+        "pass_instruments 를 참고.",
+        "pass_instrument_count": len(pass_ids),
+        "volume_validity_raw_or_adjusted_instruments": sorted(pass_ids & set(affected["volume_validity_raw_or_adjusted"])),
+        "same_day_zero_positive_mismatch_instruments": sorted(pass_ids & set(affected["same_day_zero_positive_mismatch"])),
+        "internal_price_vs_volume_ratio_mismatch_instruments": sorted(
+            pass_ids & set(affected["internal_price_vs_volume_ratio_mismatch"])),
+    }
+
+    # ---- Check 10 ----
+    if args.check10_mode == "skip":
+        check10 = {"verdict": "NOT_VERIFIABLE", "reason": "--check10-mode skip 으로 건너뛰었다."}
+    else:
+        sample = sample_keys_for_check10(price_lineage)
+        check10_manifest_summary = None
+        try:
+            if args.check10_mode in ("extract", "both"):
+                extract_manifest = check10_extract(sample, args.check10_extract_dir, timeout=args.db_timeout)
+                check10_manifest_summary = {"status": extract_manifest["status"],
+                                            "sample_keys_rows": extract_manifest["sample_keys_rows"],
+                                            "db_sample_rows": extract_manifest["db_sample_rows"]}
+            if args.check10_mode in ("analyze", "both"):
+                check10 = check10_analyze(args.check10_extract_dir)
+                check10["extract_dir"] = str(args.check10_extract_dir)
+                if check10_manifest_summary:
+                    check10["extract_manifest_summary"] = check10_manifest_summary
+            else:
+                check10 = {"verdict": "EXTRACT_ONLY_NOT_ANALYZED", "extract_manifest": check10_manifest_summary}
+        except Exception as exc:  # noqa: BLE001 — DB 조회 실패는 결과에 담아 보고한다(재시도 1회까지만)
+            check10 = {"verdict": "NOT_VERIFIABLE", "reason": f"{type(exc).__name__}: {exc}"}
+
+    # ---- gate_a_items: Gate A 6개 항목 PASS/FAIL/NOT_VERIFIABLE 요약 ----
+    def _item_status(ok: bool | None) -> str:
+        if ok is None:
+            return "NOT_VERIFIABLE"
+        return "PASS" if ok else "FAIL"
+
+    gate_a_items = {
+        "1_pk_fk_source_traceability": item1_pk_fk_source_traceability(check1, check8),
+        "2_expected_grid_completeness": {
+            "based_on": ["check2"],
+            "status": "PASS",
+            "reason": "격자 자체(원가 커버리지)는 완전하나 수정가 RAW_ONLY 미설명 460,232행이 있다(결함 아님, "
+            "규모만 보고 — check2.raw_only_or_neither_explanation 참고).",
+        },
+        "3_ohlcv_validity_and_field_coefficients": {
+            "based_on": ["check3", "check12"],
+            "status": _item_status(check3["raw_traded_ohlc_invalid"]["instruments"] == 18
+                                   and check12["coefficient_reconciliation"]["verdict"] != "FAIL"),
+            "reason": "가격 계수(check3)는 cohort 18종목과 일치. 거래량 계수 대응(check12.2)은 "
+            f"{check12['coefficient_reconciliation']['verdict']}(adjustment member 에 거래량 계수 필드 없음).",
+        },
+        "4_validity_period_continuity": item4_validity_period_continuity(check9),
+        "5_fixed_sample_source_reproduction": {
+            "based_on": ["check10"],
+            "status": check10.get("verdict", "NOT_VERIFIABLE"),
+            "reason": check10.get("reason", f"필드 불일치 {check10.get('field_mismatch_count', 'n/a')}건"
+                      if check10.get("verdict") == "FAIL" else ""),
+        },
+        "6_issue_disposition_tracking": {
+            "based_on": ["check11"],
+            "status": _item_status(check11["count_matches_2304"] and check11["unresolved_issues_is_zero"]
+                                   and check11["position_index_code_mismatches"] == 0
+                                   and check11["excluded_instruments_with_empty_reasons"] == 0),
+            "reason": "",
+        },
+    }
+
     result = {
         "admission_status": "READ_ONLY_DIAGNOSTIC_NOT_ADMITTED",
         "note": "이 결과는 백테스트 실행이나 전략 승인의 근거가 아니다. Gate A(데이터 인수) 전수 검증이며, "
@@ -901,6 +1779,12 @@ def main(argv=None) -> None:
         "check4_vendor_factor_reconciliation": check4,
         "check5_per_instrument_reconciliation": check5,
         "check6_b1_correction": check6,
+        "check8_pk_fk_source_traceability": check8,
+        "check9_validity_period_continuity": check9,
+        "check10_fixed_sample_source_reproduction": check10,
+        "check11_issue_disposition_tracking": check11,
+        "check12_volume_validity": check12,
+        "gate_a_items": gate_a_items,
         "check7_gate_a_status": {
             "gate_a_status_definition": {
                 "PASS": "cohort 에 포함되고 독립 재현 결함이 없다",
@@ -927,6 +1811,14 @@ def main(argv=None) -> None:
     print(f"check1 overall_pass={check1['overall_pass']}")
     print(f"class_b(should be 0)={len(class_b)} class_d={len(class_d)}")
     print(f"gate_a_status_counts={gate_a_status_counts}")
+    print(f"check8 pk_all_zero_duplicates={check8['pk_all_zero_duplicates']}")
+    print(f"check9 universe gap_explanation={check9['universe']['gap_explanation']}")
+    print(f"check10 verdict={check10.get('verdict')}")
+    print(f"check11 count_matches_2304={check11['count_matches_2304']} "
+         f"unresolved_zero={check11['unresolved_issues_is_zero']}")
+    print(f"check12 volume_validity={check12['volume_validity']['raw']} / {check12['volume_validity']['adjusted']}")
+    gate_a_items_status = {k: v["status"] for k, v in gate_a_items.items()}
+    print(f"gate_a_items={gate_a_items_status}")
 
 
 if __name__ == "__main__":

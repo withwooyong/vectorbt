@@ -11,7 +11,7 @@
 - B4 완료: 원가 OHLC≤0 135,717행 중 정지 280·무거래 135,419·미설명 18건. 18건은 종목·일로 확정했고 17건은 체결 단가가 전일 종가와 같다(시간외 종가매매 가설, 원천 미확인).
 - B2b 완료(2026-09-24): 증권거래세 5개 시행본을 law.go.kr 원문(브라우저 열람)으로 확인했고 세율은 기존 표와 같다. 기존 `rules.parquet` 는 2014년 SELL_TAX 가 비어 조회 490건이 실패하고, 법령(양도분=결제일) 경계를 체결일 조회에 그대로 썼다. 원천 수정은 ted-startup 몫이므로 [요청서](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/requests/README.md) R1 로 넘겼고, `../vectorbt-data/krx-prd-v1-b2b-20260924/` 는 원천을 대체하지 않는 대조용 기대값이다.
 - 역할 경계: 수집·적재·원천 보정은 ted-startup 이 한다. 이 리포는 결함을 찾으면 보정 사본 대신 `requests/` 에 요청서를 쓰고, 전달은 사용자가 한다. B7 은 R2, B1b 원천 결함은 R3 으로 요청서만 썼다.
-- B5 완료(2026-09-24): 11개 member 해시 재계산과 DB 봉인값 대조가 11/11 일치하고, 가격쌍·OHLC·수정계수 독립 재계산이 cohort 2,787종목과 전량 일치한다. Gate A 데이터 수준 적격은 1,076종목이다(결함 843·미지원 사건 771·워밍업만 97, 그중 PRD 120거래일 충족 38). [B5 결과](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/README.md#b5-gate-a-전수-검증)
+- B5 완료(2026-09-24): 11개 member 해시 재계산과 DB 봉인값 대조가 11/11 일치하고, 가격쌍·OHLC·수정계수 독립 재계산이 cohort 2,787종목과 전량 일치한다. Gate A 데이터 수준 적격은 1,076종목이다(결함 843·미지원 사건 771·워밍업만 97, 그중 PRD 120거래일 충족 38). Gate A 항목별 판정은 가격 데이터(격자·OHLCV·원문 재현) PASS, 이슈 중복 75건과 실행 규칙 TICK_SIZE 미포함 2,689개장일(신규, 요청서 미작성) 때문에 항목 1·4 FAIL 이다. [B5 결과](docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/README.md#b5-gate-a-전수-검증)
 - R1~R3 납품은 2026-09-24 기준 미도착이다(원천 SELL_TAX 는 여전히 2015-01-01 시작, 최신 revision 은 2026-09-21 봉인본). ted-startup 전달용 프롬프트는 사용자에게 전달했다.
 - 다음: ted-startup 납품(R1~R3) 대조. DB 접속은 드라이버 없이 `research/krx_lab/v3_snapshot.py` 의 `COMMAND` 방식으로 된다. B3b 는 실행 경로를 건드리므로 `BLOCKED` 해제와 함께 다룬다. 계획서 §4 의 사용자 결정 D1~D4 는 미정이다.
 
