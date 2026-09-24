@@ -1,0 +1,3327 @@
+{
+  "admission_status": "READ_ONLY_DIAGNOSTIC_NOT_ADMITTED",
+  "note": "새 rules.parquet 후보를 만들고 기존 소비자(V3MarketRules)로 전수 조회 검증한 결과다. PRD 승인·admission 판단은 이 스크립트의 몫이 아니다.",
+  "generated_at": "2026-09-24T10:17:48.761174",
+  "runtime_seconds": 0.2,
+  "step1_effective_basis": {
+    "conclusion": "TRADE_DATE",
+    "evidence": [
+      "research/krx_lab/v3_execution.py:369 costs(day,...) -> rules.fees(day,...)",
+      "research/krx_lab/v3_execution.py:375 정산일은 day + settlement_sessions(day) 로 별도 계산",
+      "research/krx_lab/v3_market.py:102 fees() 가 SELL_TAX 를 인자로 받은 day(체결일)로 조회"
+    ]
+  },
+  "law_periods": [
+    {
+      "law_reference": "대통령령 제24697호(2013-08-29 시행)",
+      "source_url": "https://www.law.go.kr/법령/증권거래세법시행령/(24697,20130827)",
+      "settlement_effective_from": "2013-08-29",
+      "rates": {
+        "KOSPI": {
+          "securities_transaction_rate": "0.0015",
+          "rural_special_tax_rate": "0.0015"
+        },
+        "KOSDAQ": {
+          "securities_transaction_rate": "0.003",
+          "rural_special_tax_rate": "0"
+        }
+      }
+    },
+    {
+      "law_reference": "대통령령 제29788호(2019-06-03 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208731",
+      "settlement_effective_from": "2019-06-03",
+      "rates": {
+        "KOSPI": {
+          "securities_transaction_rate": "0.001",
+          "rural_special_tax_rate": "0.0015"
+        },
+        "KOSDAQ": {
+          "securities_transaction_rate": "0.0025",
+          "rural_special_tax_rate": "0"
+        }
+      }
+    },
+    {
+      "law_reference": "대통령령 제31290호(2021-01-01 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167",
+      "settlement_effective_from": "2021-01-01",
+      "rates": {
+        "KOSPI": {
+          "securities_transaction_rate": "0.0008",
+          "rural_special_tax_rate": "0.0015"
+        },
+        "KOSDAQ": {
+          "securities_transaction_rate": "0.0023",
+          "rural_special_tax_rate": "0"
+        }
+      }
+    },
+    {
+      "law_reference": "대통령령 제33209호(2023-01-01 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487",
+      "settlement_effective_from": "2023-01-01",
+      "rates": {
+        "KOSPI": {
+          "securities_transaction_rate": "0.0005",
+          "rural_special_tax_rate": "0.0015"
+        },
+        "KOSDAQ": {
+          "securities_transaction_rate": "0.002",
+          "rural_special_tax_rate": "0"
+        }
+      }
+    }
+  ],
+  "trade_date_boundaries": {
+    "대통령령 제29788호(2019-06-03 시행)": {
+      "settlement_effective_from": "2019-06-03",
+      "trade_date_boundary": "2019-05-30"
+    },
+    "대통령령 제31290호(2021-01-01 시행)": {
+      "settlement_effective_from": "2021-01-01",
+      "trade_date_boundary": "2020-12-29"
+    },
+    "대통령령 제33209호(2023-01-01 시행)": {
+      "settlement_effective_from": "2023-01-01",
+      "trade_date_boundary": "2022-12-28"
+    }
+  },
+  "new_sell_tax_rows": [
+    {
+      "effective_from": "2014-01-01",
+      "effective_to": "2019-05-29",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSDAQ",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제24697호(2013-08-29 시행)\",\"rural_special_tax_rate\":0E-8,\"securities_transaction_rate\":0.00300000,\"settlement_effective_from\":\"2013-08-29\",\"total_sell_tax_rate\":0.00300000}",
+      "source_url": "https://www.law.go.kr/법령/증권거래세법시행령/(24697,20130827)"
+    },
+    {
+      "effective_from": "2014-01-01",
+      "effective_to": "2019-05-29",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSPI",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제24697호(2013-08-29 시행)\",\"rural_special_tax_rate\":0.00150000,\"securities_transaction_rate\":0.00150000,\"settlement_effective_from\":\"2013-08-29\",\"total_sell_tax_rate\":0.00300000}",
+      "source_url": "https://www.law.go.kr/법령/증권거래세법시행령/(24697,20130827)"
+    },
+    {
+      "effective_from": "2019-05-30",
+      "effective_to": "2020-12-28",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSDAQ",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제29788호(2019-06-03 시행)\",\"rural_special_tax_rate\":0E-8,\"securities_transaction_rate\":0.00250000,\"settlement_effective_from\":\"2019-06-03\",\"total_sell_tax_rate\":0.00250000}",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208731"
+    },
+    {
+      "effective_from": "2019-05-30",
+      "effective_to": "2020-12-28",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSPI",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제29788호(2019-06-03 시행)\",\"rural_special_tax_rate\":0.00150000,\"securities_transaction_rate\":0.00100000,\"settlement_effective_from\":\"2019-06-03\",\"total_sell_tax_rate\":0.00250000}",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208731"
+    },
+    {
+      "effective_from": "2020-12-29",
+      "effective_to": "2022-12-27",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSDAQ",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제31290호(2021-01-01 시행)\",\"rural_special_tax_rate\":0E-8,\"securities_transaction_rate\":0.00230000,\"settlement_effective_from\":\"2021-01-01\",\"total_sell_tax_rate\":0.00230000}",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167"
+    },
+    {
+      "effective_from": "2020-12-29",
+      "effective_to": "2022-12-27",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSPI",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제31290호(2021-01-01 시행)\",\"rural_special_tax_rate\":0.00150000,\"securities_transaction_rate\":0.00080000,\"settlement_effective_from\":\"2021-01-01\",\"total_sell_tax_rate\":0.00230000}",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167"
+    },
+    {
+      "effective_from": "2022-12-28",
+      "effective_to": "2023-12-31",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSDAQ",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제33209호(2023-01-01 시행)\",\"rural_special_tax_rate\":0E-8,\"securities_transaction_rate\":0.00200000,\"settlement_effective_from\":\"2023-01-01\",\"total_sell_tax_rate\":0.00200000}",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487"
+    },
+    {
+      "effective_from": "2022-12-28",
+      "effective_to": "2023-12-31",
+      "evidence_status": "OFFICIAL",
+      "market": "KOSPI",
+      "rule_kind": "SELL_TAX",
+      "rule_value": "{\"effective_basis\":\"TRADE_DATE\",\"law_reference\":\"대통령령 제33209호(2023-01-01 시행)\",\"rural_special_tax_rate\":0.00150000,\"securities_transaction_rate\":0.00050000,\"settlement_effective_from\":\"2023-01-01\",\"total_sell_tax_rate\":0.00200000}",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487"
+    }
+  ],
+  "input_sha256": {
+    "rules.parquet": "232be3a58a9b0c90fb97dcb9b26f559001744f0e0729a3c8b492cdd26a1a498c",
+    "calendar.parquet": "af61cfa3bee686602cc671717ed086721fd59a43f840a3df8760c157482ceef9"
+  },
+  "output": {
+    "data_dir": "C:\\Users\\aeby\\vscode\\stock\\vectorbt-data\\krx-prd-v1-b2b-20260924",
+    "rules_parquet_sha256": "e6bd9595597e0b5074b700203433a9edc950360d7ec625f9f3837fc5903a697c",
+    "rows": 15
+  },
+  "validation": {
+    "effective_to_within_window": {
+      "max_effective_to": "2023-12-31",
+      "ok": true
+    },
+    "old_table_probe": {
+      "checked": 19672,
+      "failure_count": 490,
+      "failures_sample": [
+        {
+          "date": "2014-01-02",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-02; found 0"
+        },
+        {
+          "date": "2014-01-02",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-02; found 0"
+        },
+        {
+          "date": "2014-01-03",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-03; found 0"
+        },
+        {
+          "date": "2014-01-03",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-03; found 0"
+        },
+        {
+          "date": "2014-01-06",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-06; found 0"
+        },
+        {
+          "date": "2014-01-06",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-06; found 0"
+        },
+        {
+          "date": "2014-01-07",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-07; found 0"
+        },
+        {
+          "date": "2014-01-07",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-07; found 0"
+        },
+        {
+          "date": "2014-01-08",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-08; found 0"
+        },
+        {
+          "date": "2014-01-08",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-08; found 0"
+        },
+        {
+          "date": "2014-01-09",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-09; found 0"
+        },
+        {
+          "date": "2014-01-09",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-09; found 0"
+        },
+        {
+          "date": "2014-01-10",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-10; found 0"
+        },
+        {
+          "date": "2014-01-10",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-10; found 0"
+        },
+        {
+          "date": "2014-01-13",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-13; found 0"
+        },
+        {
+          "date": "2014-01-13",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-13; found 0"
+        },
+        {
+          "date": "2014-01-14",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-14; found 0"
+        },
+        {
+          "date": "2014-01-14",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-14; found 0"
+        },
+        {
+          "date": "2014-01-15",
+          "market": "KOSDAQ",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSDAQ on 2014-01-15; found 0"
+        },
+        {
+          "date": "2014-01-15",
+          "market": "KOSPI",
+          "rule_kind": "SELL_TAX",
+          "error": "Expected one SELL_TAX rule for KOSPI on 2014-01-15; found 0"
+        }
+      ]
+    },
+    "new_table_probe": {
+      "checked": 19672,
+      "failure_count": 0,
+      "failures_sample": []
+    },
+    "sell_tax_rate_diffs": {
+      "count": 502,
+      "rows": [
+        {
+          "date": "2014-01-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-06",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-06",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-09",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-09",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-01-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-01-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-01-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-06",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-06",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-02-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-02-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-02-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-06",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-06",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-31",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-03-31; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-03-31",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-03-31; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-01",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-01",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-09",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-09",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-04-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-04-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-04-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-09",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-09",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-05-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-05-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-05-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-09",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-09",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-06-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-06-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-06-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-01",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-01",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-09",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-09",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-31",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-07-31; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-07-31",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-07-31; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-01",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-01",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-06",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-06",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-08-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-08-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-08-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-01",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-01",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-09-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-09-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-09-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-01",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-01",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-06",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-06",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-31",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-10-31; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-10-31",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-10-31; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-06",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-06",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-06; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-07",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-07",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-07; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-13",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-13",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-13; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-14",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-14",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-14; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-20",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-20",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-20; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-21",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-21",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-21; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-25",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-25",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-25; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-27",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-27",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-27; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-28",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-11-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-11-28",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-11-28; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-01",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-01",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-01; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-02",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-02",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-02; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-03",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-03",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-03; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-04",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-04",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-04; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-05",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-05",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-05; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-08",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-08",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-08; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-09",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-09",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-09; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-10",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-10",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-10; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-11",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-11",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-11; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-12",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-12",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-12; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-15",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-15",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-15; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-16",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-16",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-16; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-17",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-17",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-17; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-18",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-18",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-18; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-19",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-19",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-19; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-22",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-22",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-22; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-23",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-23",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-23; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-24",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-24",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-24; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-26",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-26",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-26; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-29",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-29",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-29; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-30",
+          "market": "KOSDAQ",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSDAQ on 2014-12-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2014-12-30",
+          "market": "KOSPI",
+          "old_rate": "ERROR:Expected one SELL_TAX rule for KOSPI on 2014-12-30; found 0",
+          "new_rate": "0.00300000"
+        },
+        {
+          "date": "2019-05-30",
+          "market": "KOSDAQ",
+          "old_rate": "0.00300000",
+          "new_rate": "0.00250000"
+        },
+        {
+          "date": "2019-05-30",
+          "market": "KOSPI",
+          "old_rate": "0.00300000",
+          "new_rate": "0.00250000"
+        },
+        {
+          "date": "2019-05-31",
+          "market": "KOSDAQ",
+          "old_rate": "0.00300000",
+          "new_rate": "0.00250000"
+        },
+        {
+          "date": "2019-05-31",
+          "market": "KOSPI",
+          "old_rate": "0.00300000",
+          "new_rate": "0.00250000"
+        },
+        {
+          "date": "2020-12-29",
+          "market": "KOSDAQ",
+          "old_rate": "0.00250000",
+          "new_rate": "0.00230000"
+        },
+        {
+          "date": "2020-12-29",
+          "market": "KOSPI",
+          "old_rate": "0.00250000",
+          "new_rate": "0.00230000"
+        },
+        {
+          "date": "2020-12-30",
+          "market": "KOSDAQ",
+          "old_rate": "0.00250000",
+          "new_rate": "0.00230000"
+        },
+        {
+          "date": "2020-12-30",
+          "market": "KOSPI",
+          "old_rate": "0.00250000",
+          "new_rate": "0.00230000"
+        },
+        {
+          "date": "2022-12-28",
+          "market": "KOSDAQ",
+          "old_rate": "0.00230000",
+          "new_rate": "0.00200000"
+        },
+        {
+          "date": "2022-12-28",
+          "market": "KOSPI",
+          "old_rate": "0.00230000",
+          "new_rate": "0.00200000"
+        },
+        {
+          "date": "2022-12-29",
+          "market": "KOSDAQ",
+          "old_rate": "0.00230000",
+          "new_rate": "0.00200000"
+        },
+        {
+          "date": "2022-12-29",
+          "market": "KOSPI",
+          "old_rate": "0.00230000",
+          "new_rate": "0.00200000"
+        }
+      ]
+    }
+  }
+}
