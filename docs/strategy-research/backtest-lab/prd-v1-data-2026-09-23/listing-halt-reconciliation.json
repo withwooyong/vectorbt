@@ -1,0 +1,484 @@
+{
+  "admission_status": "READ_ONLY_DIAGNOSTIC_NOT_ADMITTED",
+  "note": "이 결과는 백테스트 실행이나 전략 승인의 근거가 아니다. B1b(상장·폐지·거래정지 PostgreSQL 대조) 결과다.",
+  "generated_at": "2026-09-24T09:55:19.506058",
+  "runtime_seconds": 7.3,
+  "date_cutoff": {
+    "cutoff": "2024-01-01",
+    "saw_rows_on_or_after_cutoff": false,
+    "note": "로컬 가격 Parquet 는 날짜로 사전 필터링하지 않고 전부 읽은 뒤 컷오프 이후 행을 집계에서 제외했다(saw_rows_on_or_after_cutoff 로 존재 여부만 표시). DB 추출은 SQL WHERE 절과 CASE 마스킹으로 2023-12-31 이하만 값으로 내보냈다."
+  },
+  "extract_manifest_summary": {
+    "extract_dir": "C:\\Users\\aeby\\vscode\\stock\\vectorbt-data\\krx-prd-v1-b1b-20260924",
+    "row_counts": {
+      "STOCK": 2787,
+      "INSTRUMENT_HISTORY": 2787,
+      "INSTRUMENT_HISTORY_EXCLUDED": 1,
+      "MARKET_STATUS_EVENT": 5485,
+      "TRADING_HALT": 1809
+    },
+    "instrument_history_excluded_after_cutoff_row_count": 0,
+    "sql_sha256": "90315c7f38951640de4e1657cd513210b9bf944fd6f5d7178b6a331e49c1ccac"
+  },
+  "input_sha256": {
+    "cohort.json": "69b8233145ccad2e3c5b6e2d73d23c42ee4c5878a3f9bed267f29e70dc0e8ff0",
+    "issues.parquet": "af25303260002d22977df5bd2e8edda00054541ce788cc6423dd652b173213c1",
+    "calendar.parquet": "af61cfa3bee686602cc671717ed086721fd59a43f840a3df8760c157482ceef9",
+    "status-00110.parquet": "ee634ae325f055dd731acd8c9bd7ecbff71b5d09b8afb58e97eb2f7ecb73b65e",
+    "price_parquet_files": {
+      "price-00000.parquet": "379e008556f3e0298205b218a60758be11c92e149797f5fe3e0155ea21ec80ba",
+      "price-00001.parquet": "fc6a6d1d0212580d94e7a75817f1b223cf1a361f3a46dab6414b354b045162b7",
+      "price-00002.parquet": "bcac99cf2c5e939cf693afa8ed6cf50c9222b0e51e0eea9c8b592fbe6550bac0",
+      "price-00003.parquet": "5f241f5c5d9b5caa79fdff985c23f5cb219f8eac3e059b363ba4b3d09a52d54a",
+      "price-00004.parquet": "bc288922075bd8782262cc2177a7eca927da97a2ddc99bb7cbf1bca54f170000",
+      "price-00005.parquet": "698736566cd924b651e894917cab3d77149977e09537bf652fd5f15989e98d39",
+      "price-00006.parquet": "82da8466bb6974ce10f184fcc30c15edcbedc2abad1b136141e906cadcef6517",
+      "price-00007.parquet": "776840d73494d482dcef0acff8093eafcd14418e9643174e1e097e2a374e67c4",
+      "price-00008.parquet": "dc3341364489e31de53f5423cf0ff6eebeb082684a3ad83c5f966a1fcba741f2",
+      "price-00009.parquet": "777b02591510e28ba9acaf57794dd2afdda668da086a782aaa5373459baa4e52",
+      "price-00010.parquet": "f3b2d1ff268e28efc9854efb15c8cb488c6ceebbc800d43a5b08b977dfdac6b3",
+      "price-00011.parquet": "168dc35d7d32c3fb181938e1f603ef35cd3fef79eafc3a6ec71a021476154cc1",
+      "price-00012.parquet": "e1703aae1de57e81b230cf0aa1da7fff3c056f96e2f8036e72aaab19acca97f6",
+      "price-00013.parquet": "0ba5f015418385b2eab3be382e2c032d66e89d638a947c22c8670bdfb2790215",
+      "price-00014.parquet": "0c3018ff621ff3759e60bc8b7df1fb2b1cbd5f36944cb0228d6e4e4ce8895d79",
+      "price-00015.parquet": "2fe2996fa00e6e9158e053778bd42c63ee792cb445a7c8cd147347b43a209d40",
+      "price-00016.parquet": "792c1b6e4c162999acf67519222a761937698c118905e7a03566a7758e683705",
+      "price-00017.parquet": "422bc6f561380066a11988ef3aa032c955518448e4140109eff2809b1bf91d21",
+      "price-00018.parquet": "3d46792a11f867287b0aa0df41ff037c430c2932377f5d3b3ae4076c1989a1c3",
+      "price-00019.parquet": "b1029b596921741c8f12cf74b60faa4f8217c713525bada3db952a5fb33a5dee",
+      "price-00020.parquet": "20643dd1abb2ec15ebd9d81e2106c80da1bf35ec064e13c9eb6169d78b2686cb",
+      "price-00021.parquet": "d5527fc4d2f2ac5b9a4fa68ef9ee595d8e18248455cf29e8886db39b89c7425d",
+      "price-00022.parquet": "9aebd1e8914d2ab005de46f07a9fb5dc073defd13a16b2cfad0b1bc732905644",
+      "price-00023.parquet": "01e7d0e22992d5a80721277a5a5e99dab79a37e085320eee624b2d74b39556e1",
+      "price-00024.parquet": "b6d8fe96ae4f5209db4bccb131f565b79563560c1e0d1a3b9c4c547760dd4283",
+      "price-00025.parquet": "73f60f643bb60380e6873affd894a7d50893b374cab0de9706c3304df3018a9a",
+      "price-00026.parquet": "1740d52d6e144d32f24322be8e9b12d8bd8267b64ca4a29a3841ed4520d6cf6e",
+      "price-00027.parquet": "784d4bbb9d501ecc4d8983f590e5bfb43b44813e5c663564f5e4d9b38b3d85fd",
+      "price-00028.parquet": "577b75118c55a7bf84547fa62d5d41c651271a60a4560cc3324c9ea8c0debcc1",
+      "price-00029.parquet": "0441916b9e2c29d80177079755feb6209d6db6d8569df345e525832cd3319566",
+      "price-00030.parquet": "b8569098e7541dfc500d7476784eb17b94e8dbb5d3338ed0576ad2fb32360ec8",
+      "price-00031.parquet": "1d9ba614e29ffd439b4b69e9e4116496be2e6efdb97996ad2641e1b1fc54efab",
+      "price-00032.parquet": "e71f73b14fac6ef64fbc3d39764beda6046f876f182499c122c29ee83a07a110",
+      "price-00033.parquet": "bdd45c9580a62e241737121cf87e11fc38bb25672395532cb780bd89894ed04c",
+      "price-00034.parquet": "ae0d0347576c5d7703fa339a473769bdeda5098bd6e6e0722a54feda31365635",
+      "price-00035.parquet": "8842365bcbfd72f6ddb86c042424abf5d3e51ba8ff440d668e59a3d4fc6c6f92",
+      "price-00036.parquet": "82ac82b507669f796be99f115a51a470ee4217fc30c3e6807b3d82b73cf7c569",
+      "price-00037.parquet": "f270454157e968ba0f33a1e30eb4ace20942f3cf8e0aa4140a0175a90899abb4",
+      "price-00038.parquet": "56629b52abe51fa0e4bbdb2a10d1cc538fcab36a978bc3d195b81d8c9eb5ed1a",
+      "price-00039.parquet": "f264e5e3cef39ddd69a18496c019ea45400c185428be3682dd0b1983d02de855",
+      "price-00040.parquet": "c9142587b65193fb8640afa7d535893a28d75f62726aa254f0e0d802f5e50bb0",
+      "price-00041.parquet": "23bac14d029f91b7a3444d2a7c9c07ef086fd1317ca5102f03902e4c40c5dc8f",
+      "price-00042.parquet": "8f0e9f9f152e20f1b5e6517d779a6ad7214a97216d6b5fa08b76b761cc1f4420",
+      "price-00043.parquet": "8b623c29b13b8706ed01fab5d649a560358994b3b71b342ddfef9be891de0f3e",
+      "price-00044.parquet": "b662e4a89180cb04917edc803e98cca09ea0b0fe433bfdc1ee7f1e2d90cbbc1f",
+      "price-00045.parquet": "c237989611e2721f288c6b4ab89389f7115364d56cff16c96536bbb47b946ea6",
+      "price-00046.parquet": "c598a1847a0bba4515bbb6f42167dd3382262561dafa6ffdd7916830368b86db",
+      "price-00047.parquet": "b2c1b8a50873e921525c4e9e60d1f81eeb70105873ac62a3125e6b8bcb9736e5",
+      "price-00048.parquet": "a0f66119212b58518e8a8a02f435575e03d578fbc7c8b09688a8eeb031302825",
+      "price-00049.parquet": "ff502381997bad4dc42cac0617822f83fe79b2ddbeb466731d1945a3e92d6ed2",
+      "price-00050.parquet": "0dabd581239efe33c247f77d62d8a6cacc2be262523ccc9978397431d52cdbd4",
+      "price-00051.parquet": "213a52911093cfadd75b9d9245eee0f37f88e1f922a6b59af95bf8ec84afd703",
+      "price-00052.parquet": "f546a79a26fe599a62335529291982701641e52d6fb5fcf79724c0082851fca5",
+      "price-00053.parquet": "2501c161e4957a72163288923ccde16426736e1f2f3be970d9b2913d07542d27",
+      "price-00054.parquet": "ff1d5e4363b47d002f41a8e93cf5255f00ff246af79ed3af701052ff323a1c99",
+      "price-00055.parquet": "daad01d30fa86e0b0b82beb55080a48e09cfe2f86d5a4b2b2b393ad3e2231d8c",
+      "price-00056.parquet": "6a7c8f2d13e34b62481d5933205e32b4c1e8be0a3ad2331282427b07f4ce2c32",
+      "price-00057.parquet": "73f124e1fbb95fd9416cd5a1690fd3141c24da419b26afde476eee6b80914252",
+      "price-00058.parquet": "e46d743d5e5b7d4c26b683352494d8a27d6da0591de7a3dd8337e7ddd3627104",
+      "price-00059.parquet": "0683b3e4a01ce2b20fdf5577e3b5fa9d649396d431875a7e65bb0914c1c62e87",
+      "price-00060.parquet": "5fae716d088f7c632b4709e687a917d35f96edddbc722700f31259da91518514",
+      "price-00061.parquet": "18c5e70c6130b6c2a1a1dd0b9b6feffc634c6c5cfacaa61d1deb79632f015442",
+      "price-00062.parquet": "8699d4c5dc1ac6b7cf2fcfcdc9a855c65fa66f26288196bb6f3012df707483fd",
+      "price-00063.parquet": "e10472d32314de69db4fa07bbd900c41c805e906932fab8d326eaba7d028896c",
+      "price-00064.parquet": "edbaf9a6e806acf1126b7c41f0a47d045809720c33f1a4d665bf0b4a9627b923",
+      "price-00065.parquet": "825a417152869bd8b51b9cc1795812e6fbd3c2bca26463becabcec231da9b43d",
+      "price-00066.parquet": "04115d3c5292ff5e9719dc654e4b4b07e1f1009c0b41db1a341f34b94da2f459",
+      "price-00067.parquet": "8fadee074df68693f5e4600c07d29e5a1e309341b28e63244e71b2098c80c9bb",
+      "price-00068.parquet": "bd18304878059f56e182441294b8b6b93e158b81cc90b710940eab57b37df87f",
+      "price-00069.parquet": "23c3304009c66bd37f7cbfc038de06defaba0a7549768a2d7e12fbdb0ed813f5",
+      "price-00070.parquet": "ab3af279b17e4c4e53d1ad1d5f45c10768922eb7669ed55ac27db96c7329b42e",
+      "price-00071.parquet": "11996a82cafe48d064dac4ba97e1720f6a22f56383bfe2dd74f21f454807295d",
+      "price-00072.parquet": "9c4efd157383ba7444a08e05a56e7447f6e4c60cbec646c306785029095a5d92",
+      "price-00073.parquet": "cc4b60c8e604d7fd971184b144cad87792df4cdb7c5df6443063fb4996ad500b",
+      "price-00074.parquet": "aac7e6af15cde9f41dc82865da12800afecd41a8b2ea2f020d8aed301f1a3543",
+      "price-00075.parquet": "159205d45e1425dca52475f348b455602a4882de3beedbcd7d1f6edefce04b2c",
+      "price-00076.parquet": "8945dc13ace0ef027dfe09fd1095a349509511c0adcf13a91ead0923e90b5046",
+      "price-00077.parquet": "aa7bcd3f1e9395114ca946b581deb5f4769ab8f7d6c5f0c84e268d6bc4553077",
+      "price-00078.parquet": "5b824d3af0ec93334abc5e403a435dbee1d8bbe0a742edcaf1631b1d89c0ae42",
+      "price-00079.parquet": "ed7061eb825cba5bce472cd889c0a29b90b0614801b61ef8a24833bddeaa8410",
+      "price-00080.parquet": "07e04c5fcabd5fae84c4ea5275dd5e019162fcf963beddba4d630b44d1934249",
+      "price-00081.parquet": "7adf642b181de43860fd6bb242317cc9e283960ff1623b76ab3b1fbf26562803",
+      "price-00082.parquet": "937bfe3e2e2bd0d145d4069986e41877fd9d3a6e23da22aa65e3afdc30a67005",
+      "price-00083.parquet": "630c9d66449c2f13cd2bdb1c9b58769be1f458b0d0653f0abce2cc310131c132",
+      "price-00084.parquet": "8fd67c0fab25c2ea911a7854241292836acf0e870a0731eb7c3ba8689818601e",
+      "price-00085.parquet": "846be95de7b5de9cbd3e488bcca0fc3c0ad4bf592bf762beb98c1983052aaef1",
+      "price-00086.parquet": "b4e18fc6e7bacf09419b38a864fc074d8308378eea860a471cd0f16790f17bde",
+      "price-00087.parquet": "4d36f2f15c20e171c3cc8361b713eb8edc6bdce4b7d85f7509b917ed9126761c",
+      "price-00088.parquet": "226c9780712c755e45655a7e39b21698d2f887f84a4d5ee5878328224fda616b",
+      "price-00089.parquet": "c242d9cf3fe44ba04727ee0c56fe0bbd668ff7d78fffe8240172e2177a4f83a9",
+      "price-00090.parquet": "1004feca66f72c4b52ec0f4d6c0280029b3e51c40d405483fff0c78c41ebb22d",
+      "price-00091.parquet": "ae194e280c876a40029cc3a01b261b9f93b50629ef062d13d56661814c621cc0",
+      "price-00092.parquet": "bd051bee3ba710ab288c2d8f3b44ca8a65b07ce9af5ddb33d81648023b6e5817",
+      "price-00093.parquet": "e267cd4424b3a819713f2e85fa45e063f1b19100f9da84be22ab36f666fbc713",
+      "price-00094.parquet": "06ea9b49d785220d422f02dbf9c577d56768525eaf62a478dc6348eacecd217d",
+      "price-00095.parquet": "8f9fa6bd342b2736d052afa8407da2105043a8da29ae265d391d21f0dd7e5991",
+      "price-00096.parquet": "85ac84723c15967ea4c1d013922e40ed49b3aeb714e4fa5cb89fcc2eafe69279"
+    },
+    "extract_parquet_files": {
+      "stock.parquet": "5530ab0513b1db8533af59e3561e7da98cd1ca73828c743769100f313c44e687",
+      "instrument_history.parquet": "0bab948be55530704b84aff789f997ac81b78a5e1b34279b46ce8c6ceebdff5d",
+      "instrument_history_excluded.parquet": "e14238041439dbcac23694169ecdc34009fe3316e9d6d0e9a7b839ec283f2dde",
+      "market_status_event.parquet": "81cf1998de596c222e6972ab3dc538d6aec99024557b6debb7b52ce2575986d3",
+      "trading_halt.parquet": "046bba1fcf6792cece09c4927da1f983ea5a57c3a6910b5f81430dc739a892b3"
+    }
+  },
+  "a_listing": {
+    "note": "상장일은 stock.listed_date 를 우선하고 없으면 instrument_history 의 최소 listed_date (effective_listed_date)를 쓴다. 2013년 하반기 상장 건은 2014-01-02 이전 개장일 캘린더가 없어 '120거래일 ≈ 6개월' 로 근사했으며 실제 거래일 수가 아니다.",
+    "target_stock_count": 2787,
+    "has_listed_date_in_stock": 2364,
+    "has_listed_date_in_instrument_history": 1802,
+    "has_listed_date_in_both": 1570,
+    "mismatch_count": 12,
+    "mismatch_examples": [
+      {
+        "stock_id": 2591,
+        "stock_code": "003670",
+        "stock_listed_date": "2019-05-29",
+        "instrument_history_min_listed_date": "2001-11-01"
+      },
+      {
+        "stock_id": 3131,
+        "stock_code": "026960",
+        "stock_listed_date": "2016-07-15",
+        "instrument_history_min_listed_date": "1996-05-22"
+      },
+      {
+        "stock_id": 3144,
+        "stock_code": "030190",
+        "stock_listed_date": "2023-08-08",
+        "instrument_history_min_listed_date": "2000-05-16"
+      },
+      {
+        "stock_id": 3171,
+        "stock_code": "034830",
+        "stock_listed_date": "2016-07-11",
+        "instrument_history_min_listed_date": "2001-05-22"
+      },
+      {
+        "stock_id": 3177,
+        "stock_code": "035720",
+        "stock_listed_date": "2017-07-10",
+        "instrument_history_min_listed_date": "1999-11-11"
+      },
+      {
+        "stock_id": 3178,
+        "stock_code": "036420",
+        "stock_listed_date": "2019-10-18",
+        "instrument_history_min_listed_date": "2000-03-23"
+      },
+      {
+        "stock_id": 3227,
+        "stock_code": "068270",
+        "stock_listed_date": "2018-02-09",
+        "instrument_history_min_listed_date": "2005-07-19"
+      },
+      {
+        "stock_id": 3290,
+        "stock_code": "090460",
+        "stock_listed_date": "2023-06-20",
+        "instrument_history_min_listed_date": "2007-01-26"
+      },
+      {
+        "stock_id": 3314,
+        "stock_code": "097520",
+        "stock_listed_date": "2021-07-06",
+        "instrument_history_min_listed_date": "2012-07-25"
+      },
+      {
+        "stock_id": 3318,
+        "stock_code": "100090",
+        "stock_listed_date": "2023-04-19",
+        "instrument_history_min_listed_date": "2008-08-01"
+      }
+    ],
+    "instrument_history_internally_inconsistent_count": 0,
+    "contradiction_listed_after_first_raw_trade_count": 13,
+    "listed_on_or_after_2014_01_02_count": 884,
+    "listed_2013_h2_approx_120td_boundary_count": 32
+  },
+  "b_delisting": {
+    "note": "B1(universe_diagnosis.py 의 analyze_delisting_proxy)의 '데이터 종료일보다 90일 이상 앞서 원가가 끊긴 종목' 정의(임계값 90일)를 그대로 재현했고, 폐지 근거는 stock.delisted_date / MSE status=DELISTED / trading_halt notice_type=DELIST 의 합집합이다(전부 2023-12-31 이하).",
+    "evidence_by_source": {
+      "stock_delisted_date": 266,
+      "market_status_event_delisted": 364,
+      "trading_halt_delist": 188,
+      "union": 398
+    },
+    "stock_delisted_date_masked_after_cutoff_count": 176,
+    "proxy_last_print_gt_90d_count": 284,
+    "proxy_with_delisting_evidence_count": 254,
+    "proxy_without_evidence_collection_cutoff_candidate_count": 30,
+    "mse_last_trade_date_vs_last_raw_trade_date_diff_days": {
+      "count": 186,
+      "mean": -79.9,
+      "std": 338.0,
+      "min": -3093.0,
+      "p25": -41.0,
+      "median": 0.0,
+      "p75": 0.0,
+      "max": 0.0
+    },
+    "delisting_reference_date_vs_last_raw_trade_date_diff_days": {
+      "count": 398,
+      "mean": -584.5,
+      "std": 846.6,
+      "min": -3179.0,
+      "p25": -818.5,
+      "median": -164.0,
+      "p75": 0.0,
+      "max": 0.0
+    }
+  },
+  "c_halt": {
+    "note": "MSE 정지 구간은 HALTED 다음 TRADING/DELISTED 전날(개장일 기준)까지, 끝을 못 찾으면 2023-12-28 까지 열어 둔다. trading_halt 구간은 halt_date~resume_date 전날(달력일)이며 resume_date 가 없으면 halt_date 하루만 확정 구간으로 쓴다. 우선순위는 MSE_INTERVAL > TH_START_ONLY > NEITHER. 분류 기준(halt_source_category) 자체는 아래 검증 지표를 위해 바꾸지 않았다 — 검증 지표는 별도 필드로만 보고한다.",
+    "mse_interval_count": 3849,
+    "mse_interval_open_ended_count": 1030,
+    "trading_halt_interval_count": 1460,
+    "trading_halt_interval_confirmed_range_count": 117,
+    "zero_volume_no_status_total": 135419,
+    "zero_volume_no_status_by_category": {
+      "MSE_INTERVAL": 104067,
+      "NEITHER": 31273,
+      "TH_START_ONLY": 79
+    },
+    "zero_volume_no_status_by_market_x_category": {
+      "KOSDAQ": {
+        "MSE_INTERVAL": 104067,
+        "NEITHER": 9864,
+        "TH_START_ONLY": 3
+      },
+      "KOSPI": {
+        "NEITHER": 21409,
+        "TH_START_ONLY": 76
+      }
+    },
+    "validation": {
+      "note": "MSE_INTERVAL(상한값) 104,067행이 전부 KOSDAQ 이고, MSE 구간 3,849개 중 1,030개가 끝을 못 찾아 2023-12-28 까지 열려 있어 과대 집계 가능성을 점검했다. 닫힌 구간의 모순도 적지 않은데(80,488건), 원인은 HALTED 의 의미(무상증자·개선기간 부여·상장폐지 사유 발생 등 실제 매매정지 공시) 자체가 아니라 해제 이벤트(TRADING 1,205건)가 정지 이벤트(HALTED 3,849건)보다 훨씬 적어 '다음 TRADING/DELISTED 전날' 규칙이 다른 정지의 해제일까지 구간을 이어 붙이기 때문으로 본다.",
+      "mse_interval_rows_in_closed_intervals": 86719,
+      "mse_interval_rows_in_open_intervals": 17348,
+      "contradiction_positive_volume_in_mse_closed_interval_rows": 80488,
+      "contradiction_positive_volume_in_mse_open_interval_rows": 427171,
+      "open_intervals_with_positive_volume_after_start_count": 925,
+      "open_intervals_total_count": 1030,
+      "mse_interval_truncated": {
+        "note": "보수 추정치. 닫힌·열린 구간 모두 시작일 이후 첫 원가 거래량>0 날짜의 전날에서 자른다(시작일 당일 거래량이 양수면 그 구간은 빈 구간이 된다). 트렁케이션 근거가 없는(끝까지 양수 거래량이 없는) 구간은 원래 end_date 를 그대로 쓴다. 기존 halt_source_category(상한값 104,067)는 바꾸지 않고 halt_source_category_truncated 로 별도 집계했다.",
+        "zero_volume_no_status_by_category_truncated": {
+          "NEITHER": 82332,
+          "MSE_INTERVAL_TRUNCATED": 53007,
+          "TH_START_ONLY": 80
+        },
+        "zero_volume_no_status_by_market_x_category_truncated": {
+          "KOSDAQ": {
+            "MSE_INTERVAL_TRUNCATED": 53007,
+            "NEITHER": 60923,
+            "TH_START_ONLY": 4
+          },
+          "KOSPI": {
+            "NEITHER": 21409,
+            "TH_START_ONLY": 76
+          }
+        },
+        "status_halted_280_in_truncated_mse_interval": 280,
+        "status_halted_280_not_in_truncated_mse_interval": 0,
+        "top10_halted_reasons_row_count_in_truncated_interval": {
+          "무상증자": 0,
+          "개선기간 부여": 8135,
+          "상장폐지 사유 발생": 5973,
+          "SPAC 합병(예비심사청구대상)": 3522,
+          "풍문 또는 보도 관련": 1674,
+          "구주권 제출": 3305,
+          "주식의 병합, 분할 등 전자등록 변경, 말소": 2516,
+          "불성실공시법인 지정": 0,
+          "투자자 보호": 4282,
+          "상장적격성 실질심사 대상 결정": 2375
+        }
+      },
+      "source_market_bias": {
+        "note": "정지 원천(MSE HALTED·trading_halt HALT)의 시장 분포. stock.market_code 기준(종목의 현재 시장, 사건 발생 시점 시장과 다를 수 있다). KOSPI 는 두 원천 모두 표본이 극히 적어 KOSPI 무거래일의 정지 여부는 이번 원천으로도 판별되지 않는다.",
+        "market_status_event_halted_by_market": {
+          "KOSDAQ": 3834,
+          "KOSPI": 15
+        },
+        "trading_halt_halt_by_market": {
+          "KOSDAQ": 1381,
+          "KOSPI": 79
+        }
+      }
+    },
+    "status_halted_280_reverse_check": {
+      "total": 280,
+      "in_mse_interval": 280,
+      "not_in_mse_interval": 0
+    },
+    "unexplained_18_halt_event_adjacency": [
+      {
+        "stock_id": 27,
+        "stock_code": "001000",
+        "trading_date": "2014-05-07",
+        "same_day_halt_event": false,
+        "next_trading_date": "2014-05-08",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 390420,
+        "stock_code": "056340",
+        "trading_date": "2014-05-08",
+        "same_day_halt_event": false,
+        "next_trading_date": "2014-05-09",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 83,
+        "stock_code": "008830",
+        "trading_date": "2015-01-05",
+        "same_day_halt_event": false,
+        "next_trading_date": "2015-01-06",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 362214,
+        "stock_code": "053870",
+        "trading_date": "2015-08-17",
+        "same_day_halt_event": true,
+        "next_trading_date": "2015-08-18",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 3031,
+        "stock_code": "016380",
+        "trading_date": "2016-02-16",
+        "same_day_halt_event": false,
+        "next_trading_date": "2016-02-17",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 362138,
+        "stock_code": "015540",
+        "trading_date": "2016-03-25",
+        "same_day_halt_event": false,
+        "next_trading_date": "2016-03-28",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 1148,
+        "stock_code": "215100",
+        "trading_date": "2017-06-12",
+        "same_day_halt_event": true,
+        "next_trading_date": "2017-06-13",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 539,
+        "stock_code": "060570",
+        "trading_date": "2017-07-17",
+        "same_day_halt_event": true,
+        "next_trading_date": "2017-07-18",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 3198,
+        "stock_code": "047810",
+        "trading_date": "2017-10-11",
+        "same_day_halt_event": false,
+        "next_trading_date": "2017-10-12",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 510,
+        "stock_code": "056730",
+        "trading_date": "2019-02-11",
+        "same_day_halt_event": true,
+        "next_trading_date": "2019-02-12",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 1311,
+        "stock_code": "270520",
+        "trading_date": "2019-05-29",
+        "same_day_halt_event": false,
+        "next_trading_date": "2019-05-30",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 1407,
+        "stock_code": "310200",
+        "trading_date": "2019-05-29",
+        "same_day_halt_event": false,
+        "next_trading_date": "2019-05-30",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 259,
+        "stock_code": "033790",
+        "trading_date": "2020-01-28",
+        "same_day_halt_event": true,
+        "next_trading_date": "2020-01-29",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 362463,
+        "stock_code": "349720",
+        "trading_date": "2020-10-07",
+        "same_day_halt_event": false,
+        "next_trading_date": "2020-10-08",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 362345,
+        "stock_code": "141070",
+        "trading_date": "2021-02-01",
+        "same_day_halt_event": true,
+        "next_trading_date": "2021-02-02",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 1468,
+        "stock_code": "336570",
+        "trading_date": "2021-10-14",
+        "same_day_halt_event": true,
+        "next_trading_date": "2021-10-15",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 1147,
+        "stock_code": "215090",
+        "trading_date": "2022-02-09",
+        "same_day_halt_event": true,
+        "next_trading_date": "2022-02-10",
+        "next_trading_day_halt_event": false
+      },
+      {
+        "stock_id": 362284,
+        "stock_code": "089530",
+        "trading_date": "2023-04-24",
+        "same_day_halt_event": true,
+        "next_trading_date": "2023-04-25",
+        "next_trading_day_halt_event": false
+      }
+    ]
+  },
+  "d_no_record_crosstab": {
+    "note": "universe_diagnosis.py 의 gap 로직(원가 population - cohort, 1차 사유가 이슈 기록 전혀 없는 NO_ADMISSION_ISSUE_RECORD 인 종목)을 그대로 재계산했다(top20 예시가 아니라 전체 목록).",
+    "no_record_stock_count": 1184,
+    "crosstab_delisting_x_listing_x_halt": {
+      "delisting=False|listing=2014_01_02_이전|halt=False": 365,
+      "delisting=False|listing=2014_01_02_이전|halt=True": 316,
+      "delisting=False|listing=2014_01_02_이후|halt=False": 155,
+      "delisting=False|listing=2014_01_02_이후|halt=True": 285,
+      "delisting=False|listing=NO_LISTED_DATE|halt=True": 1,
+      "delisting=True|listing=2014_01_02_이전|halt=False": 4,
+      "delisting=True|listing=2014_01_02_이후|halt=False": 11,
+      "delisting=True|listing=2014_01_02_이후|halt=True": 47
+    }
+  }
+}

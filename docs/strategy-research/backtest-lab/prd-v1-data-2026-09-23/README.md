@@ -1,4 +1,4 @@
-# B1·B2·B3·B4 데이터 정리 결과
+# B1·B1b·B2·B3·B4 데이터 정리 결과
 
 기준 문서: [PRD v1 실행 계획](../prd-v1-plan-2026-09-23.md)
 작성일: 2026-09-23
@@ -16,7 +16,9 @@
 
 ## B1 Universe 진단 결과
 
-로컬 Parquet 8개 테이블에는 `security_type`·2014년 이전 상장일·상장폐지 플래그·일별 거래상태가 없다. 이 필드는 PostgreSQL 뷰 `backtest_universe_v2` 에서만 가져온다(`research/krx_lab/v3_inputs.py:23,133`, `research/krx_lab/v3_snapshot.py:27`). 따라서 PRD §5.3 기준 일별 Universe 는 현재 로컬 자료로 계산할 수 없다.
+정정(B1b 작업 중 발견): 아래 `q3_security_type_field.field_found_in_offline_tables: false` 는 오류다. 로컬 `universe-*.parquet`(31,475행)에는 실제로 `security_type` 컬럼이 있고 대상 2,787종목 전부 `COMMON_STOCK` 이다. `universe_diagnosis.py:294` 의 `analyze_security_type_field` 가 이 값을 검사 없이 `False` 로 하드코딩해서 생긴 오류이며, 이 스크립트와 `universe-diagnosis.json` 은 이번 작업 범위가 아니라 고치지 않았다.
+
+로컬 Parquet 8개 테이블에는 여전히 2014년 이전 상장일·상장폐지 플래그·일별 거래상태가 없다(이 문장은 유효하다). 이 필드는 PostgreSQL 뷰 `backtest_universe_v2` 에서만 가져온다(`research/krx_lab/v3_inputs.py:23,133`, `research/krx_lab/v3_snapshot.py:27`). 따라서 PRD §5.3 기준 일별 Universe 는 현재 로컬 자료로 계산할 수 없다. B1b 는 PostgreSQL 기반 테이블(`stock`·`instrument_history`·`market_status_event`·`trading_halt`)에서 상장일·상장폐지·거래정지를 읽기 전용으로 대조했다(아래 B1b 절).
 
 | 항목 | 수치 |
 | --- | --- |
@@ -131,3 +133,95 @@
 - 가설(원천 미확인): 정규장 체결 없이 장전 시간외 종가매매(전일 종가로 체결)만 있었던 날로 보인다. 정지가 시작된 날이 많다는 점도 이 가설과 맞는다. 349720 은 체결 단가가 전일 종가와 달라 이 가설로 설명되지 않는다.
 - 이슈 연결: `issues.parquet` 의 `RAW_NONPOSITIVE_PRICE_TRADED`(13건)는 종목 식별자가 비어 있어 날짜로만 대조할 수 있고, 날짜가 겹치는 것이 6건이다. 종목 단위 연결은 확정하지 못했다.
 - 한계: 무거래 135,419행에는 정지 기록이 없는 정지일이 섞여 있을 수 있다. 정지 기록이 KOSDAQ 에만 있으므로, KOSPI 정지일은 전부 이 분류에 들어간다. 판별하려면 B1b 의 일별 거래상태가 필요하다.
+
+## B1b 상장·폐지·거래정지 대조
+
+[`listing_halt_reconciliation.py`](listing_halt_reconciliation.py)가 PostgreSQL 기반 테이블(`kiwoom.stock`·`instrument_history`·`market_status_event`·`trading_halt`, 대상 2,787종목)을 단일 읽기 전용 트랜잭션(`BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY ... ROLLBACK`)으로 추출해 로컬 자료·B1·B4 와 대조한다. 결과는 [`listing-halt-reconciliation.json`](listing-halt-reconciliation.json), 추출 결과는 `../vectorbt-data/krx-prd-v1-b1b-20260924/`(manifest.json 에 SQL 원문·해시·행 수)이다.
+
+재실행 명령(리포 루트 기준):
+
+```
+.venv/Scripts/python -X utf8 docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/listing_halt_reconciliation.py \
+    --extract-dir ../vectorbt-data/krx-prd-v1-b1b-20260924 \
+    --prepared-dir ../vectorbt-data/krx-v3-20260921-prepared-r2 \
+    --tables-dir ../vectorbt-data/krx-v3-20260921-tables \
+    --out docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/listing-halt-reconciliation.json
+```
+
+`--mode extract`/`--mode analyze` 로 단계를 나눌 수 있다(디렉터리가 이미 있으면 extract 는 실패한다). analyze 실행 시간은 5.9~6.0초, `date_cutoff.saw_rows_on_or_after_cutoff` 는 `false` 다. 모든 추출 쿼리는 2023-12-31 이하로 제한했고, 그 이후 값(`delisted_date`·`last_trade_date`·`resume_date`·`official_delist_date`·`announced_at`·`disclosed_at`)은 SQL CASE 로 NULL 처리하고 `*_after_cutoff` 로만 표시했다(`stock.delisted_date` 176건이 이렇게 가려졌다).
+
+### A. 상장일
+
+| 항목 | 수치 |
+| --- | --- |
+| 대상 종목 | 2,787 |
+| stock.listed_date 있음 | 2,364 |
+| instrument_history 기준 있음 | 1,802 |
+| 둘 다 있음 | 1,570 |
+| 둘의 값이 다름 | 12 |
+| instrument_history 내부 상장일 값이 여럿(내적 불일치) | 0 |
+| 상장일이 첫 원가 거래일보다 늦은 모순 | 13 |
+| 2014-01-02 이후 상장 | 884 |
+| 2013년 하반기 상장(120거래일≈6개월 근사, 2014년 초 경계 후보) | 32 |
+
+표가 말하는 것: `stock.listed_date` 와 `instrument_history` 최소 `listed_date` 가 다른 12종목은 전부 `stock.listed_date` 가 더 늦다(예: 003670 은 2019-05-29 대 2001-11-01). 시장 이전상장·재상장 등으로 `stock.listed_date` 가 원래 IPO 일이 아닐 수 있다는 뜻이며, 어느 쪽이 PRD 의 "상장일" 의미에 맞는지는 확인하지 못했다.
+
+- 근사: 2013-07-01~2013-12-31 상장 32종목은 2014-01-02 이전 개장일 캘린더가 없어 "120거래일≈6개월" 로만 근사했고, 정확한 거래일 수 조건은 계산하지 못했다.
+- 한계: 상장일이 첫 원가 거래일보다 늦은 13건은 데이터 결함인지 재상장/시장이전 때문인지 이번 대조로는 구분하지 못한다.
+
+### B. 상장폐지
+
+| 근거 | 종목 수(2023-12-31 이하) |
+| --- | --- |
+| stock.delisted_date | 266 |
+| market_status_event status=DELISTED | 364 |
+| trading_halt notice_type=DELIST | 188 |
+| 합집합 | 398 |
+| B1 근사(90일 이상 원가 절단) | 284 |
+| ↳ 위 합집합에 근거 있음 | 254 |
+| ↳ 근거 없음(수집 절단 후보) | 30 |
+
+표가 말하는 것: B1 의 "90일 이상 앞서 원가가 끊긴 284종목" 은 이번 대조에서도 그대로 284개로 재현됐고, 그중 254개(89%)는 실제 폐지 근거(세 원천 중 하나)가 있다. 나머지 30개는 폐지 근거가 없는 순수 수집 절단 후보다.
+
+- 마지막 원가 거래일 대비 MSE `last_trade_date` 차이(일, 음수=원가가 더 늦게 관측): 표본 186건, 중앙값 0일, 25백분위수 -41일, 최솟값 -3,093일(이상값 1건).
+- 마지막 원가 거래일 대비 "1차 폐지 근거일"(세 원천 중 가장 이른 날짜) 차이: 표본 398건, 중앙값 -164일. 상장폐지 사유 발생 공시가 실제 상장폐지보다 훨씬 먼저(중앙값 164일) 나온다는 뜻으로, 원가는 그 사이 계속 관측된다.
+- 한계: "1차 폐지 근거일" 은 최솟값(가장 이른 이벤트)을 쓰므로 관리종목 지정 등 예비 경고성 공시도 섞여 있어 실제 상장폐지일보다 훨씬 이를 수 있다.
+
+### C. 거래정지
+
+MSE 정지 구간(HALTED→다음 TRADING/DELISTED 전날, 개장일 기준, 끝이 없으면 2023-12-28 까지 열린 구간) 3,849개(그중 1,030개가 끝을 못 찾아 열려 있음), `trading_halt` 구간(halt_date~resume_date 전날, resume_date 없으면 halt_date 하루) 1,460개(확정 범위 117개). 상한값(원래 구간)과 보수 추정치(`MSE_INTERVAL_TRUNCATED`: 닫힌·열린 구간 모두 시작일 이후 첫 원가 거래량>0 날짜의 전날에서 자르고, 시작일 당일부터 거래량이 있으면 빈 구간으로 둔 것) 를 나란히 뒀다. 분류 기준(`halt_source_category`)은 상한값 그대로 두고, 보수 추정치는 `halt_source_category_truncated` 로 별도 집계했다.
+
+| B4 ZERO_VOLUME_NO_STATUS(135,419행) 재분류 | 상한값(전체 / KOSPI / KOSDAQ) | 보수 추정치(전체 / KOSPI / KOSDAQ) |
+| --- | --- | --- |
+| MSE 정지 구간 안 | 104,067 / 0 / 104,067 | 53,007 / 0 / 53,007 |
+| trading_halt 시작일만 일치 | 79 / 76 / 3 | 80 / 76 / 4 |
+| 어느 쪽에도 없음 | 31,273 / 21,409 / 9,864 | 82,332 / 21,409 / 60,923 |
+
+표가 말하는 것: 무거래 135,419행 중 "정지로 설명됨" 은 구간을 어떻게 잡느냐에 따라 77%(상한값 104,067)에서 39%(보수 추정치 53,007)까지 갈린다 — 그래도 B4 가 "정지 기록 없음" 으로 뭉뚱그린 행의 상당수는 실제로 정지 중이었다는 결론은 유지된다. KOSPI 는 두 추정치 모두 21,409행이 그대로 남는다(원천 자체가 KOSDAQ 편중).
+
+- 원인: 상한값의 닫힌 구간에도 모순(구간 안인데 원가 거래량>0)이 80,488건 있는데, HALTED 의 의미(무상증자·개선기간 부여·상장폐지 사유 발생 등 실제 매매정지 공시) 문제가 아니라 해제 이벤트(TRADING 1,205건)가 정지 이벤트(HALTED 3,849건)보다 훨씬 적어 "다음 TRADING/DELISTED 전날" 규칙이 다른 정지의 해제일까지 구간을 이어 붙이기 때문으로 본다. 열린 구간(1,030개, 그중 925개는 재개로 보이는 첫 양수거래량 날짜가 있음)의 모순은 427,171건으로 훨씬 크다.
+- 검증: B4 의 STATUS_HALTED 280행은 상한값·보수 추정치 모두 280/280 전부 구간 안에 들어간다(초기 구현은 44/280 이었는데, 같은 날 HALTED·TRADING 공시가 함께 나오는 경우 시작일 자체가 구간에서 빠지는 버그가 있어 "시작일은 항상 포함" 으로 고쳤다).
+- 정지 사유 상위 10개 중 보수 추정치에서 0행으로 잘려나가는 것은 "무상증자"·"불성실공시법인 지정"(당일 재개형 형식적 공시로 추정)이고, "개선기간 부여"(8,135)·"상장폐지 사유 발생"(5,973)·"투자자 보호"(4,282)는 여러 날 이어지는 정지로 남는다.
+- B4 의 UNEXPLAINED 18건 중 9건은 당일에 정지 사건(MSE HALTED 또는 trading_halt HALT)이 있었고, 다음 거래일에 정지 사건이 있는 건은 0건이다. 나머지 9건은 당일·다음 거래일 모두 정지 사건이 없어 여전히 설명되지 않는다.
+- 한계: MSE HALTED 이벤트 3,849건 중 KOSPI 는 15건(0.4%), trading_halt HALT 1,460건 중 KOSPI 는 79건(5%)뿐이다. 두 원천 모두 정지 기록이 사실상 KOSDAQ 전용이라, **KOSPI 무거래일(위 표의 KOSPI 21,409행)이 실제 정지 때문인지는 상한값·보수 추정치 어느 쪽으로도 판별되지 않는다.**
+- 한계: MSE `event_id` 로 미루어 볼 때 같은 종목·날짜에 사유가 다른 HALTED 공시가 여러 건 겹칠 수 있어(예: stock_id 93 은 2020-09-04 하루에 사유가 다른 HALTED 공시 12건), 정지 구간을 "가장 이른 HALTED~가장 가까운 다음 TRADING/DELISTED" 로 병합했다. 개별 사유별 구간은 구분하지 않았다.
+
+### D. B1 원인 미확인 누락 1,184종목 교차 집계
+
+`universe_diagnosis.py` 의 1차 사유 `NO_ADMISSION_ISSUE_RECORD` 전체 목록(1,184종목, `universe-diagnosis.json` 의 1,184와 일치)을 재계산해 교차 집계했다.
+
+| 폐지 근거 | 상장 시점 | 정지 이력 | 종목 수 |
+| --- | --- | --- | --- |
+| 없음 | 2014-01-02 이전 | 없음 | 365 |
+| 없음 | 2014-01-02 이전 | 있음 | 316 |
+| 없음 | 2014-01-02 이후 | 없음 | 155 |
+| 없음 | 2014-01-02 이후 | 있음 | 285 |
+| 없음 | 상장일 정보 없음 | 있음 | 1 |
+| 있음 | 2014-01-02 이전 | 없음 | 4 |
+| 있음 | 2014-01-02 이후 | 없음 | 11 |
+| 있음 | 2014-01-02 이후 | 있음 | 47 |
+
+표가 말하는 것: 1,184종목 중 폐지 근거가 있는 것은 62건(5%)뿐이라, 나머지 1,122종목(95%)의 cohort 제외 사유는 상장폐지가 아니다. 정지 이력이 있는 종목이 649종목(55%)으로 절반을 넘어, 거래정지가 잦았던 종목이 cohort 에서 원인 불명으로 빠졌을 가능성을 시사하지만 인과관계는 확인하지 못했다.
+
+- 한계: "정지 이력 있음" 은 대상 기간(≤2023-12-31) 어느 시점에든 HALTED/HALT 기록이 한 번이라도 있으면 참으로 두었다. 그 정지가 cohort 제외와 시점적으로 관련 있는지는 보지 않았다.
+- 한계: `stock.listed_date` 와 `instrument_history` 가 다른 12종목(A 절)처럼, "상장 시점" 버킷이 실제 IPO 일과 다를 수 있는 종목이 섞여 있을 수 있다.
