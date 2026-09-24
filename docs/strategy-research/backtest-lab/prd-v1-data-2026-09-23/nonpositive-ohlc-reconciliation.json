@@ -1,0 +1,924 @@
+{
+  "admission_status": "READ_ONLY_DIAGNOSTIC_NOT_ADMITTED",
+  "note": "이 결과는 백테스트 실행이나 전략 승인의 근거가 아니다. B1 진단(universe_diagnosis.py 의 analyze_nonpositive_ohlc, 거래량0 만으로 판정: 원가 OHLC<=0 135,717건 / 거래량0 135,699건 / 거래량>0 18건)을 거래상태 테이블로 정밀화한 것이다.",
+  "generated_at": "2026-09-24T09:16:14.866571",
+  "runtime_seconds": 12.2,
+  "date_cutoff": {
+    "cutoff": "2024-01-01",
+    "saw_rows_on_or_after_cutoff": false,
+    "note": "파일 자체는 날짜로 사전 필터링하지 않고 전부 읽었다. 컷오프 이후 행이 있었다면 saw_rows_on_or_after_cutoff 가 true 이며, 모든 집계·목록은 그런 행을 제외했다."
+  },
+  "input_sha256": {
+    "issues.parquet": "af25303260002d22977df5bd2e8edda00054541ce788cc6423dd652b173213c1",
+    "calendar.parquet": "af61cfa3bee686602cc671717ed086721fd59a43f840a3df8760c157482ceef9",
+    "status-00110.parquet": "ee634ae325f055dd731acd8c9bd7ecbff71b5d09b8afb58e97eb2f7ecb73b65e",
+    "price_parquet_files": {
+      "price-00000.parquet": "379e008556f3e0298205b218a60758be11c92e149797f5fe3e0155ea21ec80ba",
+      "price-00001.parquet": "fc6a6d1d0212580d94e7a75817f1b223cf1a361f3a46dab6414b354b045162b7",
+      "price-00002.parquet": "bcac99cf2c5e939cf693afa8ed6cf50c9222b0e51e0eea9c8b592fbe6550bac0",
+      "price-00003.parquet": "5f241f5c5d9b5caa79fdff985c23f5cb219f8eac3e059b363ba4b3d09a52d54a",
+      "price-00004.parquet": "bc288922075bd8782262cc2177a7eca927da97a2ddc99bb7cbf1bca54f170000",
+      "price-00005.parquet": "698736566cd924b651e894917cab3d77149977e09537bf652fd5f15989e98d39",
+      "price-00006.parquet": "82da8466bb6974ce10f184fcc30c15edcbedc2abad1b136141e906cadcef6517",
+      "price-00007.parquet": "776840d73494d482dcef0acff8093eafcd14418e9643174e1e097e2a374e67c4",
+      "price-00008.parquet": "dc3341364489e31de53f5423cf0ff6eebeb082684a3ad83c5f966a1fcba741f2",
+      "price-00009.parquet": "777b02591510e28ba9acaf57794dd2afdda668da086a782aaa5373459baa4e52",
+      "price-00010.parquet": "f3b2d1ff268e28efc9854efb15c8cb488c6ceebbc800d43a5b08b977dfdac6b3",
+      "price-00011.parquet": "168dc35d7d32c3fb181938e1f603ef35cd3fef79eafc3a6ec71a021476154cc1",
+      "price-00012.parquet": "e1703aae1de57e81b230cf0aa1da7fff3c056f96e2f8036e72aaab19acca97f6",
+      "price-00013.parquet": "0ba5f015418385b2eab3be382e2c032d66e89d638a947c22c8670bdfb2790215",
+      "price-00014.parquet": "0c3018ff621ff3759e60bc8b7df1fb2b1cbd5f36944cb0228d6e4e4ce8895d79",
+      "price-00015.parquet": "2fe2996fa00e6e9158e053778bd42c63ee792cb445a7c8cd147347b43a209d40",
+      "price-00016.parquet": "792c1b6e4c162999acf67519222a761937698c118905e7a03566a7758e683705",
+      "price-00017.parquet": "422bc6f561380066a11988ef3aa032c955518448e4140109eff2809b1bf91d21",
+      "price-00018.parquet": "3d46792a11f867287b0aa0df41ff037c430c2932377f5d3b3ae4076c1989a1c3",
+      "price-00019.parquet": "b1029b596921741c8f12cf74b60faa4f8217c713525bada3db952a5fb33a5dee",
+      "price-00020.parquet": "20643dd1abb2ec15ebd9d81e2106c80da1bf35ec064e13c9eb6169d78b2686cb",
+      "price-00021.parquet": "d5527fc4d2f2ac5b9a4fa68ef9ee595d8e18248455cf29e8886db39b89c7425d",
+      "price-00022.parquet": "9aebd1e8914d2ab005de46f07a9fb5dc073defd13a16b2cfad0b1bc732905644",
+      "price-00023.parquet": "01e7d0e22992d5a80721277a5a5e99dab79a37e085320eee624b2d74b39556e1",
+      "price-00024.parquet": "b6d8fe96ae4f5209db4bccb131f565b79563560c1e0d1a3b9c4c547760dd4283",
+      "price-00025.parquet": "73f60f643bb60380e6873affd894a7d50893b374cab0de9706c3304df3018a9a",
+      "price-00026.parquet": "1740d52d6e144d32f24322be8e9b12d8bd8267b64ca4a29a3841ed4520d6cf6e",
+      "price-00027.parquet": "784d4bbb9d501ecc4d8983f590e5bfb43b44813e5c663564f5e4d9b38b3d85fd",
+      "price-00028.parquet": "577b75118c55a7bf84547fa62d5d41c651271a60a4560cc3324c9ea8c0debcc1",
+      "price-00029.parquet": "0441916b9e2c29d80177079755feb6209d6db6d8569df345e525832cd3319566",
+      "price-00030.parquet": "b8569098e7541dfc500d7476784eb17b94e8dbb5d3338ed0576ad2fb32360ec8",
+      "price-00031.parquet": "1d9ba614e29ffd439b4b69e9e4116496be2e6efdb97996ad2641e1b1fc54efab",
+      "price-00032.parquet": "e71f73b14fac6ef64fbc3d39764beda6046f876f182499c122c29ee83a07a110",
+      "price-00033.parquet": "bdd45c9580a62e241737121cf87e11fc38bb25672395532cb780bd89894ed04c",
+      "price-00034.parquet": "ae0d0347576c5d7703fa339a473769bdeda5098bd6e6e0722a54feda31365635",
+      "price-00035.parquet": "8842365bcbfd72f6ddb86c042424abf5d3e51ba8ff440d668e59a3d4fc6c6f92",
+      "price-00036.parquet": "82ac82b507669f796be99f115a51a470ee4217fc30c3e6807b3d82b73cf7c569",
+      "price-00037.parquet": "f270454157e968ba0f33a1e30eb4ace20942f3cf8e0aa4140a0175a90899abb4",
+      "price-00038.parquet": "56629b52abe51fa0e4bbdb2a10d1cc538fcab36a978bc3d195b81d8c9eb5ed1a",
+      "price-00039.parquet": "f264e5e3cef39ddd69a18496c019ea45400c185428be3682dd0b1983d02de855",
+      "price-00040.parquet": "c9142587b65193fb8640afa7d535893a28d75f62726aa254f0e0d802f5e50bb0",
+      "price-00041.parquet": "23bac14d029f91b7a3444d2a7c9c07ef086fd1317ca5102f03902e4c40c5dc8f",
+      "price-00042.parquet": "8f0e9f9f152e20f1b5e6517d779a6ad7214a97216d6b5fa08b76b761cc1f4420",
+      "price-00043.parquet": "8b623c29b13b8706ed01fab5d649a560358994b3b71b342ddfef9be891de0f3e",
+      "price-00044.parquet": "b662e4a89180cb04917edc803e98cca09ea0b0fe433bfdc1ee7f1e2d90cbbc1f",
+      "price-00045.parquet": "c237989611e2721f288c6b4ab89389f7115364d56cff16c96536bbb47b946ea6",
+      "price-00046.parquet": "c598a1847a0bba4515bbb6f42167dd3382262561dafa6ffdd7916830368b86db",
+      "price-00047.parquet": "b2c1b8a50873e921525c4e9e60d1f81eeb70105873ac62a3125e6b8bcb9736e5",
+      "price-00048.parquet": "a0f66119212b58518e8a8a02f435575e03d578fbc7c8b09688a8eeb031302825",
+      "price-00049.parquet": "ff502381997bad4dc42cac0617822f83fe79b2ddbeb466731d1945a3e92d6ed2",
+      "price-00050.parquet": "0dabd581239efe33c247f77d62d8a6cacc2be262523ccc9978397431d52cdbd4",
+      "price-00051.parquet": "213a52911093cfadd75b9d9245eee0f37f88e1f922a6b59af95bf8ec84afd703",
+      "price-00052.parquet": "f546a79a26fe599a62335529291982701641e52d6fb5fcf79724c0082851fca5",
+      "price-00053.parquet": "2501c161e4957a72163288923ccde16426736e1f2f3be970d9b2913d07542d27",
+      "price-00054.parquet": "ff1d5e4363b47d002f41a8e93cf5255f00ff246af79ed3af701052ff323a1c99",
+      "price-00055.parquet": "daad01d30fa86e0b0b82beb55080a48e09cfe2f86d5a4b2b2b393ad3e2231d8c",
+      "price-00056.parquet": "6a7c8f2d13e34b62481d5933205e32b4c1e8be0a3ad2331282427b07f4ce2c32",
+      "price-00057.parquet": "73f124e1fbb95fd9416cd5a1690fd3141c24da419b26afde476eee6b80914252",
+      "price-00058.parquet": "e46d743d5e5b7d4c26b683352494d8a27d6da0591de7a3dd8337e7ddd3627104",
+      "price-00059.parquet": "0683b3e4a01ce2b20fdf5577e3b5fa9d649396d431875a7e65bb0914c1c62e87",
+      "price-00060.parquet": "5fae716d088f7c632b4709e687a917d35f96edddbc722700f31259da91518514",
+      "price-00061.parquet": "18c5e70c6130b6c2a1a1dd0b9b6feffc634c6c5cfacaa61d1deb79632f015442",
+      "price-00062.parquet": "8699d4c5dc1ac6b7cf2fcfcdc9a855c65fa66f26288196bb6f3012df707483fd",
+      "price-00063.parquet": "e10472d32314de69db4fa07bbd900c41c805e906932fab8d326eaba7d028896c",
+      "price-00064.parquet": "edbaf9a6e806acf1126b7c41f0a47d045809720c33f1a4d665bf0b4a9627b923",
+      "price-00065.parquet": "825a417152869bd8b51b9cc1795812e6fbd3c2bca26463becabcec231da9b43d",
+      "price-00066.parquet": "04115d3c5292ff5e9719dc654e4b4b07e1f1009c0b41db1a341f34b94da2f459",
+      "price-00067.parquet": "8fadee074df68693f5e4600c07d29e5a1e309341b28e63244e71b2098c80c9bb",
+      "price-00068.parquet": "bd18304878059f56e182441294b8b6b93e158b81cc90b710940eab57b37df87f",
+      "price-00069.parquet": "23c3304009c66bd37f7cbfc038de06defaba0a7549768a2d7e12fbdb0ed813f5",
+      "price-00070.parquet": "ab3af279b17e4c4e53d1ad1d5f45c10768922eb7669ed55ac27db96c7329b42e",
+      "price-00071.parquet": "11996a82cafe48d064dac4ba97e1720f6a22f56383bfe2dd74f21f454807295d",
+      "price-00072.parquet": "9c4efd157383ba7444a08e05a56e7447f6e4c60cbec646c306785029095a5d92",
+      "price-00073.parquet": "cc4b60c8e604d7fd971184b144cad87792df4cdb7c5df6443063fb4996ad500b",
+      "price-00074.parquet": "aac7e6af15cde9f41dc82865da12800afecd41a8b2ea2f020d8aed301f1a3543",
+      "price-00075.parquet": "159205d45e1425dca52475f348b455602a4882de3beedbcd7d1f6edefce04b2c",
+      "price-00076.parquet": "8945dc13ace0ef027dfe09fd1095a349509511c0adcf13a91ead0923e90b5046",
+      "price-00077.parquet": "aa7bcd3f1e9395114ca946b581deb5f4769ab8f7d6c5f0c84e268d6bc4553077",
+      "price-00078.parquet": "5b824d3af0ec93334abc5e403a435dbee1d8bbe0a742edcaf1631b1d89c0ae42",
+      "price-00079.parquet": "ed7061eb825cba5bce472cd889c0a29b90b0614801b61ef8a24833bddeaa8410",
+      "price-00080.parquet": "07e04c5fcabd5fae84c4ea5275dd5e019162fcf963beddba4d630b44d1934249",
+      "price-00081.parquet": "7adf642b181de43860fd6bb242317cc9e283960ff1623b76ab3b1fbf26562803",
+      "price-00082.parquet": "937bfe3e2e2bd0d145d4069986e41877fd9d3a6e23da22aa65e3afdc30a67005",
+      "price-00083.parquet": "630c9d66449c2f13cd2bdb1c9b58769be1f458b0d0653f0abce2cc310131c132",
+      "price-00084.parquet": "8fd67c0fab25c2ea911a7854241292836acf0e870a0731eb7c3ba8689818601e",
+      "price-00085.parquet": "846be95de7b5de9cbd3e488bcca0fc3c0ad4bf592bf762beb98c1983052aaef1",
+      "price-00086.parquet": "b4e18fc6e7bacf09419b38a864fc074d8308378eea860a471cd0f16790f17bde",
+      "price-00087.parquet": "4d36f2f15c20e171c3cc8361b713eb8edc6bdce4b7d85f7509b917ed9126761c",
+      "price-00088.parquet": "226c9780712c755e45655a7e39b21698d2f887f84a4d5ee5878328224fda616b",
+      "price-00089.parquet": "c242d9cf3fe44ba04727ee0c56fe0bbd668ff7d78fffe8240172e2177a4f83a9",
+      "price-00090.parquet": "1004feca66f72c4b52ec0f4d6c0280029b3e51c40d405483fff0c78c41ebb22d",
+      "price-00091.parquet": "ae194e280c876a40029cc3a01b261b9f93b50629ef062d13d56661814c621cc0",
+      "price-00092.parquet": "bd051bee3ba710ab288c2d8f3b44ca8a65b07ce9af5ddb33d81648023b6e5817",
+      "price-00093.parquet": "e267cd4424b3a819713f2e85fa45e063f1b19100f9da84be22ab36f666fbc713",
+      "price-00094.parquet": "06ea9b49d785220d422f02dbf9c577d56768525eaf62a478dc6348eacecd217d",
+      "price-00095.parquet": "8f9fa6bd342b2736d052afa8407da2105043a8da29ae265d391d21f0dd7e5991",
+      "price-00096.parquet": "85ac84723c15967ea4c1d013922e40ed49b3aeb714e4fa5cb89fcc2eafe69279"
+    }
+  },
+  "summary": {
+    "total_nonpositive_rows_examined": 135717,
+    "classification_counts": {
+      "ZERO_VOLUME_NO_STATUS": 135419,
+      "STATUS_HALTED": 280,
+      "UNEXPLAINED": 18
+    },
+    "classification_x_volume_bucket": {
+      "STATUS_HALTED": {
+        "ZERO": 280
+      },
+      "UNEXPLAINED": {
+        "POSITIVE": 18
+      },
+      "ZERO_VOLUME_NO_STATUS": {
+        "ZERO": 135419
+      }
+    },
+    "classification_x_ohlc_pattern": {
+      "STATUS_HALTED": {
+        "OHL": 280
+      },
+      "UNEXPLAINED": {
+        "OHL": 18
+      },
+      "ZERO_VOLUME_NO_STATUS": {
+        "OHL": 135419
+      }
+    },
+    "ohlc_pattern_totals": {
+      "OHL": 135717
+    },
+    "holiday_rows": {
+      "total": 0,
+      "by_classification": {},
+      "note": "calendar.parquet 는 개장일만 나열하므로(is_open 컬럼 없음), 그 목록에 없는 날짜를 휴장일로 판정했다."
+    },
+    "reverse_status_match": {
+      "total_status_rows": 292,
+      "counts": {
+        "MATCHED_NONPOSITIVE_RAW_ROW": 280,
+        "RAW_ROW_EXISTS_BUT_POSITIVE": 12
+      },
+      "by_daily_state": {
+        "HALTED": {
+          "MATCHED_NONPOSITIVE_RAW_ROW": 279
+        },
+        "NO_BAR_HALTED": {
+          "MATCHED_NONPOSITIVE_RAW_ROW": 1
+        },
+        "PARTIAL_TRADING": {
+          "RAW_ROW_EXISTS_BUT_POSITIVE": 12
+        }
+      }
+    },
+    "classification_x_year": {
+      "STATUS_HALTED": {
+        "2015": 13,
+        "2016": 22,
+        "2017": 37,
+        "2018": 42,
+        "2019": 49,
+        "2020": 28,
+        "2021": 37,
+        "2022": 27,
+        "2023": 25
+      },
+      "UNEXPLAINED": {
+        "2014": 2,
+        "2015": 2,
+        "2016": 2,
+        "2017": 3,
+        "2019": 3,
+        "2020": 2,
+        "2021": 2,
+        "2022": 1,
+        "2023": 1
+      },
+      "ZERO_VOLUME_NO_STATUS": {
+        "2014": 5699,
+        "2015": 6147,
+        "2016": 7164,
+        "2017": 7890,
+        "2018": 8433,
+        "2019": 14747,
+        "2020": 21301,
+        "2021": 23602,
+        "2022": 20412,
+        "2023": 20024
+      }
+    },
+    "classification_x_market": {
+      "STATUS_HALTED": {
+        "KOSDAQ": 280
+      },
+      "UNEXPLAINED": {
+        "KOSDAQ": 15,
+        "KOSPI": 3
+      },
+      "ZERO_VOLUME_NO_STATUS": {
+        "KOSDAQ": 113934,
+        "KOSPI": 21485
+      }
+    }
+  },
+  "unexplained_rows": [
+    {
+      "stock_id": 27,
+      "stock_code": "001000",
+      "market": "KOSDAQ",
+      "trading_date": "2014-05-07",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 4675,
+      "trade_volume": 50,
+      "trade_amount": 234750,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 37909623,
+      "payload_sha256": "658ada2fc483b131327e1f69a156f494ca4a4f9c58306e7c28088a311c4fc1b4",
+      "prev_raw_row": {
+        "trading_date": "2014-05-02",
+        "close_price": 4695,
+        "trade_volume": 138
+      },
+      "next_raw_row": {
+        "trading_date": "2014-05-08",
+        "close_price": 4680,
+        "trade_volume": 249
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 935,
+        "high_price": 935,
+        "low_price": 935,
+        "close_price": 935
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 390420,
+      "stock_code": "056340",
+      "market": "KOSDAQ",
+      "trading_date": "2014-05-08",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 96,
+      "trade_volume": 191,
+      "trade_amount": 18336,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 37913136,
+      "payload_sha256": "630e5bd85c3e13f29e53efb29db9006fbf6cc2e498b5dc3dcd74df100982a48c",
+      "prev_raw_row": {
+        "trading_date": "2014-05-07",
+        "close_price": 96,
+        "trade_volume": 1355704
+      },
+      "next_raw_row": {
+        "trading_date": "2014-05-09",
+        "close_price": 96,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": false
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 83,
+      "stock_code": "008830",
+      "market": "KOSDAQ",
+      "trading_date": "2015-01-05",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 18500,
+      "trade_volume": 1,
+      "trade_amount": 18700,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 38542586,
+      "payload_sha256": "dc8e186e5649e81a68b6bb5d8703cb35662a255837e8425614a4a5bd3d945f8f",
+      "prev_raw_row": {
+        "trading_date": "2015-01-02",
+        "close_price": 18700,
+        "trade_volume": 2
+      },
+      "next_raw_row": {
+        "trading_date": "2015-01-06",
+        "close_price": 18050,
+        "trade_volume": 23
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 1850,
+        "high_price": 1850,
+        "low_price": 1850,
+        "close_price": 1850
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 362214,
+      "stock_code": "053870",
+      "market": "KOSDAQ",
+      "trading_date": "2015-08-17",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 1220,
+      "trade_volume": 5234,
+      "trade_amount": 6385480,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 38706617,
+      "payload_sha256": "fc56d0f0f2c26d7fa06090cf40fc1a670e21404d88cf724ff2b98e9eb750e7b0",
+      "prev_raw_row": {
+        "trading_date": "2015-08-13",
+        "close_price": 1220,
+        "trade_volume": 235884
+      },
+      "next_raw_row": {
+        "trading_date": "2015-08-18",
+        "close_price": 1220,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": false
+      },
+      "issue_link": {
+        "linked": true,
+        "note": "날짜만 일치(issues.parquet 의 instrument_id 가 비어 있어 종목 단위 확인 불가)",
+        "matches": [
+          {
+            "affected_from": "2015-08-17",
+            "affected_to": "2015-08-17",
+            "decision": "REJECT",
+            "details": "{\"adjusted_source_id\":\"PYKRX_NAVER_ADJUSTED\",\"source_id\":\"PYKRX_KRX_UNADJUSTED\"}"
+          }
+        ]
+      }
+    },
+    {
+      "stock_id": 3031,
+      "stock_code": "016380",
+      "market": "KOSPI",
+      "trading_date": "2016-02-16",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 2500,
+      "trade_volume": 437,
+      "trade_amount": 1092500,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 41982983,
+      "payload_sha256": "5c28613079c566a9b401845456367c8f18b44ad072af9229c7c48cfe5fab3d66",
+      "prev_raw_row": {
+        "trading_date": "2016-02-15",
+        "close_price": 2500,
+        "trade_volume": 399625
+      },
+      "next_raw_row": {
+        "trading_date": "2016-02-17",
+        "close_price": 2500,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 33351,
+        "high_price": 33351,
+        "low_price": 33351,
+        "close_price": 33351
+      },
+      "issue_link": {
+        "linked": true,
+        "note": "날짜만 일치(issues.parquet 의 instrument_id 가 비어 있어 종목 단위 확인 불가)",
+        "matches": [
+          {
+            "affected_from": "2016-02-16",
+            "affected_to": "2016-02-16",
+            "decision": "REJECT",
+            "details": "{\"adjusted_source_id\":\"PYKRX_NAVER_ADJUSTED\",\"source_id\":\"PYKRX_KRX_UNADJUSTED\"}"
+          }
+        ]
+      }
+    },
+    {
+      "stock_id": 362138,
+      "stock_code": "015540",
+      "market": "KOSPI",
+      "trading_date": "2016-03-25",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 1700,
+      "trade_volume": 5161,
+      "trade_amount": 8773700,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 42009750,
+      "payload_sha256": "e53e569435351ed9e2948a83979fe709e725bc5055afd2b6eea9626c0a9f52a8",
+      "prev_raw_row": {
+        "trading_date": "2016-03-24",
+        "close_price": 1700,
+        "trade_volume": 4226122
+      },
+      "next_raw_row": {
+        "trading_date": "2016-03-28",
+        "close_price": 1700,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": false
+      },
+      "issue_link": {
+        "linked": true,
+        "note": "날짜만 일치(issues.parquet 의 instrument_id 가 비어 있어 종목 단위 확인 불가)",
+        "matches": [
+          {
+            "affected_from": "2016-03-25",
+            "affected_to": "2016-03-25",
+            "decision": "REJECT",
+            "details": "{\"adjusted_source_id\":\"PYKRX_NAVER_ADJUSTED\",\"source_id\":\"PYKRX_KRX_UNADJUSTED\"}"
+          }
+        ]
+      }
+    },
+    {
+      "stock_id": 1148,
+      "stock_code": "215100",
+      "market": "KOSDAQ",
+      "trading_date": "2017-06-12",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 2135,
+      "trade_volume": 2,
+      "trade_amount": 4270,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 39232448,
+      "payload_sha256": "85a8da0dbf92f38dba7a8631dc05db6d64aa29c10bed83cf21914fd74ad1f350",
+      "prev_raw_row": {
+        "trading_date": "2017-06-09",
+        "close_price": 2135,
+        "trade_volume": 120683
+      },
+      "next_raw_row": {
+        "trading_date": "2017-06-13",
+        "close_price": 2135,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 4144,
+        "high_price": 4144,
+        "low_price": 4144,
+        "close_price": 4144
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 539,
+      "stock_code": "060570",
+      "market": "KOSDAQ",
+      "trading_date": "2017-07-17",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 5420,
+      "trade_volume": 12771,
+      "trade_amount": 69218820,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 39262676,
+      "payload_sha256": "ed05ccc4a416992e5e696f8b3eca90c0ed4ee95a90905406e77a33a8ccc32c2f",
+      "prev_raw_row": {
+        "trading_date": "2017-07-14",
+        "close_price": 5420,
+        "trade_volume": 1035552
+      },
+      "next_raw_row": {
+        "trading_date": "2017-07-18",
+        "close_price": 7040,
+        "trade_volume": 1305597
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 5420,
+        "high_price": 5420,
+        "low_price": 5420,
+        "close_price": 5420
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 3198,
+      "stock_code": "047810",
+      "market": "KOSPI",
+      "trading_date": "2017-10-11",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 47700,
+      "trade_volume": 141,
+      "trade_amount": 6725700,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 42377521,
+      "payload_sha256": "edd8402fe93adcbff0921e6ea5d828b66daaf1e6c034b6e219d02194fec9911e",
+      "prev_raw_row": {
+        "trading_date": "2017-10-10",
+        "close_price": 47700,
+        "trade_volume": 2181642
+      },
+      "next_raw_row": {
+        "trading_date": "2017-10-12",
+        "close_price": 47700,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 47700,
+        "high_price": 47700,
+        "low_price": 47700,
+        "close_price": 47700
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 510,
+      "stock_code": "056730",
+      "market": "KOSDAQ",
+      "trading_date": "2019-02-11",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 1460,
+      "trade_volume": 60795,
+      "trade_amount": 88760700,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 39747990,
+      "payload_sha256": "776e440155e84e4e058972dffdae700df26f0749753272565a040699914586cb",
+      "prev_raw_row": {
+        "trading_date": "2019-02-08",
+        "close_price": 1460,
+        "trade_volume": 9403339
+      },
+      "next_raw_row": {
+        "trading_date": "2019-02-12",
+        "close_price": 1460,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 3300,
+        "high_price": 3300,
+        "low_price": 3300,
+        "close_price": 3300
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 1311,
+      "stock_code": "270520",
+      "market": "KOSDAQ",
+      "trading_date": "2019-05-29",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 2085,
+      "trade_volume": 58500,
+      "trade_amount": 122265000,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 39846650,
+      "payload_sha256": "28e76df78e4024f6d39c30aa841a316171ed631f070b435066f37590773e22b4",
+      "prev_raw_row": {
+        "trading_date": "2019-05-28",
+        "close_price": 2090,
+        "trade_volume": 1149
+      },
+      "next_raw_row": {
+        "trading_date": "2019-05-30",
+        "close_price": 2085,
+        "trade_volume": 2
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 653,
+        "high_price": 653,
+        "low_price": 653,
+        "close_price": 653
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 1407,
+      "stock_code": "310200",
+      "market": "KOSDAQ",
+      "trading_date": "2019-05-29",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 2230,
+      "trade_volume": 67503,
+      "trade_amount": 150531690,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 39845788,
+      "payload_sha256": "28e76df78e4024f6d39c30aa841a316171ed631f070b435066f37590773e22b4",
+      "prev_raw_row": {
+        "trading_date": "2019-05-28",
+        "close_price": 2230,
+        "trade_volume": 20228
+      },
+      "next_raw_row": {
+        "trading_date": "2019-05-30",
+        "close_price": 2230,
+        "trade_volume": 1
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 2257,
+        "high_price": 2257,
+        "low_price": 2257,
+        "close_price": 2257
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 259,
+      "stock_code": "033790",
+      "market": "KOSDAQ",
+      "trading_date": "2020-01-28",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 829,
+      "trade_volume": 401,
+      "trade_amount": 332429,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 40069712,
+      "payload_sha256": "490b07909d0a23185096c45d08019d9c4077a6c792871bd6c637ba32ae66949a",
+      "prev_raw_row": {
+        "trading_date": "2020-01-23",
+        "close_price": 829,
+        "trade_volume": 1248177
+      },
+      "next_raw_row": {
+        "trading_date": "2020-01-29",
+        "close_price": 829,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 1658,
+        "high_price": 1658,
+        "low_price": 1658,
+        "close_price": 1658
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 362463,
+      "stock_code": "349720",
+      "market": "KOSDAQ",
+      "trading_date": "2020-10-07",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 1995,
+      "trade_volume": 147946,
+      "trade_amount": 288494700,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 40315560,
+      "payload_sha256": "d1067fc51d369010ec52b888b0cc24ad05d47582f5d1f5876d902c28bcc7eae1",
+      "prev_raw_row": {
+        "trading_date": "2020-10-06",
+        "close_price": 2000,
+        "trade_volume": 1002
+      },
+      "next_raw_row": {
+        "trading_date": "2020-10-08",
+        "close_price": 2000,
+        "trade_volume": 32
+      },
+      "same_day_adjusted_row": {
+        "exists": false
+      },
+      "issue_link": {
+        "linked": true,
+        "note": "날짜만 일치(issues.parquet 의 instrument_id 가 비어 있어 종목 단위 확인 불가)",
+        "matches": [
+          {
+            "affected_from": "2020-10-07",
+            "affected_to": "2020-10-07",
+            "decision": "REJECT",
+            "details": "{\"adjusted_source_id\":\"PYKRX_NAVER_ADJUSTED\",\"source_id\":\"PYKRX_KRX_UNADJUSTED\"}"
+          }
+        ]
+      }
+    },
+    {
+      "stock_id": 362345,
+      "stock_code": "141070",
+      "market": "KOSDAQ",
+      "trading_date": "2021-02-01",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 1365,
+      "trade_volume": 177,
+      "trade_amount": 241605,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 40430105,
+      "payload_sha256": "8aab06ace3bd4eb9d963695b260dc1a5e503aa2b659ae0800bef3390ac3d22a8",
+      "prev_raw_row": {
+        "trading_date": "2021-01-29",
+        "close_price": 1365,
+        "trade_volume": 3258598
+      },
+      "next_raw_row": {
+        "trading_date": "2021-02-02",
+        "close_price": 1185,
+        "trade_volume": 7710262
+      },
+      "same_day_adjusted_row": {
+        "exists": false
+      },
+      "issue_link": {
+        "linked": true,
+        "note": "날짜만 일치(issues.parquet 의 instrument_id 가 비어 있어 종목 단위 확인 불가)",
+        "matches": [
+          {
+            "affected_from": "2021-02-01",
+            "affected_to": "2021-02-01",
+            "decision": "REJECT",
+            "details": "{\"adjusted_source_id\":\"PYKRX_NAVER_ADJUSTED\",\"source_id\":\"PYKRX_KRX_UNADJUSTED\"}"
+          }
+        ]
+      }
+    },
+    {
+      "stock_id": 1468,
+      "stock_code": "336570",
+      "market": "KOSDAQ",
+      "trading_date": "2021-10-14",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 2675,
+      "trade_volume": 78,
+      "trade_amount": 208650,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 40688280,
+      "payload_sha256": "24dfd0edf6d0f536c37f020ec0141d90da7e4934296e1734c98cef90fa47cec3",
+      "prev_raw_row": {
+        "trading_date": "2021-10-13",
+        "close_price": 2675,
+        "trade_volume": 1241958
+      },
+      "next_raw_row": {
+        "trading_date": "2021-10-15",
+        "close_price": 2675,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 3525,
+        "high_price": 3525,
+        "low_price": 3525,
+        "close_price": 3525
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 1147,
+      "stock_code": "215090",
+      "market": "KOSDAQ",
+      "trading_date": "2022-02-09",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 1505,
+      "trade_volume": 1911,
+      "trade_amount": 2876055,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 40812029,
+      "payload_sha256": "503279e83099864aab6fc0af706f5e0642d4b3604458d80ed13aff32cfc32de7",
+      "prev_raw_row": {
+        "trading_date": "2022-02-08",
+        "close_price": 1505,
+        "trade_volume": 11508652
+      },
+      "next_raw_row": {
+        "trading_date": "2022-02-10",
+        "close_price": 1505,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": true,
+        "open_price": 1505,
+        "high_price": 1505,
+        "low_price": 1505,
+        "close_price": 1505
+      },
+      "issue_link": {
+        "linked": false,
+        "note": "NOT_LINKED",
+        "matches": []
+      }
+    },
+    {
+      "stock_id": 362284,
+      "stock_code": "089530",
+      "market": "KOSDAQ",
+      "trading_date": "2023-04-24",
+      "open_price": 0,
+      "high_price": 0,
+      "low_price": 0,
+      "close_price": 600,
+      "trade_volume": 120,
+      "trade_amount": 72000,
+      "ohlc_pattern": "OHL",
+      "source_code": "KRX_OPEN_API",
+      "source_record_id": 41286088,
+      "payload_sha256": "da48e4392c424e7615ea1a2264c7f7d7e418aa17e42ab71bab1f0b73d4b5b667",
+      "prev_raw_row": {
+        "trading_date": "2023-04-21",
+        "close_price": 600,
+        "trade_volume": 5165540
+      },
+      "next_raw_row": {
+        "trading_date": "2023-04-25",
+        "close_price": 600,
+        "trade_volume": 0
+      },
+      "same_day_adjusted_row": {
+        "exists": false
+      },
+      "issue_link": {
+        "linked": true,
+        "note": "날짜만 일치(issues.parquet 의 instrument_id 가 비어 있어 종목 단위 확인 불가)",
+        "matches": [
+          {
+            "affected_from": "2023-04-24",
+            "affected_to": "2023-04-24",
+            "decision": "REJECT",
+            "details": "{\"adjusted_source_id\":\"PYKRX_NAVER_ADJUSTED\",\"source_id\":\"PYKRX_KRX_UNADJUSTED\"}"
+          }
+        ]
+      }
+    }
+  ]
+}
