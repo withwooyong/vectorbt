@@ -19,6 +19,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/).
 
 ---
 
+## [2026-09-24] Session Summary
+
+### Added
+- PRD v1 데이터 정리 B5: member 해시 재계산·DB 봉인 대조와 가격쌍·OHLCV·원문 표본 재현(`gate_a_verification.py`, Gate A 데이터 수준 1,076종목)
+- ted-startup 원천 수정 요청서 R1~R3(`requests/`)
+
+### Changed
+- B1 의 「원인 미확인 1,184종목」 결론과 R2 근거를 정정했다
+- 전략 연구를 새 리포 `ted-strategy-research` 로 이관했다(이 리포의 연구 파일은 보존)
+
+---
+
 ## [2026-09-10] Session Summary
 
 ### Added

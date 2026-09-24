@@ -1,4 +1,18 @@
-# 현재 인수인계: 기존 백테스트 결과와 OHLCV20 입력 연구
+# 현재 인수인계: 연구는 ted-strategy-research 로 이관됨 (2026-09-24)
+
+전략 연구는 이 포크에서 새 리포 `C:/Users/aeby/vscode/stock/ted-strategy-research` 로 옮겼다. 이 리포의 연구 파일과 이력은 삭제하지 않고 보존하며, 새 작업은 새 리포에서 한다.
+
+| 항목 | 내용 |
+| --- | --- |
+| 이관 이유 | vectorbt 내부를 고칠 일이 없어 포크 대신 pip 의존성으로 쓰고, 라이브러리 코드와 연구 코드를 분리한다(사용자 결정). |
+| 이관 방식 | 연구 경로(`docs/strategy-research/`·`research/`·`tests/research/`·인계 문서)를 `git filter-repo` 로 이력째 복사했다. 이 리포에는 태그 `archive/research-2026-09-24` 를 남겼다. |
+| master 병합 | `research/prd-v1-data-20260923`(B1~B5)과 `research/ohlcv20-s0-r2`(S0·S6, D7 에 따른 `ohlcv20_exploratory.py` 제거)를 병합했다. `withwooyong/grayling` 은 이미 master 에 포함되어 있어 worktree 만 정리했다. |
+| 다음 할 일 | 새 리포에서 PRD §5.2 에 탐색 등급을 추가하고 전략 A~D × Exit E1~E7 탐색 스윕을 시작한다. 느렸던 원인은 「데이터 승인 전 실제 수익률 BLOCKED」 규칙이었다. |
+| 외부 대기·후속 | ted-startup R1~R3 납품 대기. B5 후속(TICK_SIZE 미포함 2,689개장일, 이슈 중복 75건)은 요청서 미작성. B3b 대상 `ohlcv20_exploratory.py` 는 D7 로 제거되어 계획을 다시 잡아야 한다. |
+
+---
+
+# 이전 인수인계: 기존 백테스트 결과와 OHLCV20 입력 연구
 
 ## AI 트레이딩 PRD v1 착수 · 데이터 정리(트랙 B) — 2026-09-23
 
