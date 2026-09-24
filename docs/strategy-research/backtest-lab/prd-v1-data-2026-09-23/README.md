@@ -89,7 +89,7 @@
 1. SELL_TAX 행이 2015-01-01 부터 시작해 2014년이 비어 있다. 소비자 `V3MarketRules` 는 효력 구간이 0개면 예외를 던지므로(`research/krx_lab/v3_market.py:79-82`) 2014년 매도는 실행이 실패한다.
 2. 법령은 양도분(결제일, T+2) 기준인데 소비자는 체결일로 조회한다(`research/krx_lab/v3_execution.py:369`). 그래서 법령 시행일을 경계로 그대로 쓰면 경계 직전 2개 개장일에 옛 세율이 적용된다.
 
-새 표는 [`rules_effective_date_table.py`](rules_effective_date_table.py) 가 만들며, `../vectorbt-data/krx-prd-v1-b2b-20260924/rules.parquet`(15행, SHA-256 `e6bd9595…a697c`)에 있다. 기존 봉인 파일은 고치지 않았다. SELL_TAX 경계는 캘린더에서 「T+2 결제일이 시행일 이상인 첫 개장일」 로 계산해 2019-05-30·2020-12-29·2022-12-28 이 되었다. 이 값은 금융투자협회·언론이 안내한 매매일 기준 시작일과 같다. `rule_value` 에는 `effective_basis=TRADE_DATE`·`settlement_effective_from`·`law_reference` 를 더했고, SELL_TAX 가 아닌 7행은 그대로 복사했다.
+원천(`kiwoom.backtest_execution_rule_v2`) 수정은 ted-startup 에 [R1 요청](requests/r1-execution-rule-sell-tax.md)으로 넘겼고, `../vectorbt-data/krx-prd-v1-b2b-20260924/rules.parquet`(15행, SHA-256 `e6bd9595…a697c`)는 원천을 대체하지 않는 대조용 기대값이다. 기존 봉인 파일은 고치지 않았다. 이 기대값은 [`rules_effective_date_table.py`](rules_effective_date_table.py) 로 만들었고, SELL_TAX 경계는 캘린더에서 「T+2 결제일이 시행일 이상인 첫 개장일」 로 계산해 2019-05-30·2020-12-29·2022-12-28 이 되었다. 이 값은 금융투자협회·언론이 안내한 매매일 기준 시작일과 같다. `rule_value` 에는 `effective_basis=TRADE_DATE`·`settlement_effective_from`·`law_reference` 를 더했고, SELL_TAX 가 아닌 7행은 그대로 복사했다.
 
 재실행 명령(리포 루트 기준): `.venv/Scripts/python -X utf8 docs/strategy-research/backtest-lab/prd-v1-data-2026-09-23/rules_effective_date_table.py` (인자는 스크립트의 `--help` 참고, 출력 디렉터리가 이미 있으면 실패한다).
 
@@ -102,7 +102,7 @@
 
 표가 말하는 것: 새 표는 2014~2023 전 개장일에서 조회가 성공하고, 세율이 바뀌는 날은 공백 채움과 경계 이동뿐이다.
 
-한계: 농어촌특별세(KOSPI 0.15%)는 원문의 세율 표가 텍스트로 추출되지 않아 2차 확인으로 남았다. 제5조의 2014~2023 개정 표지는 2021-12-21 한 건이다. 수수료·가격제한폭·호가단위·결제 행은 원문으로 재확인하지 않았다. 새 표는 `READ_ONLY_DIAGNOSTIC_NOT_ADMITTED` 이며 실행 경로에 연결하지 않았다.
+한계: 농어촌특별세(KOSPI 0.15%)는 원문의 세율 표가 텍스트로 추출되지 않아 2차 확인으로 남았다. 제5조의 2014~2023 개정 표지는 2021-12-21 한 건이다. 수수료·가격제한폭·호가단위·결제 행은 원문으로 재확인하지 않았다. 새 표는 `READ_ONLY_DIAGNOSTIC_NOT_ADMITTED` 이며 실행 경로에 연결하지 않았다. 원천이 고쳐지기 전까지 실행 경로는 기존 봉인 표를 쓴다.
 
 ## B3 무상증자·주식배당 수량 정산
 

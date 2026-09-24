@@ -1,0 +1,106 @@
+{
+  "schema_version": "sell-tax-expected-v1",
+  "request_only": true,
+  "transmitted": false,
+  "source_of_truth": "ted-startup 원천(kiwoom.backtest_execution_rule_v2) 갱신 결과이며, 이 파일은 vectorbt 리포가 만든 대조용 기대값이다",
+  "basis_expected_local_snapshot": "../vectorbt-data/krx-prd-v1-b2b-20260924/rules.parquet (15행, SHA-256 e6bd9595…a697c 중 SELL_TAX 8행)",
+  "row_count": 8,
+  "rows": [
+    {
+      "market": "KOSDAQ",
+      "effective_from": "2014-01-01",
+      "effective_to": "2019-05-29",
+      "total_sell_tax_rate": 0.003,
+      "securities_transaction_rate": 0.003,
+      "rural_special_tax_rate": 0.0,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2013-08-29",
+      "law_reference": "대통령령 제24697호(2013-08-29 시행)",
+      "source_url": "https://www.law.go.kr/법령/증권거래세법시행령/(24697,20130827)"
+    },
+    {
+      "market": "KOSDAQ",
+      "effective_from": "2019-05-30",
+      "effective_to": "2020-12-28",
+      "total_sell_tax_rate": 0.0025,
+      "securities_transaction_rate": 0.0025,
+      "rural_special_tax_rate": 0.0,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2019-06-03",
+      "law_reference": "대통령령 제29788호(2019-06-03 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208731"
+    },
+    {
+      "market": "KOSDAQ",
+      "effective_from": "2020-12-29",
+      "effective_to": "2022-12-27",
+      "total_sell_tax_rate": 0.0023,
+      "securities_transaction_rate": 0.0023,
+      "rural_special_tax_rate": 0.0,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2021-01-01",
+      "law_reference": "대통령령 제31290호(2021-01-01 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167"
+    },
+    {
+      "market": "KOSDAQ",
+      "effective_from": "2022-12-28",
+      "effective_to": "2023-12-31",
+      "total_sell_tax_rate": 0.002,
+      "securities_transaction_rate": 0.002,
+      "rural_special_tax_rate": 0.0,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2023-01-01",
+      "law_reference": "대통령령 제33209호(2023-01-01 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487"
+    },
+    {
+      "market": "KOSPI",
+      "effective_from": "2014-01-01",
+      "effective_to": "2019-05-29",
+      "total_sell_tax_rate": 0.003,
+      "securities_transaction_rate": 0.0015,
+      "rural_special_tax_rate": 0.0015,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2013-08-29",
+      "law_reference": "대통령령 제24697호(2013-08-29 시행)",
+      "source_url": "https://www.law.go.kr/법령/증권거래세법시행령/(24697,20130827)"
+    },
+    {
+      "market": "KOSPI",
+      "effective_from": "2019-05-30",
+      "effective_to": "2020-12-28",
+      "total_sell_tax_rate": 0.0025,
+      "securities_transaction_rate": 0.001,
+      "rural_special_tax_rate": 0.0015,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2019-06-03",
+      "law_reference": "대통령령 제29788호(2019-06-03 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208731"
+    },
+    {
+      "market": "KOSPI",
+      "effective_from": "2020-12-29",
+      "effective_to": "2022-12-27",
+      "total_sell_tax_rate": 0.0023,
+      "securities_transaction_rate": 0.0008,
+      "rural_special_tax_rate": 0.0015,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2021-01-01",
+      "law_reference": "대통령령 제31290호(2021-01-01 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=225167"
+    },
+    {
+      "market": "KOSPI",
+      "effective_from": "2022-12-28",
+      "effective_to": "2023-12-31",
+      "total_sell_tax_rate": 0.002,
+      "securities_transaction_rate": 0.0005,
+      "rural_special_tax_rate": 0.0015,
+      "effective_basis": "TRADE_DATE",
+      "settlement_effective_from": "2023-01-01",
+      "law_reference": "대통령령 제33209호(2023-01-01 시행)",
+      "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269487"
+    }
+  ]
+}
